@@ -1,0 +1,73 @@
+%%%%%% IMPORTAÇÃO DOS PACOTES %%%%%%
+\input{preamble/preambulo}
+% \bibliography{library}
+
+% Informacoes de dados para CAPA e FOLHA DE ROSTO:
+\mytitle{Correção de ótica linear no comissionamento do Sirius}
+\titulo{Linear optics correction on Sirius comissioning}
+\autor{Murilo Barbosa Alves}
+\local{Campinas}
+\data{Dezembro, 2020}
+\orientador[Orientador:]{Prof. Dr. Antônio Rubens Britto de Castro}
+\instituicao{%
+    UNIVERSIDADE ESTADUAL DE CAMPINAS
+    \par
+    Instituto de Física Gleb Wataghin (IFGW)
+    }
+\tipotrabalho{Dissertação de Mestrado}
+% O preambulo deve conter o tipo do trabalho, o objetivo, o nome da instituição
+% e a área de concentração
+\preambulo{Dissertação apresentada ao Instituto de Física Gleb Wataghin (IFGW) da
+           Universidade Estadual de Campinas (UNICAMP) como parte dos
+           requisitos exigidos para a obtenção do título de Mestre em Ciências.
+
+           Dissertation submitted to the Instituto de Física Gleb Wataghin (IFGW) of
+           the Universidade Estadual de Campinas (UNICAMP) in partial
+           fulfillment of the requirements for the degree of Master of Science.}
+
+\input{preamble/comandos}
+
+\begin{document}
+	% Retira espaço extra obsoleto entre as frases
+	\frenchspacing
+
+	%---------- Elementos pré-textuais --------------%
+	\pretextual
+	\input{preamble/pretextuais}
+
+	%---------- Elementos textuais ------------------%
+	\textual
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{1introduction}
+\input{2dynamics}
+\input{3loco}
+\input{4sirius}
+\input{5results}
+% \input{6optics}
+
+% Finaliza a parte no bookmark do PDF, para que se inicie o bookmark na raiz
+\bookmarksetup{startatroot}%
+
+\input{conclusions.tex}
+% --------- Elementos pós-textuais --------------&
+\postextual
+
+\input{appendix}
+
+% Referências bibliográficas
+% \bibliographystyle{unsrt}
+% \bibliographystyle{numeric}
+% \bibliographystyle{plain}
+\bibliography{library}
+% \printbibliography
+
+
+% % Apêndices
+% \begin{apendicesenv}
+% % Imprime uma página indicando o início dos apêndices
+% \partapendices
+%
+% \chapter{Catch up Distance}\label{app:catch_up}
+\end{document}

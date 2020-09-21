@@ -1,0 +1,92 @@
+%Capa
+\renewcommand{\sfdefault}{\rmdefault}
+\imprimircapa
+
+
+%Folha de rosto sem número de página
+\setcounter{page}{2}
+\renewcommand{\sfdefault}{\rmdefault}
+\imprimirfolhaderosto*
+
+
+% Ficha Catalográfica
+\renewcommand{\sfdefault}{\rmdefault}
+\begin{fichacatalografica}
+    % \includepdf{}
+\end{fichacatalografica}
+
+% Folha de aprovação
+% \includepdf[pagecommand={\thispagestyle{empty}}]{}
+\cleardoublepage
+
+
+% Dedicatória
+\renewcommand{\sfdefault}{\rmdefault}
+\begin{dedicatoria}
+    \vspace*{\fill}
+    \centering
+    \noindent
+    \textit{}
+    \vspace*{\fill}
+\end{dedicatoria}
+
+% Agradecimentos
+% \renewcommand{\agradecimentosname}{Agradecimentos}
+\renewcommand{\sfdefault}{\rmdefault}
+\begin{agradecimentos}[Agradecimentos]
+    
+    \vspace{5mm}
+    {\centering \Large \textbf{Acknowledgements}}
+
+    
+\end{agradecimentos}
+
+% Resumo em Português
+\begin{otherlanguage*}{brazil}
+\renewcommand{\sfdefault}{\rmdefault}
+    \begin{center}{\ABNTEXchapterfont\huge Resumo}\end{center}
+    
+    \vspace{\onelineskip}
+    \noindent\textbf{Palavras-chaves}: 
+    \vspace{\fill}
+\end{otherlanguage*}
+\cleardoublepage
+
+% Resumos em Inglês
+\begin{resumo}
+\renewcommand{\sfdefault}{\rmdefault}
+    
+    % \vspace{\onelineskip}
+
+    \noindent\textbf{Keywords}: 
+    \vspace{\fill}
+\end{resumo}
+
+% Lista de ilustrações
+\pdfbookmark[0]{\listfigurename}{lof}
+\renewcommand{\sfdefault}{\rmdefault}
+\listoffigures*
+\cleardoublepage
+
+
+% Lista de tabelas
+\pdfbookmark[0]{\listtablename}{lot}
+\renewcommand{\sfdefault}{\rmdefault}
+\listoftables*
+\cleardoublepage
+
+% Lista de Acronimos e Abreviações
+% \renewcommand{\nomname}{Acronyms}
+% \pdfbookmark[0]{\nomname}{las}
+% \printnomenclature
+\renewcommand{\sfdefault}{\rmdefault}
+\printglossaries
+\cleardoublepage
+
+
+% Sumário
+\pdfbookmark[0]{\contentsname}{toc}
+\renewcommand{\sfdefault}{\rmdefault}
+\tableofcontents*
+% \tableofcontents*
+\cleardoublepage
