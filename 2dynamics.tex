@@ -297,7 +297,8 @@ The phase stability principle guarantees that the electrons will oscillate aroun
 Since the synchronism condition is $f_{\mathrm{rf}} = h f_0$ the equation \eqref{orbitlen} can be adapted to:
 
 \begin{equation}
-    \dfrac{\Delta f_{\mathrm{rf}}}{f_{\mathrm{rf}}} = \alpha \delta.
+    \dfrac{\Delta f_{\mathrm{rf}}}{f_{\mathrm{rf}}} = -\alpha \delta.
+    \label{eq:delta_freq}
 \end{equation}
 
 From this equation it can be seen that a change in the \gls{rf} frequency forces the electrons to follow an off-energy orbit. In the \gls{rf} signal tuning, one must adjust the \gls{rf} frequency to match the condition $\delta = 0$ and this can be performed by making the horizontal orbit average go to zero, since the orbit displacement is related to the energy deviation by the dispersion function.
@@ -481,6 +482,7 @@ and this is the orbit distortion for a dipolar error localized in the position $
 
 \begin{equation}
     \Delta u(s) = \oint \dfrac{\sqrt{\beta_{u}(s)\beta_{u}(\bar{s})}}{2\sin\left(\pi\nu_{u}\right)} \theta_{u}(\bar{s}) \cos\left( |\varphi_{u}(s) - \varphi_{u}(\bar{s})| - \pi\nu_{u} \right) \dif \bar{s}.
+    \label{eq:orbit_distortion}
 \end{equation}
 
 Note that the orbit distortion diverges if the tune fractional part is an integer. Here the connection between dipolar fields errors and integer resonances becomes explicit. Moreover, it is very important to point out that the orbit distortion depends on the betatron functions and the betatron phase advances, i.e., it depends on the optics parameters of the magnetic lattice.

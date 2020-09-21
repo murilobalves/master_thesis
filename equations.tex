@@ -2,72 +2,47 @@
 
 \section{Transversal}
 
-
 \begin{align}
     \mathbf{\hat{s}}(s) & = \dfrac{d}{ds}\mathbf{\hat{r}}_0 (s), \nonumber \\
      \mathbf{\hat{x}}(s) & = -\rho(s)\dfrac{d}{ds}\mathbf{\hat{s}} (s), \\
       \mathbf{\hat{y}}(s) & = \mathbf{\hat{s}}(s) \times \mathbf{\hat{x}}(s). \nonumber 
 \end{align}
 
-
-\begin{figure}
-    \centering
-    \includegraphics[scale=0.5]{figures/coordinate.png}
-    \caption{Curvilinear coordinate system used for storage rings \cite{wiedemann2007physics}}
-    \label{sist}
-\end{figure}
-
-
-
 \begin{align}
     x' & = \dfrac{dx}{ds} \approx  \dfrac{p_x}{p} \nonumber \\
       y' & = \dfrac{dy}{ds} \approx  \dfrac{p_y}{p} \nonumber
 \end{align}
 
-
-
 \[
 z(t) = s_{\text{sinc}}(t) - s(t).
 \]
-
-
 
 \begin{equation}
     G(s) = \dfrac{1}{\rho(s)} \approx \dfrac{ec}{E_0}B_{y}(s),
 \end{equation}
 
-
-
 \begin{equation}
     K(s) = \dfrac{e}{p_0} \left.\dfrac{\partial B_y}{\partial x}\right|_{y=0}.
 \end{equation}
-
-
 
 \begin{align*}
     G(s+C_0) = G(s) \\
     K(s+C_0) = K(s),
 \end{align*}
 
-
-
 \begin{align*}
     G(s+L) = G(s) \\
     K(s+L) = K(s).
 \end{align*}
 
-
 \begin{equation}
     H_{\perp} = \dfrac{x'^2}{2} + \dfrac{y'^2}{2} + G^2(s)\dfrac{x^2}{2} + K(s)\dfrac{\left(x^2 - y^2\right)}{2} - G(s) x\delta.
 \end{equation}
-
-
 
 \begin{align*}
    H_x & =  \dfrac{x'^2}{2}  + \left(G^2(s)+K(s)\right)\dfrac{x^2}{2} - G(s) x\delta, \\
    H_y &= \dfrac{y'^2}{2}  -K(s)\dfrac{y^2}{2},
 \end{align*}
-
 
 \begin{align}
     x'' &= - \dfrac{\partial H_{x}}{\partial x}  = -\left(G^2(s) + K(s)\right)x + G(s)\delta, \\
