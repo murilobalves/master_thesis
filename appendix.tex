@@ -1,7 +1,73 @@
 \appendix
 
-\chapter{Response matrix approach}
-
 \chapter{Singular Value Decomposition - SVD}\label{appendix:svd}
 
-\chapter{BPMs and correctors gains matrices}
+Let $\mathbf{M}$ be a real or complex $m \times n$ matrix. The Singular Value Decomposition (SVD) is a factorization that generalizes the eigenvalues decomposition and it states that every matrix can be decomposed in the following form:
+
+\begin{equation}
+    \mathbf{M} = \mathbf{U} \Sigma \mathbf{V}^{\dagger},
+    \label{eq:svd}
+\end{equation}
+
+where $\mathbf{U}$ is a $m \times m$ matrix, $\mathbf{V}$ is a $n \times n$ hermitian matrix as well and $\Sigma$ is a $m \times n$ positive-definite rectangular diagonal matrix. 
+
+For the case of real matrices, which covers all the matrices used in this work, the hermitian matrices are translated to orthogonal, so:
+
+\begin{align}
+    \mathbf{U}\mathbf{U}^{\mathsf{T}} = \mathbf{U}^{\mathsf{T}}\mathbf{U} &= \mathbf{I}_{m} \\
+    \mathbf{V}\mathbf{V}^{\mathsf{T}} = \mathbf{V}^{\mathsf{T}}\mathbf{V} &= \mathbf{I}_{n}. 
+\end{align}
+
+Manipulating the equation \eqref{eq:svd} and using the matrices properties we obtain
+
+\begin{align}
+    \mathbf{M}\mathbf{M}^{\mathsf{T}} &= \mathbf{U} \Sigma^2 \mathbf{U}^{\mathsf{T}} \\
+    \mathbf{M}^{\mathsf{T}}\mathbf{M} &= \mathbf{V}^{\mathsf{T}} \Sigma^2 \mathbf{V}.
+\end{align}
+
+From this, since all matrices obtained above are square matrices, we observe that the diagonal elements of $\Sigma^2$ are eigenvalues of $\mathbf{M}\mathbf{M}^{\mathsf{T}}$ and $\mathbf{M}\mathbf{M}^{\mathsf{T}}$. Since $\mathbf{U}^{\mathsf{T}} = \mathbf{U}^{-1}$ and $\mathbf{V}^{\mathsf{T}} = \mathbf{V}^{-1}$, the columns of $\mathbf{U}$ are the eigenvectors of $\mathbf{M}\mathbf{M}^{\mathsf{T}}$ and the columns of $\mathbf{V}$ are the eigenvectors of $\mathbf{M}^{\mathsf{T}}\mathbf{M}$.
+
+The diagonal elements $\sigma_i := \Sigma_{ii} \geq 0$ are called singular values. The number of non-zero singular values is exactly the rank of matrix $\mathbf{M}$. Thus, the SVD of a rank deficient matrix will result in zero (exactly or numerically) singular values. 
+
+A common procedure to avoid problems of including a null-space in the calculations is the singular values selection. This can be done by setting explicitly the unwanted singular values to zero. Alternatively, this can be done by defining a threshold $\delta$ and setting to zero the singular values that satisfy $\dfrac{\sigma_i}{\mathrm{max}\left(\sigma_i\right)} < \delta$. This methods eliminates the less important directions defined by the columns of $\mathbf{U}$ and $\mathbf{V}$ as compared to the direction with higher singular value.
+
+Since $\Sigma$ is a square diagonal matrix, its inverse is obtained simply by $\Sigma^{-1}_{ii} = 1/\sigma_{i}$. For the case that $\sigma_{i} = 0$, one can define $\Sigma^{-1}_{ii} = 0$. Hence, the matrix $n \times m$
+
+\begin{equation}
+    \mathbf{M}^{-1} = \mathbf{V} \Sigma^{-1} \mathbf{U}^{\mathsf{T}},
+    \label{eq:svd_inverse}
+\end{equation}
+
+is the pseudo-inverse of $\mathbf{M}$ as can be checked by
+
+\begin{align}
+    \mathbf{M}^{-1}\mathbf{M} =  \left(\mathbf{V} \Sigma^{-1} \mathbf{U}^{\mathsf{T}} \right)\left(\mathbf{U} \Sigma \mathbf{V}^{\mathsf{T}}\right) &= \mathbf{I}_{n} \\
+    \mathbf{M}\mathbf{M}^{-1} =  \left(\mathbf{U} \Sigma \mathbf{V}^{\mathsf{T}}\right)\left( \mathbf{V} \Sigma^{-1} \mathbf{U}^{\mathsf{T}} \right)&= \mathbf{I}_{m}. 
+\end{align}
+
+The matrix $\mathbf{M}^{-1}$ is also known as Moore-Penrose pseudo-inverse \cite{numerical_recipes}.
+
+The \gls{svd} pseudo-inversion is a powerful tool to solve a generic linear system of equations given by
+
+\begin{equation}
+    \mathbf{A} \vec{x} = \vec{b},
+    \label{eq:linear_system}
+\end{equation}
+
+where $\mathbf{A}$ is a $m \times n$ matrix, $\vec{x}$ a $n \times 1$ column vector and $\vec{b}$ a $m \times 1$ column vector. The case that $m=n$ is exactly solvable, if $\mathrm{det}\left(\mathbf{A}\right) \neq 0$ the exact solution is obtained by normal inversion. Other two cases that may not have an exact solution may occur:
+
+\begin{itemize}
+    \item Underdeterminated: $n > m$ and the system has infinitely many solutions, given a generic vector $\vec{b}$. The system does not have enough information, i.e., data points given by the elements of $\vec{b}$ to obtain the exact unknowns $\vec{x}$. With the pseudo-inversion it is possible to obtain a solution $\vec{x}_s$ to the linear system such that $|\vec{x}_s|^2 = \sum_{i=1}^{n}x^2_{s, i}$ is minimized. This is called the minimum-norm solution.
+    
+    \item Overdeterminated: $n < m$ and the system has no solution, given a generic vector $\vec{b}$. The system has more equations than unknowns, so the system is overconstrained and it is not possible to satisfy exactly and simultaneously all the equations. In this case, with the pseudo-inversion it is obtained a solution $\vec{x}_s$ that minimizes the difference $|\mathbf{A}\vec{x}_s - \vec{b}|$. This is called the least squares solution.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+\chapter{BPMs and correctors gains matrices}\label{appendix:gains}

@@ -86,7 +86,7 @@ The LOCO algorithm can be viewed as a model dependent minimization problem. The 
     \label{eq:chi2}
 \end{equation}
 
-The vector $\vec{V}$ has $2 \times \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}+1\right)$ elements and it is obtained by the vectorization transformation applied in the difference of \gls{orm}s. For example, the vectorization of a $2 \times 2$ matrix is:
+The residue vector $\vec{V}$ has $2 \times \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}+1\right)$ elements and it is obtained by the vectorization transformation applied in the difference of \gls{orm}s. For example, the vectorization of a $2 \times 2$ matrix is:
 
 \begin{equation}
         \mathbf{A} = \begin{bmatrix}
@@ -102,9 +102,7 @@ The vector $\vec{V}$ has $2 \times \mathrm{N}_{\mathrm{BPM}} \times \left(\mathr
 
 Let the dimension of $\vec{V}$ be denoted by $\mathrm{N}_{\mathrm{data}}$. For the Sirius storage ring, $\mathrm{N}_{\mathrm{data}} = 2 \times 160 \times 281 = 89920$.
 
-The minimization is performed by changing some parameters in the computational model, so the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$ is also changed and the square difference $\chi^2$, i.e., the modulus of the vector $\vec{V}$, might be reduced. It is used two methods to calculate the parameters variation that minimizes $\chi^2$: \gls{gn} and \gls{lm}.
-
-\subsection{Gauss-Newton Algorithm}
+The minimization is performed by changing some parameters in the computational model, so the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$ is also changed and the square difference $\chi^2$, i.e., the modulus of the residue vector $\vec{V}$, might be reduced. It is used two methods to calculate the parameters variation that minimizes $\chi^2$: \gls{gn} and \gls{lm}.
 
 Suppose that each element $V_k$ of the vector is a function of several parameters $\vec{P} = \left(P_1, \ldots, P_{\mathrm{N}_{\mathrm{knobs}}}\right)$. The number of knobs used as parameters are represented by $\mathrm{N}_{\mathrm{knobs}}$. Then it is possible to calculate the linear response of the vector elements for a given change in the parameters:
 
@@ -129,17 +127,21 @@ The vectorization uses the indices $(i, j)$ of this rank-3 tensor to convert the
 
 Depending on the parameter type, it is possible to calculate the LOCO jacobian matrix analytically or numerically, by changing the parameter and calculating the correspondent change in the vector $\vec{V}$. The numerical jacobian calculation typically dominates the running time for the LOCO algorithm.
 
-The \gls{gn} algorithm was already presented in the calculation of kicks to correct the orbit distortion. This algorithm is generally used to solve non-linear least squares problems. 
+\subsection{Gauss-Newton Algorithm}
 
-Suppose that a \gls{orm} was measured in the real storage ring and the initial model \gls{orm} is calculated with the initial parameters $\vec{P}_0$, so the initial difference vector is obtained $\vec{V}_0$. The goal is to apply variations in the difference vector such that $\vec{V}_0 + \Delta \vec{V} = 0$. From $\Delta \vec{V} = \mathbf{J}\Delta \vec{P}$, we obtain that $\Delta \vec{P}_0 = -\mathbf{J}^{-1} \vec{V}_0$, so changing the parameters by $\vec{P}_1 = \vec{P}_0 + \Delta \vec{P}_0$ will reduce the modulus of the new square difference vector $\vec{V}_1$. Since the problem is non-linear, proceeding in that manner iteratively, in principle the algorithm converges to the minimum of $\chi^2$.
+The \gls{gn} algorithm was already presented in the calculation of kicks to correct the orbit distortion. This algorithm is generally used to solve non-linear least squares problems~\cite{numerical_recipes}. 
+
+Suppose that a \gls{orm} was measured in the real storage ring and the initial model \gls{orm} is calculated with the initial parameters $\vec{P}_0$, so the initial residue vector $\vec{V}_0$ is obtained. The goal is to apply variations in the residues such that $\vec{V}_0 + \Delta \vec{V} = 0$. From $\Delta \vec{V} = \mathbf{J}\Delta \vec{P}$, we obtain the solution $\Delta \vec{P}_0 = -\mathbf{J}^{-1} \vec{V}_0$, so changing the parameters by $\vec{P}_1 = \vec{P}_0 + \Delta \vec{P}_0$ will reduce the modulus of the new residue vector $\vec{V}_1$. Since the problem is non-linear, proceeding in that manner iteratively, in principle the algorithm converges to the minimum of $\chi^2$.
 
 The LOCO jacobian matrix $\mathbf{J}$ dimension is $\mathrm{N}_{\mathrm{data}} \times \mathrm{N}_{\mathrm{knobs}}$. The number of data points $\mathrm{N}_{\mathrm{data}}$ is much greater than the typical number of knobs $\mathrm{N}_{\mathrm{knobs}}$ used as parameters. Hence, $\mathbf{J}$ is a rectangular matrix with much more rows than columns and the problem is highly over-constrained. For Sirius $\mathrm{N}_{\mathrm{data}} = 89920$ and $\mathrm{N}_{\mathrm{data}} \approx 1000$ for regular LOCO fittings. Moreover, since $\mathbf{J}$ is not a square matrix, $\mathbf{J}^{-1}$ is actually a pseudo-inverse, obtained by \gls{svd} pseudo-inversion.
 
 To summarize, the \gls{gn} method seeks for the minimum of $\chi^2$ by iteratively applying the parameters variations, calculated by
 
 \begin{equation}
-    \Delta \vec{P} = - \mathbf{J}^{-1} \vec{V}.
+    \Delta \vec{P} = - \mathbf{J}^{-1} \vec{V},
 \end{equation}
+
+where $\vec{V}$ is the residue vector.
 
 Since $\mathbf{J}$ is a huge matrix, its \gls{svd} decomposition to perform the pseudo-inversion may be very time consuming and storing the matrices may demand a lot of computer memory. So a strategy to 
 circumvent this technical problem is to rewrite the problem as $\mathbf{J}^{\mathsf{T}}\Delta \vec{V} = \mathbf{J}^{\mathsf{T}}\mathbf{J}\Delta \vec{P}$. In that way, the parameters variations are calculated by
@@ -151,13 +153,42 @@ circumvent this technical problem is to rewrite the problem as $\mathbf{J}^{\mat
 The matrix $\mathbf{J}^{\mathsf{T}} \mathbf{J}$ has a smaller dimension $\mathrm{N}_{\mathrm{knobs}} \times \mathrm{N}_{\mathrm{knobs}}$ so the aforementioned computational 
 inconveniences are greatly reduced.
 
+It is important to mention that if the initial model \gls{orm} is far from the measured \gls{orm}, i.e., the actual and the model linear optics are very different, the algorithm may not converge due to nonlinearities. Therefore, the Gauss-Newton convergence requires a good initial model in order to the linear approximations be valid. The Levenberg-Marquardt is then introduced as a fitting option that is less dependent on the initial model.
+
 \subsection{Levenberg-Marquardt Algorithm}
+
+The \gls{lm} algorithm is a damped least squares method. It is combination between the \gls{gn} algorithm and the gradient descent, being more robust than \gls{gn} since it converges to the solution even if the initial guess is far from the final values \cite{numerical_recipes}. The \gls{lm} method is also viewed as the \gls{gn} method adapted to used the trust region approach.
+
+While the \gls{gn} solves the linear algebra problem given by $\mathbf{J}^{\mathsf{T}}\mathbf{J}\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}} \vec{V}$ for a given residue vector $\vec{V}$. The \gls{lm} method solves the modified equation:
+
+\begin{equation}
+    \left(\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) \right)\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}}\vec{V},
+    \label{eq:lm}
+\end{equation}
+
+where $\lambda > 0$ is a constant and the diagonal operator acts on a $2\times 2$ matrix, for example, as:
+
+\begin{equation}
+        \mathbf{A} = \begin{bmatrix}
+     a_{11} & a_{12} \\
+     a_{21} & a_{22} 
+\end{bmatrix} \Rightarrow \mathrm{diag}\left(\mathbf{A}\right) = \begin{bmatrix}
+     a_{11} & 0 \\
+     0 & a_{22}
+ \end{bmatrix}.
+\end{equation}
+
+Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, the equation \eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, the equation \eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
+
+The parameter may be chosen in a heuristic manner. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa} is start with low values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor 10 if the iteration reduces $\chi^2$ and multiply $\lambda$ by $10$ if $\chi^2$ is increased and keep increasing the parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method to the gradient descent by increasing the value of $\lambda$.
+
 \section{Functionalities}
+
+
+\subsection{Fitting parameters}
 \subsection{Finding errors}
-\subsection{Optics correction}
-\subsection{Coupling correction}
+\subsection{Correcting errors}
 
 \section{Degeneracies}
-
 \section{Constraints and weights}
 
