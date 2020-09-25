@@ -186,7 +186,7 @@ The parameter $\lambda$ may be chosen in a heuristic manner. It also can be chan
 
 The \gls{loco} algorithm can be configured for two purposes: find the error sources and calculate the linear optics corrections. Therefore, it can be used as a diagnostic or a correction tool. In this section it will be discussed the common parameters types used in the algorithm and how to setup it for each purpose.
 
-\subsection{Fit Parameters}
+\subsection{Fit Parameters}\label{subsec:fit_params}
 
 In order to determine the type of parameters to be included in the \gls{orm} fitting it is useful to use the sources of perturbations described in Section~\ref{perturbations}.
 
@@ -239,7 +239,7 @@ BPMs gains and rolls can be viewed as adjustments to the measurements given by t
 $g_{i, x}$ and $g_{i, y}$ are the horizontal and vertical gains for the $i$-th BPM and $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting the equation \eqref{eq:bpm_gain1} as:
 
 \begin{equation}
-    \vec{u}_{i, \mathrm{real}} = \mathbf{R}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}},
+    \vec{u}_{i, \mathrm{real}} = \mathbf{R}^{\mathrm{BPM}}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}},
     \label{eq:bpm_gain}
 \end{equation}
 
@@ -252,7 +252,7 @@ For the steering magnets the discussion is similar. Suppose that the $j$-th corr
     \label{eq:corr_gain}
 \end{equation}
 
-The equation~\eqref{eq:corr_gain} also allows for the jacobian matrix analytical calculation for the steering magnets gains, done in Appendix~\ref{appendix:gains}.
+The gain definition for correctors and BPMs was made differently in order to obtain linear analytical expressions for both jacobian matrices. The equation~\eqref{eq:corr_gain} also allows for the jacobian matrix analytical calculation for the steering magnets gains, done in Appendix~\ref{appendix:gains}. 
 
 The others parameters jacobian matrix are calculated by numerical derivatives:
 
@@ -260,14 +260,60 @@ The others parameters jacobian matrix are calculated by numerical derivatives:
     J_{kl} = \dfrac{V_{k}\left(P_{l} + \Delta P_{l}\right) - V_{k}\left(P_{l}\right)}{\Delta P_{l}}.
 \end{equation}
 
+The residue vector is $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} - \mathbf{M}^{\mathrm{model}}\right)$. For these parameters, the dependence is contained in the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$, since the $\mathbf{M}^{\mathrm{meas.}}$ contains the data measured in the real storage ring, i.e., it can be interpreted as scalars and not functions. In that way, the jacobian elements are obtained by
+
+\begin{equation}
+    J_{kl} = -\mathrm{vec}\left(\dfrac{M_{ij}^{\mathrm{model}}\left(P_{l} + \Delta P_{l}\right) - M_{ij}^{\mathrm{model}}\left(P_{l}\right)}{\Delta P_{l}}\right),
+\end{equation}
+
+remembering that the vectorization transforms the $(i, j)$ indices in the $k$ index.
+
 This numerical calculation dominates the running time for the LOCO algorithm, since for each individual parameters to be varied, the model \gls{orm} must be calculated to obtain the residue vector. The total jacobian calculation time is approximately $\delta t_{\mathsf{ORM}} \times \mathrm{N}_{\mathrm{knobs}}$, where $\Delta t_{\mathsf{ORM}}$ is the time required to calculate the \gls{orm}. Thus, optimizing the \gls{orm} calculation directly reduces the LOCO running time.
 
-By default, the BPMs and steering magnets gains are always included as fit parameters, both for finding errors or calculating the corrections. The reason for this is that these calibrations has a specific signature in the residue vector and not including the gains would force the other parameters to compensate these errors. In this case, even if the the measured \gls{orm} is perfectly fitted, the adjusted parameters are inconsistent. 
+By default, the BPMs and steering magnets gains are always included as fit parameters, both for finding errors or calculating the corrections. The reason for this is that these calibrations have a specific signature in the residue vector and not including the gains would force the other parameters to compensate these errors. In this case, even if the the measured \gls{orm} is perfectly fitted, the adjusted parameters are inconsistent. 
 
 \subsection{Finding Errors}
+The fit parameters to be included in the LOCO algorithm and its interpretation are directly related to the goal that must be achieved. 
+
+As discussed in the Section~\ref{perturbations}, there are various sources of errors that perturbs the storage ring linear optics: the betatron and dispersion functions. The \gls{orm} depends on these functions, so fitting the measured \gls{orm} is fundamentally equivalent to obtain a model that represents the real machine on the optics functions subject.
+
+If the measured \gls{orm} is adjusted by varying in the model all the available fit parameters, then the final values of these parameters are interpreted as the deviations from ideal conditions represented by the nominal lattice, i.e., they represent the errors sources. 
+
+Let's use the fit parameters described in the previous subsection~\ref{subsec:fit_params} as an example for discussion. If all these parameters are adjusted, their variations may be interpreted as:
+
+\begin{itemize}
+    \item quadrupoles gradients: discrepancies between the gradient applied by the control system and the actual field that affects the beam dynamics,
+    \item dipoles gradients: difference between the expected gradients in the dipole model in the simulated magnetic lattice and the actual gradients affecting the beam,
+    \item sextupoles gradients: the major contribution is due to horizontal transverse alignment errors or horizontal orbit distortions in the sextupoles, leading to feed-down effects that produces gradients. The difference between magnet model and real magnets field also plays a role so it may be difficult to distinguish the effects, 
+    \item quadrupoles skew gradients: rotation errors in normal quadrupoles,
+    \item dipoles skew gradients: rotation errors in dipoles,
+    \item sextupoles skew gradients: the major contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produces gradients. 
+    \end{itemize}
+    
+The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the algorithm. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in the section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains from the fit parameters. The BPMs roll angles are related mainly to electrical coupling between the device channels and cables.
 
 \subsection{Correcting Errors}
 
-\section{Degeneracies}
+Finding the errors sources with LOCO algorithm is a strategy to obtain a model representation in the computer for the real storage ring. This LOCO functionality can be used as a diagnostic tool, for example after a machine shutdown where there was some interventions in the storage ring. Running the LOCO after a shutdown including all parameters in the fitting might show non-trivial problems in the machine may perturb the beam, pointing out specific errors and facilitating interventions to correct them.
+
+Among the fit parameters described in section~\ref{subsec:fit_params}, there are some parameters that cannot be directly varied in the real machine. In that way, even though the errors sources are obtained (in principle) their corrections cannot be made by simply applying the opposite variations in the machine. Therefore, to effectively correct the errors, a subset with adjustable fit parameters in the real storage ring must be used. These subset of parameters are commonly called as knobs.
+
+The knobs final variations obtained with this LOCO setup are interpreted as the effective corrections that restores the real storage ring to the nominal linear optics and symmetry. The knobs used for correction the linear optics are the quadrupoles trim coils and the knobs used to correct the betatron coupling are the skew quadrupoles. 
+
+To sum up: in order to calculate the effective corrections for the errors, the fit parameters included in the LOCO algorithm must be only the subset that can be adjusted in the real machine.
+
+Suppose that the LOCO algorithm provides the final values for the knobs:
+
+\begin{equation}
+    \vec{P}_{\mathrm{final}}^{\mathrm{model}} = \vec{P}_{\mathrm{initial}}^{\mathrm{model}} + \Delta\vec{P}_{\mathrm{LOCO}}.
+\end{equation}
+
+For the LOCO algorithm, the initial parameters $\vec{P}_{\mathsf{initial}}$ produces the nominal and symmetric optics functions. The final parameters $\vec{P}_{\mathsf{final}}$ corresponds to the distorted linear optics, a representation to the actual optics functions in the real storage ring. To correct the actual optics function the process is inverted: the initial linear optics is distorted and, ideally, the final situation is the nominal symmetric optics functions. Therefore, the variations calculated by LOCO algorithm is applied as corrections in the real machine with the opposite sign:
+
+\begin{equation}
+    \vec{P}_{\mathrm{final}}^{\mathrm{real}} = \vec{P}_{\mathrm{initial}}^{\mathrm{real}} - \Delta\vec{P}_{\mathrm{LOCO}}.
+\end{equation}
+
+\section{Degeneracies}\label{sec:degeneracy}
 \section{Constraints and Weights}
 
