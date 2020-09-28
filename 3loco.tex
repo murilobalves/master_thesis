@@ -56,6 +56,7 @@ It is common to also include the \gls{rf} frequency as a knob in the orbit corre
 
 \begin{equation}
     \dfrac{\Delta u_i}{ \Delta f_{\mathrm{rf}}} = - \dfrac{\eta_u(s_i)}{\alpha f_{\mathrm{rf}}}.
+    \label{eq:rf_column}
 \end{equation}
 
 In this way, the correction calculations for the orbit distortions also provides the variation of the \gls{rf} frequency (this is useful, for example, to correct thermal variations in the storage ring tunnel). It is important to observe that the \gls{rf} signature in the orbit distortion is very different from the signature created by the correctors, since the first depends on the dispersion function and the latter on the betatron function.
@@ -82,7 +83,7 @@ To implement the LOCO algorithm, a computational model of the storage ring is re
 The LOCO algorithm can be viewed as a model dependent minimization problem. The main goal is to find a set of parameters in the computational model that best reproduce the measured \gls{orm}. Equivalently, it seeks for the global minimum of the square difference:
 
 \begin{equation}
-    \chi^2 = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 := \sum_{{k = (i,j)}} V_{k}^2.
+    \chi^2 = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 =: \sum_{{k = (i,j)}} V_{k}^2.
     \label{eq:chi2}
 \end{equation}
 
@@ -180,7 +181,7 @@ where $\lambda > 0$ is a constant and the diagonal operator acts on a $2\times 2
 
 Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, the equation \eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, the equation \eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
 
-The parameter $\lambda$ may be chosen in a heuristic manner. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa} is begin with low values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor 10 if the iteration reduces $\chi^2$ and multiply $\lambda$ by $10$ if $\chi^2$ is increased and keep increasing the parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$.
+The parameter $\lambda$ may be chosen in a heuristic manner. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa_huang} is begin with low values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor 10 if the iteration reduces $\chi^2$ and multiply $\lambda$ by $10$ if $\chi^2$ is increased and keep increasing the parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$.
 
 \section{Functionalities}
 
@@ -296,7 +297,7 @@ The BPM gains, rolls and the steering magnets gains interpretation is the same f
 
 Finding the errors sources with LOCO algorithm is a strategy to obtain a model representation in the computer for the real storage ring. This LOCO functionality can be used as a diagnostic tool, for example after a machine shutdown where there was some interventions in the storage ring. Running the LOCO after a shutdown including all parameters in the fitting might show non-trivial problems in the machine may perturb the beam, pointing out specific errors and facilitating interventions to correct them.
 
-Among the fit parameters described in section~\ref{subsec:fit_params}, there are some parameters that cannot be directly varied in the real machine. In that way, even though the errors sources are obtained (in principle) their corrections cannot be made by simply applying the opposite variations in the machine. Therefore, to effectively correct the errors, a subset with adjustable fit parameters in the real storage ring must be used. These subset of parameters are commonly called as knobs.
+Among the fit parameters described in section~\ref{subsec:fit_params}, there are some parameters that cannot be directly varied in the real machine. In that way, even though the errors sources are obtained, their corrections cannot be made by simply applying the opposite variations in the machine. Therefore, to effectively correct the errors, a subset with adjustable fit parameters in the real storage ring must be used. These subset of parameters are commonly called knobs.
 
 The knobs final variations obtained with this LOCO setup are interpreted as the effective corrections that restores the real storage ring to the nominal linear optics and symmetry. The knobs used for correction the linear optics are the quadrupoles trim coils and the knobs used to correct the betatron coupling are the skew quadrupoles. 
 
@@ -315,5 +316,80 @@ For the LOCO algorithm, the initial parameters $\vec{P}_{\mathsf{initial}}$ prod
 \end{equation}
 
 \section{Degeneracies}\label{sec:degeneracy}
-\section{Constraints and Weights}
 
+Suppose that there are two fit parameters with the same signature in the \gls{orm}, i.e., two degenerated parameters. Let $P_1$ and $P_2$ be these parameters, then the change in the residue vector can be written as
+
+\begin{equation}
+\Delta \vec{V} = \dfrac{\partial \vec{V}}{\partial P_{1}} \Delta P_{1} + \dfrac{\partial \vec{V}}{\partial P_{2}} \Delta P_{2} + \sum_{l \neq \left\{1,2\right\}}\dfrac{\partial \vec{V}}{\partial P_{l}} \Delta P_{l}.
+\end{equation}
+
+If $P_1$ and $P_2$ are degenerate with respect to $\vec{V}$, in the LOCO jacobian matrix, this can be seen as two columns that are linearly dependent. For example, in the extreme case that $\dfrac{\partial \vec{V}}{\partial P_{2}} = \rho \dfrac{\partial \vec{V}}{\partial P_{1}}$, where $\rho \in \mathbb{R}$ is a constant, then we can write:
+
+\begin{equation}
+\Delta \vec{V} = \dfrac{\partial \vec{V}}{\partial P_{1}} \Delta P_{1}\left(1 + \rho \dfrac{\Delta P_2}{\Delta P_1}\right) + \sum_{l \neq \left\{1,2\right\}}\dfrac{\partial \vec{V}}{\partial P_{l}} \Delta P_{l}.
+\label{eq:two_params_deg}
+\end{equation}
+
+From~\eqref{eq:two_params_deg} we observe that no matter how the parameter $P_1$ varies, if the variations satisfy $\Delta P_1 = - \rho \Delta P_2$, the variation $\Delta \vec{V}$ is the same. If the summation part keeps generating variations that reduces the residue vector, this allows for great variations on the parameter $P_1$ and consequently on the parameter $P_2$ as well, in the opposite direction given by $-\rho$. 
+
+The degeneracy problem may lead to non-physical fit parameters. The effect may still be problematic to the fitting for quasi-degenerate parameters, since it may be susceptible to noise in measured data. For the exact degeneracy case, as exemplified in the parameters $P_1$ and $P_2$, the LOCO jacobian matrix is rank deficient. In this case, as discussed in the appendix~\ref{appendix:svd}, the \gls{svd} will provide a null singular value. For quasi-degenerate parameters, the \gls{svd} provides very small singular values, compared to the first one (the maximum). These small singular value represents directions in the parameter space where the parameters may be varied and there is no significant variation in the residue vector. 
+
+A common strategy to avoid the negative effect of degeneracies is the singular value selection. This can be done by explicitly removing the singular values in the singular matrix in the pseudo-inversion process. Alternatively, one can use a criteria that the singular values that satisfy $\dfrac{\sigma_i}{\mathrm{max}\left(\sigma_i\right)} < \Delta$ may be removed, for a minimum threshold $\Delta$.
+
+Another strategy to circumvent the degeneracy problems is including constraints in the minimization problem. This will be discussed in the next section~\ref{sec:constraint}. 
+
+There is a well-known degeneracy related to the BPM and steering magnets gains. The transformation that applies the gains in the measured \gls{orm} is given by 
+
+\begin{equation}
+    \mathbf{M}^{\mathrm{real}} = \mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\mathbf{G}^{-1}_{\mathrm{corr}}.
+\end{equation}
+
+This transformation changes the \gls{orm} elements by $M_{ij} \rightarrow g_{i}^{\mathrm{BPM}}g_{j}^{\mathrm{corr}}M_{ij}$. Therefore, if the BPM gain is scaled up by $g_{i}^{\mathrm{BPM}} \rightarrow \rho g_{i}^{\mathrm{BPM}}$, and the corrector gain is scale down by $g_{i}^{\mathrm{corr}} \rightarrow g_{i}^{\mathrm{corr}}/\rho$, the \gls{orm} is invariant. That degeneracy limits the LOCO algorithm to determine only the relative gains for BPMs and steering magnets. The degeneracy between BPM and correctors gains is manifested as two very small singular values in the LOCO jacobian matrix \gls{svd}, one for each plane, horizontal and vertical.
+
+Including the orbit response due to a variation in the \gls{rf} frequency as a column in the \gls{orm} matrix may break the gain degeneracy. The variation in the \gls{rf} frequency is extremely precise, so the correspondent measured orbit response contains the errors related to the BPM gains only. This additional column depends on the dispersion function $\eta(s)$, as can be seen in equation~\eqref{eq:rf_column}. Since ideally there is only horizontal dispersion function $\eta_x(s)$, including this column in the \gls{orm} may break the degeneracy between horizontal BPM and correctors gains and its absolute values may be determined. In the case that there is a substantial vertical dispersion function $\eta_y(s)$, it may be possible to determine the absolute gains for vertical BPMs and correctors as well. Actually, increasing intentionally the vertical dispersion function and performing the LOCO analysis is a possible strategy to determine the absolute gains for both planes.
+
+\section{Constraints and Weights}\label{sec:constraint}
+
+The first and common example where the degeneracy becomes a problem is when the fit parameters are quadrupoles. The trims coils in quadrupoles are used to correct the storage ring linear optics and the expected strengths variations required to achieve that goal are typically less than a few percent. This expectation is commonly based on magnetic measurements and alignment tolerances. Thus, the fit quadrupoles variations obtained from the LOCO algorithm must be compatible to this range of values. 
+
+For compact magnetic lattices, as can be found in 4\ts{th} generation synchrotron light sources, some adjacent quadrupoles may be very close to each other. If the betatron phase advance between these quadrupoles is small, a localized error in one quadrupole will perturb the linear optics with a signature that is very similar to the signature generated by its neighbor. Hence, these fit parameters may be quasi-degenerate and the LOCO algorithm may fit the measured \gls{orm} by the cost of finding unrealistic variations for quadrupoles trim coils.
+
+As discussed, singular values selection may be a strategy to circumvent the degeneracy problem. However, finding the best set of selected singular values may be very heuristic and time consuming \cite{icfa_laurent}. A more effective approach is including the quadrupoles variations in the minimization problem as a constraint. In that way, the LOCO algorithm goal is fitting the measured \gls{orm} with a solution that also minimizes the quadrupoles variations. 
+
+Let the fit parameters that represents the quadrupoles variation be $K_{q}$, where $1 \leq q \leq \mathrm{N}_{\mathrm{quads}}$ is the index. The constraints are included in the minimization problem by:
+
+\begin{equation}
+    \chi^2 = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 + \dfrac{1}{\sigma_{\Delta K}^2}\sum_q \left(w_q \Delta K_q\right)^2 =: \sum_{{k = (i,j, q)}} V_{k}^2,
+    \label{eq:chi2_constraint}
+\end{equation}
+
+where $\sigma_{\Delta K}$ is a normalization constant and $w_q$ are individual weights factors. With the adjusts of individual weights $w_q$ one can control the constraint on specific quadrupoles variations $\Delta K_q$, according to the magnetic lattice configuration.
+
+Observe that the residue vector $\vec{V}$ is extended in this constrained problem. It includes the additional $\mathrm{N}_{\mathrm{quads}}$ elements $\dfrac{w_q}{\sigma_{\Delta K}}\Delta K_q$, then the residue vector dimension is $\mathrm{N}_{\mathrm{data}} + \mathrm{N}_{\mathrm{quads}}$. Since the LOCO jacobian matrix is derived from the residue vector, the following elements are added in the jacobian:
+
+\begin{equation}
+    J_{\mathrm{N}_{\mathrm{data}} + q, q} = \dfrac{w_q}{\sigma_{\Delta K}}.
+\end{equation}
+
+In that way, the LOCO jacobian matrix dimension is $\left(\mathrm{N}_{\mathrm{data}} + \mathrm{N}_{\mathrm{quads}}\right) \times \mathrm{N}_{\mathrm{knobs}}$. 
+
+The minimization problem in the LOCO algorithm can be adapted to use weights factors too. The weights in BPMs and steering magnets are applied in the same manner that the gains. Let $\vec{W}^{\mathrm{BPM}}$ and $\vec{W}_{\mathrm{corr}}$ be the weight vectors, whose elements are $w^{\mathrm{BPM}}_{i}$ and $w^{\mathrm{corr}}_{i}$, respectively. The weights are inserted in the minimization problem by the transformation
+
+\begin{equation}
+    M_{ij} \rightarrow w^{\mathrm{BPM}}_{i}M_{ij}w^{\mathrm{corr}}_{j}, 
+\end{equation}
+
+both in the model and measured \gls{orm}s. This changes the residue vector as well. The jacobian matrix also must be transformed:
+
+\begin{equation}
+    \mathbf{J}_{\mathrm{LOCO}} \rightarrow \mathrm{vec}\left(\vec{W}^{\mathrm{BPM}} \vec{W}_{\mathrm{corr}}^{\mathsf{T}}\right) \mathbf{J}_{\mathrm{LOCO}}.
+\end{equation}
+
+A common weight used for the BPMs is the following. Suppose that $w^{\mathrm{BPM}}_{i} = 1/\sigma^{\mathrm{BPM}}_{i}$, where $\sigma^{\mathrm{BPM}}_{i}$ is the measured noise level for the $i$-th BPM. With this weight, the minimization problem is:
+
+\begin{equation}
+    \chi^2 = \sum_{i, j} \left(\dfrac{M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}}{\sigma^{\mathrm{BPM}}_{i}}\right)^2
+    \label{eq:chi2_original}
+\end{equation}
+
+This was the original problem proposed by the author in~\cite{safranek1997}, where BPMs with greater measurement noises will be less important to the fitting.
