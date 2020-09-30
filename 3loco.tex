@@ -1,10 +1,10 @@
 \chapter{\gls{loco} Algorithm}
 
-\gls{loco}, a shortening for Linear Optics from Closed Orbits, is an model-dependent algorithm which the main objective is to calibrate the accelerator model in order to reproduce the measured orbit response matrix in the real machine. Once this correspondence is achieved, it is considered that the calibrated model is a representation of the real machine in terms of magnetic lattice. Therefore, one can access the information from the real accelerator by analysing the model. The principal information that is studied in this process is related to linear optics functions, betatron and dispersion, allowing for its disturbances detection and, more importantly, to determine its corrections, pushing the measured parameters to the nominal ones.
+\gls{loco}, a shortening for Linear Optics from Closed Orbits, is an model-dependent algorithm which the main objective is to calibrate the accelerator model in order to reproduce the measured orbit response matrix in the real machine. Once this correspondence is achieved, it is considered that the calibrated model is a representation of the real machine in terms of the magnetic lattice. Therefore, one can access the information from the real accelerator by analysing the model. The principal information that is studied in this process is related to the linear optics functions (betatron and dispersion functions), allowing for disturbances detection and, more importantly, to determine the corrections, pushing the measured linear optics to the nominal values.
 
-This method has been applied to several synchrotron light sources over the years and has been proven to be efficient both to detect optics perturbations and to correct the machine linear optics. Besides that, with the realization of 4\ts{th} generation light sources, which uses innovative and very compact magnetic lattices and optics, some details and subtleties of LOCO should be revisited to successfully apply the algorithm in modern machines such as Sirius storage ring. This chapter is dedicated to present the LOCO algorithm and to discuss the aforementioned details.
+This method has been applied to several synchrotron light sources over the years and has been proven to be efficient both to detect optics perturbations and to correct the machine linear optics~\cite{safranek1997, icfa_laurent, icfa_australia}. Besides that, with the realization of 4\ts{th} generation light sources, which uses innovative and very compact magnetic lattices and optics, some details and subtleties of LOCO should be revisited to successfully apply the algorithm in modern machines such as Sirius storage ring. This chapter is dedicated to present the LOCO algorithm and to discuss the aforementioned details.
 
-\section{Orbit Response Matrix Analysis}
+\section{Orbit Response Matrix Analysis}\label{sec:orm_analysis}
 
 If a $j$-th dipolar corrector strength is locally varied by the amount $\Delta \theta_j$, the electron closed orbit will be distorted. The horizontal and vertical distortions ($\Delta x$ and $\Delta y$) can be measured by the \gls{bpm}s. With the distortions measured by the $i$-th \gls{bpm}, the following quantities can be calculated in this process:
 
@@ -12,7 +12,7 @@ If a $j$-th dipolar corrector strength is locally varied by the amount $\Delta \
     M^{uv}_{ij} &= \dfrac{\Delta u_i}{\Delta \theta_j^v}
 \end{align}
 
-If the corrector magnet is horizontal, $v=x$ and if it is vertical, $v=y$. For each corrector varied, one can measure the corresponding positions variations given by every \gls{bpm}, horizontally $u=x$ and vertically $u=y$. Then this values can be cast in an array $\mathbf{M}$, called \gls{orm}. The general organization of the elements in this matrix is the following:
+If the corrector magnet is horizontal, $v=x$ and if it is vertical, $v=y$. For each corrector varied, one can measure the corresponding positions variations given by every \gls{bpm}, horizontally $u=x$ and vertically $u=y$. These values can be cast in an array $\mathbf{M}$, called \gls{orm}. The general sorting of the elements in this matrix is the following:
 
 \begin{equation}
     \mathbf{M} = \begin{bmatrix}
@@ -21,25 +21,25 @@ If the corrector magnet is horizontal, $v=x$ and if it is vertical, $v=y$. For e
 \end{bmatrix}
 \end{equation}
 
-The sub-matrices $\mathbf{M}^{xx}$ and $\mathbf{M}^{yy}$ in the on-diagonal blocks are the principal elements in the \gls{orm}. In a magnetic lattice with zero transverse coupling (such as the nominal magnetic lattice for Sirius storage ring) the sub-matrices $\mathbf{M}^{xy}$ and $\mathbf{M}^{yx}$ in the off-diagonal blocks are zero as well. The order of magnitude of the elements in off-diagonal blocks compared to the on-diagonal blocks is smaller by the same order of magnitude of the transverse coupling, typically a few percent without corrections.
+The sub-matrices $\mathbf{M}^{xx}$ and $\mathbf{M}^{yy}$ in the on-diagonal blocks are the predominant elements in the \gls{orm}. In a magnetic lattice with zero transverse coupling (such as the nominal magnetic lattice for Sirius storage ring) the sub-matrices $\mathbf{M}^{xy}$ and $\mathbf{M}^{yx}$ in the off-diagonal blocks are zero as well. The order of magnitude of the elements in off-diagonal blocks compared to the on-diagonal blocks is smaller by the same order of magnitude of the transverse coupling, typically a few percent without corrections.
 
-It is possible to obtain an analytical expression for the \gls{orm} elements in the on-diagonal blocks. In the equation \eqref{eq:orbit_distortion} the orbit distortion in the presence of a given dipolar kick distribution $\theta_u(s)$ is given. For the special case where the kick distribution is discrete, localized in the dipolar correctors positions $s_j$, with values $\Delta \theta^{u}_{j}$, the equation is rewritten in the form:
+It is possible to obtain an analytical expression for the \gls{orm} elements in the on-diagonal blocks. In the equation~\eqref{eq:orbit_distortion} the orbit distortion in the presence of a given dipolar kick distribution $\theta_u(s)$ is given. For the special case where the kick distribution is discrete, localized in the dipolar correctors positions $s_j$, with values $\Delta \theta^{u}_{j}$, the equation~\eqref{eq:orbit_distortion} is rewritten in the form:
 
 \begin{equation}
     \Delta u(s_i) = \sum_{j} \dfrac{\sqrt{\beta_{u}(s_i)\beta_{u_j}(s_j)}}{2\sin\left(\pi\nu_{u}\right)} \Delta \theta^{u}_j \cos\left( |\varphi_{u}(s_i) - \varphi_{u}(s_j)| - \pi\nu_{u} \right).
     \label{eq:discrete_orbit_distortion}
 \end{equation}
 
-The orbit distortions $\Delta u(s_i)$ are also measured in localized positions $s_i$, where the \gls{bpm}s are installed. The equation above can be cast in the form $\Delta u_i = \sum_{j} M_{ij}^{uu} \Delta \theta_{j}^{u}$, therefore the \gls{orm} elements can be recognized as:
+The orbit distortions $\Delta u(s_i)$ are also measured in discrete and localized positions $s_i$, where the \gls{bpm}s are installed. The equation above can be cast in the form $\Delta u_i = \sum_{j} M_{ij}^{uu} \Delta \theta_{j}^{u}$, therefore the \gls{orm} elements can be recognized as:
 
 \begin{align}
 M_{ij}^{uu} = \dfrac{\sqrt{\beta_{u}(s_i)\beta_{u}(s_j)}}{2\sin\left(\pi\nu_{u}\right)}\cos\left( |\varphi_{u}(s_i) - \varphi_{u}(s_j)| - \pi\nu_{u} \right).
 \label{eq:matrix_elements}
 \end{align}
 
-Note that the \gls{orm} elements contains information about the local betatron function in the \gls{bpm}s and correctors positions. It also encodes the relative betatron phase advance between these two devices and depends on the betatron tune, a global parameter. 
+Note that the \gls{orm} elements contains information about the local betatron function in the \gls{bpm}s and correctors positions. It also encodes the relative betatron phase advance between each pair of BPM and steering magnet and the \gls{orm} also depends on the betatron tune, a global parameter. 
 
-Following the organization used in the \gls{orm}, the orbit distortions and the dipolar kick variations can be arranged in vectors
+Following the sorting used in the \gls{orm}, the orbit distortions and the dipolar kick variations can be arranged in vectors
 
 \begin{align*}
     \Delta \vec{u} &= \left(\Delta x_1, \ldots, \Delta x_{\mathrm{N}_{\mathrm{BPM}}}, \Delta y_1, \ldots, \Delta y_{\mathrm{N}_{\mathrm{BPM}}}\right), \\
@@ -50,18 +50,18 @@ $\mathrm{N}_{\mathrm{BPM}}$ are the number of \gls{bpm}s, $\mathrm{N}_{\mathrm{C
 
 In this vectorial form, the equation \eqref{eq:discrete_orbit_distortion} is $\Delta \vec{u} = \mathbf{M} \Delta \vec{\theta}$, so the \gls{orm} has dimension $2 \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}\right)$. 
 
-Suppose that the \gls{bpm}s measures the orbit distortion $\vec{u}_{\mathrm{d}}$. With the dipolar correctors it is possible to produce a orbit variation that cancels the measured orbit distortion. From $\vec{u}_{\mathrm{d}} + \Delta \vec{u} = 0$, we can calculate that the required kicks variations are $\Delta \vec{\theta} = -\mathbf{M}^{-1}\vec{u}_{\mathrm{d}}$. Since the actual problem is non-linear, the corrections must be calculated and applied iteratively until convergence. Generally, $2\mathrm{N}_{\mathrm{BPM}} \neq \mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}$, then the \gls{orm} is a rectangular matrix and $\mathbf{M}^{-1}$ is not an ordinary inverse. In this case, a pseudo-inverse \gls{orm} may be obtained with the method of \gls{svd} pseudo-inversion which is described in Appendix~\ref{appendix:svd}. Fundamentally this is a minimization of squares method and, depending on the number of knobs (correctors) compared to the number of data points (BPMs), it also minimizes the knobs variations required to minimize the figure of merit, in this case, the orbit distortion.
+Suppose that the \gls{bpm}s measure the orbit distortion $\vec{u}_{\mathrm{d}}$. With the dipolar correctors it is possible to produce a orbit variation that cancels the measured orbit distortion. From $\vec{u}_{\mathrm{d}} + \Delta \vec{u} = 0$, we can calculate that the required kicks variations are $\Delta \vec{\theta} = -\mathbf{M}^{-1}\vec{u}_{\mathrm{d}}$. Since the actual problem is non-linear, the corrections must be calculated and applied iteratively until convergence. Generally, $2\mathrm{N}_{\mathrm{BPM}} \neq \mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}$, then the \gls{orm} is a rectangular matrix and $\mathbf{M}^{-1}$ is not an ordinary inverse. In this case, a pseudo-inverse \gls{orm} may be obtained with the method of \gls{svd} pseudo-inversion which is described in Appendix~\ref{appendix:svd}. Fundamentally this is a minimization of squares method and, depending on the number of fit parameters compared to the number of data points, it also minimizes the parameters variations required to minimize the figure of merit, in this case, the orbit distortion.
 
-It is common to also include the \gls{rf} frequency as a knob in the orbit correction budget. It can be done by adding the orbit distortion vector produced after a variation in the RF frequency in the last column of the \gls{orm}. From \eqref{eq:delta_freq} and using $\Delta u_i = \eta_u(s_i) \delta$, we obtain:
+It is common to also include the \gls{rf} frequency as a knob in the orbit correction budget. It can be done by adding in the last column of the \gls{orm} the orbit distortion vector produced after a variation in the RF frequency. From \eqref{eq:delta_freq} and using $\Delta u_i = \eta_u(s_i) \delta$, we obtain:
 
 \begin{equation}
     \dfrac{\Delta u_i}{ \Delta f_{\mathrm{rf}}} = - \dfrac{\eta_u(s_i)}{\alpha f_{\mathrm{rf}}}.
     \label{eq:rf_column}
 \end{equation}
 
-In this way, the correction calculations for the orbit distortions also provides the variation of the \gls{rf} frequency (this is useful, for example, to correct thermal variations in the storage ring tunnel). It is important to observe that the \gls{rf} signature in the orbit distortion is very different from the signature created by the correctors, since the first depends on the dispersion function and the latter on the betatron function.
+In this way, the correction calculations for the orbit distortions also provides a variation in the \gls{rf} frequency (this is useful to correct variations in the orbit length, for example, produced thermal variations in the storage ring tunnel). It is important to observe that the \gls{rf} signature in the orbit distortion is very different from the signature created by the correctors, since the first depends on the dispersion function and the latter on the betatron function.
 
-The \gls{orm} with the RF frequency column is then a matrix with dimension $2 \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}+1\right)$. For the Sirius storage ring, the \gls{orm} is a $320 \times 281$ matrix. Beyond the practical function of calculating the corrections for orbit distortions, the \gls{orm} contains a lot of information about the linear optics (betatron function, phase advance and horizontal dispersion function) and rotation errors (elements of off-diagonal blocks related to betatron coupling and the vertical dispersion function). The \gls{loco} algorithm explores precisely the information contained in the \gls{orm}.
+The \gls{orm} with the RF frequency column added is then a matrix with dimension $2 \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}+1\right)$. For the Sirius storage ring, the \gls{orm} is a $320 \times 281$ matrix. Beyond the practical function of calculating the corrections for orbit distortions, the \gls{orm} contains a lot of information about the linear optics (betatron function, phase advance and horizontal dispersion function) and rotation errors (betatron coupling and the vertical dispersion function). The \gls{loco} algorithm explores precisely the information contained in the \gls{orm}.
 
 
 
@@ -78,7 +78,7 @@ The \gls{orm} with the RF frequency column is then a matrix with dimension $2 \m
 
 \section{Minimization problem}
 
-To implement the LOCO algorithm, a computational model of the storage ring is required. In this model, it is possible to calculate the nominal \gls{orm}. That can be done by simulating the measurement process which consists in varying the correctors strength and getting the corresponding orbit in all BPMs, for every corrector in the lattice. The nominal \gls{orm} calculation can be perfomed also using the transfer matrices of the lattice. In this formalism, which is much faster computationally, the \gls{orm} elements can be obtained by the composition of the transfer matrices of the elements between the correctors and the \gls{bpm}s. If non-linear effects in the orbit distortion can be disregarded, the two calculation methods produces very similar \gls{orm}s, thus, for the sake of sparing computation time, the transfer matrices approach is often used.
+To implement the LOCO algorithm, a computational model of the storage ring is required. In this model, it is possible to calculate the nominal \gls{orm}. That can be done by simulating numerically the measurement process which consists in varying the correctors strength and getting the corresponding orbit distortion in all BPMs, for every corrector in the lattice. The nominal \gls{orm} calculation can be perfomed also using the transfer matrices of the lattice. In this formalism, which is much faster computationally, the \gls{orm} elements can be obtained by the composition of the transfer matrices of the elements between the correctors and the \gls{bpm}s. If non-linear effects in the orbit distortion can be disregarded, the two calculation methods produces very similar \gls{orm}s, thus, for the sake of sparing computation time, the transfer matrices approach is often used.
 
 The LOCO algorithm can be viewed as a model dependent minimization problem. The main goal is to find a set of parameters in the computational model that best reproduce the measured \gls{orm}. Equivalently, it seeks for the global minimum of the square difference:
 
@@ -103,9 +103,9 @@ The residue vector $\vec{V}$ has $2 \times \mathrm{N}_{\mathrm{BPM}} \times \lef
 
 Let the dimension of $\vec{V}$ be denoted by $\mathrm{N}_{\mathrm{data}}$. For the Sirius storage ring, $\mathrm{N}_{\mathrm{data}} = 2 \times 160 \times 281 = 89920$.
 
-The minimization is performed by changing some parameters in the computational model, so the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$ is also changed and the square difference $\chi^2$, i.e., the modulus of the residue vector $\vec{V}$, might be reduced. It is used two methods to calculate the parameters variation that minimizes $\chi^2$: \gls{gn} and \gls{lm}.
+The minimization is performed by changing some parameters in the computational model, so the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$ is also changed and the square difference $\chi^2$, i.e., the modulus of the residue vector $\vec{V}$, might be reduced. Two methods are commonly used to calculate the parameters variations that minimizes $\chi^2$: \gls{gn} and \gls{lm}.
 
-Suppose that each element $V_k$ of the vector is a function of several parameters $\vec{P} = \left(P_1, \ldots, P_{\mathrm{N}_{\mathrm{knobs}}}\right)$. The number of knobs used as parameters are represented by $\mathrm{N}_{\mathrm{knobs}}$. Then it is possible to calculate the linear response of the vector elements for a given change in the parameters:
+Suppose that each element $V_k$ of the vector is a function of several parameters $\vec{P} = \left(P_1, \ldots, P_{\mathrm{N}_{\mathrm{param.}}}\right)$. The number of fit parameters are represented by $\mathrm{N}_{\mathrm{param.}}$. Then it is possible to calculate the linear response of the vector elements for a given change in the parameters:
 
 \begin{equation}
 \Delta V_{k} = \sum_{l}\dfrac{\partial V_{k}}{\partial P_{l}} \Delta P_{l}.
@@ -130,13 +130,13 @@ Depending on the parameter type, it is possible to calculate the LOCO jacobian m
 
 \subsection{Gauss-Newton Algorithm}
 
-The \gls{gn} algorithm was already presented in the calculation of kicks to correct the orbit distortion. This algorithm is generally used to solve non-linear least squares problems~\cite{numerical_recipes}. 
+The \gls{gn} algorithm was already briefly presented in Section~\ref{sec:orm_analysis} while discussing the calculation of kicks to correct the orbit distortion. This algorithm is generally used to solve non-linear least squares problems~\cite{numerical_recipes}. 
 
-Suppose that a \gls{orm} was measured in the real storage ring and the initial model \gls{orm} is calculated with the initial parameters $\vec{P}_0$, so the initial residue vector $\vec{V}_0$ is obtained. The goal is to apply variations in the residues such that $\vec{V}_0 + \Delta \vec{V} = 0$. From $\Delta \vec{V} = \mathbf{J}\Delta \vec{P}$, we obtain the solution $\Delta \vec{P}_0 = -\mathbf{J}^{-1} \vec{V}_0$, so changing the parameters by $\vec{P}_1 = \vec{P}_0 + \Delta \vec{P}_0$ will reduce the modulus of the new residue vector $\vec{V}_1$. Since the problem is non-linear, proceeding in that manner iteratively, in principle the algorithm converges to the minimum of $\chi^2$.
+Suppose that a \gls{orm} was measured in the real storage ring and the initial model \gls{orm} is calculated with the initial parameters $\vec{P}_0$, so the initial residue vector $\vec{V}_0$ is obtained. The goal is to apply variations in the residues such that $\vec{V}_0 + \Delta \vec{V} = 0$. From $\Delta \vec{V} = \mathbf{J}\Delta \vec{P}$, we obtain the solution $\Delta \vec{P}_0 = -\mathbf{J}^{-1} \vec{V}_0$, so changing the parameters by $\vec{P}_1 = \vec{P}_0 + \Delta \vec{P}_0$ might reduce the modulus of the new residue vector $\vec{V}_1$. Since the problem is non-linear, proceeding in that manner iteratively, in principle the algorithm converges to the minimum of $\chi^2$.
 
-The LOCO jacobian matrix $\mathbf{J}$ dimension is $\mathrm{N}_{\mathrm{data}} \times \mathrm{N}_{\mathrm{knobs}}$. The number of data points $\mathrm{N}_{\mathrm{data}}$ is much greater than the typical number of knobs $\mathrm{N}_{\mathrm{knobs}}$ used as parameters. Hence, $\mathbf{J}$ is a rectangular matrix with much more rows than columns and the problem is highly over-constrained. For Sirius $\mathrm{N}_{\mathrm{data}} = 89920$ and $\mathrm{N}_{\mathrm{data}} \approx 1000$ for regular LOCO fittings. Moreover, since $\mathbf{J}$ is not a square matrix, $\mathbf{J}^{-1}$ is actually a pseudo-inverse, obtained by \gls{svd} pseudo-inversion. As discussed in Appendix~\ref{appendix:svd}, in this overdetermined case it is not possible to solve the linear problem exactly, but the \gls{svd} method provides an approximate solution called least squares solution.
+The LOCO jacobian matrix $\mathbf{J}$ dimension is $\mathrm{N}_{\mathrm{data}} \times \mathrm{N}_{\mathrm{param.}}$. The number of data points $\mathrm{N}_{\mathrm{data}}$ is much greater than the typical number of parameters $\mathrm{N}_{\mathrm{param.}}$. Hence, $\mathbf{J}$ is a rectangular matrix with much more rows than columns and the problem is highly over-constrained. For Sirius $\mathrm{N}_{\mathrm{data}} = 89920$ and $\mathrm{N}_{\mathrm{data}} \approx 1000$ for regular LOCO fittings. Moreover, since $\mathbf{J}$ is not a square matrix, $\mathbf{J}^{-1}$ is actually a pseudo-inverse, obtained by \gls{svd} pseudo-inversion. As discussed in Appendix~\ref{appendix:svd}, in this overdetermined case it is not possible to solve the linear problem exactly, but the \gls{svd} method provides an approximate solution called least squares solution.
 
-To summarize, the \gls{gn} method seeks for the minimum of $\chi^2$ by iteratively applying the parameters variations, calculated by
+To summarize, the \gls{gn} method seeks for the minimum of $\chi^2$ by iteratively applying the parameters variations, calculated in each step by
 
 \begin{equation}
     \Delta \vec{P} = - \mathbf{J}^{-1} \vec{V},
@@ -144,21 +144,20 @@ To summarize, the \gls{gn} method seeks for the minimum of $\chi^2$ by iterative
 
 where $\vec{V}$ is the residue vector.
 
-Since $\mathbf{J}$ is typically a huge matrix with much more rows than columns, so its direct \gls{svd} decomposition to perform the pseudo-inversion may be very time consuming and storing the matrices may demand a lot of computer memory. So a strategy to 
+The matrix $\mathbf{J}$ has typically around $10^{8}$ elements, so its direct \gls{svd} decomposition to perform the pseudo-inversion may be very time consuming and storing the matrices may demand a lot of computer memory. So a strategy to 
 circumvent this technical problem is to rewrite the problem as $\mathbf{J}^{\mathsf{T}}\Delta \vec{V} = \mathbf{J}^{\mathsf{T}}\mathbf{J}\Delta \vec{P}$. In that way, the parameters variations are calculated by
 
 \begin{equation}
     \Delta \vec{P} = - \left(\mathbf{J}^{\mathsf{T}} \mathbf{J}\right)^{-1}\mathbf{J}^{\mathsf{T}} \vec{V}.
 \end{equation}
 
-The matrix $\mathbf{J}^{\mathsf{T}} \mathbf{J}$ has a smaller dimension $\mathrm{N}_{\mathrm{knobs}} \times \mathrm{N}_{\mathrm{knobs}}$ so the aforementioned computational 
-inconveniences are greatly reduced.
+Since $\mathbf{J}$ commonly has much more rows than columns, the matrix $\mathbf{J}^{\mathsf{T}} \mathbf{J}$ has a smaller dimension $\mathrm{N}_{\mathrm{param.}} \times \mathrm{N}_{\mathrm{param.}}$ so the aforementioned computational inconveniences are greatly reduced.
 
-It is important to mention that if the initial model \gls{orm} is far from the measured \gls{orm}, i.e., the actual and the model linear optics are very different, the algorithm may not converge due to nonlinearities. Therefore, the Gauss-Newton convergence requires a good initial model in order to the linear approximations be valid. The Levenberg-Marquardt is then introduced as a fitting option that is less dependent on the initial model.
+It is important to mention that if the initial model \gls{orm} is far from the measured \gls{orm}, i.e., the actual and the model linear optics are very different, the algorithm may not converge due to nonlinearities. Therefore, the Gauss-Newton convergence requires a good initial model in order to the linear approximations be valid. For the cases that a good initial guess is not available, the Levenberg-Marquardt is then introduced as a fitting option that is less dependent on the initial model.
 
 \subsection{Levenberg-Marquardt Algorithm}
 
-The \gls{lm} algorithm is a damped least squares method. It is combination between the \gls{gn} algorithm and the gradient descent, being more robust than \gls{gn} since it converges to the solution even if the initial guess is far from the final values \cite{numerical_recipes}. The \gls{lm} method is also viewed as the \gls{gn} method adapted to used the trust region approach.
+The \gls{lm} algorithm is a damped least squares method. It is combination between the \gls{gn} algorithm and the gradient descent, being more robust than \gls{gn} since it converges to the solution even if the initial guess is far from the final values \cite{numerical_recipes}. The \gls{lm} method is also viewed as the \gls{gn} method adapted to use the trust region approach.
 
 While the \gls{gn} solves the linear algebra problem given by $\mathbf{J}^{\mathsf{T}}\mathbf{J}\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}} \vec{V}$ for a given residue vector $\vec{V}$. The \gls{lm} method solves the modified equation:
 
@@ -167,7 +166,7 @@ While the \gls{gn} solves the linear algebra problem given by $\mathbf{J}^{\math
     \label{eq:lm}
 \end{equation}
 
-where $\lambda > 0$ is a constant and the diagonal operator acts on a $2\times 2$ matrix, for example, as:
+where $\lambda > 0$ is a constant. The diagonal operator acts on a $2\times 2$ matrix, for example, as:
 
 \begin{equation}
         \mathbf{A} = \begin{bmatrix}
@@ -181,15 +180,15 @@ where $\lambda > 0$ is a constant and the diagonal operator acts on a $2\times 2
 
 Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, the equation \eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, the equation \eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
 
-The parameter $\lambda$ may be chosen in a heuristic manner. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa_huang} is begin with low values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor 10 if the iteration reduces $\chi^2$ and multiply $\lambda$ by $10$ if $\chi^2$ is increased and keep increasing the parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$.
+The parameter $\lambda$ may be chosen in a heuristic manner. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa_huang} is begin with small values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor 10 if the iteration reduces $\chi^2$ and multiply $\lambda$ by $10$ if $\chi^2$ is increased and keep increasing the parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$.
 
 \section{Functionalities}
 
-The \gls{loco} algorithm can be configured for two purposes: find the error sources and calculate the linear optics corrections. Therefore, it can be used as a diagnostic or a correction tool. In this section it will be discussed the common parameters types used in the algorithm and how to setup it for each purpose.
+The \gls{loco} algorithm can be configured for two purposes: to find the error sources and to calculate the linear optics corrections. Therefore, it can be used as a diagnostic or a correction tool. In this section it will be discussed the common parameters types used and how to setup the LOCO algorithm for each purpose.
 
 \subsection{Fit Parameters}\label{subsec:fit_params}
 
-In order to determine the type of parameters to be included in the \gls{orm} fitting it is useful to use the sources of perturbations described in Section~\ref{perturbations}.
+In order to determine the type of parameters to be included in the \gls{orm} fitting it is useful to consult the sources of perturbations described in Section~\ref{perturbations}.
 
 The common parameters that can be varied to fit the \gls{orm} are:
 
@@ -215,7 +214,7 @@ The common parameters that can be varied to fit the \gls{orm} are:
     \end{itemize}
 \end{itemize}
 
-The LOCO jacobian matrix for BPMs gains and rolls, with the steering magnets gains are the only columns that can be calculated analytically. The columns related to the other parameters are calculated by numerical derivatives with the simulated storage ring model. 
+The LOCO jacobian matrix for BPMs gains and rolls, with the steering magnets gains are the columns that can be easily calculated analytically. The columns related to the other parameters are typically calculated by numerical derivatives with the simulated storage ring model. 
 
 BPMs gains and rolls can be viewed as adjustments to the measurements given by these devices, mapped with a linear transformation. Suppose that the actual orbit positions in the $i$-th BPM are $(x_{i, \mathrm{real}}, y_{i, \mathrm{real}})$ but the BPM measures the values $(x_{\mathrm{i, meas.}}, y_{\mathrm{i, meas.}})$. The real values can be obtained by the linear transformation:
 
@@ -237,7 +236,7 @@ BPMs gains and rolls can be viewed as adjustments to the measurements given by t
 \label{eq:bpm_gain1}
 \end{equation}
 
-$g_{i, x}$ and $g_{i, y}$ are the horizontal and vertical gains for the $i$-th BPM and $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting the equation \eqref{eq:bpm_gain1} as:
+$g_{i, x}$ are the horizontal gains and $g_{i, y}$ the vertical gains for the $i$-th BPM. $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting the equation \eqref{eq:bpm_gain1} as:
 
 \begin{equation}
     \vec{u}_{i, \mathrm{real}} = \mathbf{R}^{\mathrm{BPM}}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}},
@@ -246,22 +245,22 @@ $g_{i, x}$ and $g_{i, y}$ are the horizontal and vertical gains for the $i$-th B
 
 where $\mathbf{R}\left(\alpha_i\right)$ is a rotation matrix and $\mathbf{G}_{i}^{\mathrm{BPM}}$ the BPM gain matrix. The equation~\eqref{eq:bpm_gain} allows for the jacobian matrix analytical calculation for the BPM gains and rolls, which is done in details in Appendix~\ref{appendix:gains}.
 
-For the steering magnets the discussion is similar. Suppose that the $j$-th corrector kick set in the storage ring control system is $\theta_{j, \mathrm{applied}}^u$, $u=x$ for horizontal kicks and $u=y$ for vertical. However, let $\theta_{j, \mathrm{real}}^u$ be the actual kick applied in the electron beam. These two values can be related by a gain factor
+For the steering magnets the discussion is similar. Suppose that the $j$-th corrector kick set in the storage ring control system is $\theta_{j, \mathrm{applied}}^u$, $u=x$ for horizontal kicks and $u=y$ for vertical. Let $\theta_{j, \mathrm{real}}^u$ be the actual kick applied in the electron beam. These two values may be different and can be related by a gain factor
 
 \begin{equation}
     \theta_{j, \mathrm{applied}}^u = g_{j, u}^{\mathrm{corr}}\theta_{j, \mathrm{real}}^u.
     \label{eq:corr_gain}
 \end{equation}
 
-The gain definition for correctors and BPMs was made differently in order to obtain linear analytical expressions for both jacobian matrices. The equation~\eqref{eq:corr_gain} also allows for the jacobian matrix analytical calculation for the steering magnets gains, done in Appendix~\ref{appendix:gains}. 
+The gain definition for correctors and BPMs was different in order to obtain linear analytical expressions for both jacobian matrices. The equation~\eqref{eq:corr_gain} also allows for the jacobian matrix analytical calculation for the steering magnets gains, which is done in details in Appendix~\ref{appendix:gains}. 
 
-The others parameters jacobian matrix are calculated by numerical derivatives:
+The jacobian matrix for the remaining parameters are calculated by numerical derivatives:
 
 \begin{equation}
     J_{kl} = \dfrac{V_{k}\left(P_{l} + \Delta P_{l}\right) - V_{k}\left(P_{l}\right)}{\Delta P_{l}}.
 \end{equation}
 
-The residue vector is $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} - \mathbf{M}^{\mathrm{model}}\right)$. For these parameters, the dependence is contained in the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$, since the $\mathbf{M}^{\mathrm{meas.}}$ contains the data measured in the real storage ring, i.e., it can be interpreted as scalars and not functions. In that way, the jacobian elements are obtained by
+The residue vector is $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} - \mathbf{M}^{\mathrm{model}}\right)$. For that parameters, the dependence is contained in the model \gls{orm}: $\mathbf{M}^{\mathrm{model}}$, since the $\mathbf{M}^{\mathrm{meas.}}$ contains the data measured in the real storage ring, i.e., it can be interpreted as scalars and not functions. In that way, the jacobian elements are obtained by
 
 \begin{equation}
     J_{kl} = -\mathrm{vec}\left(\dfrac{M_{ij}^{\mathrm{model}}\left(P_{l} + \Delta P_{l}\right) - M_{ij}^{\mathrm{model}}\left(P_{l}\right)}{\Delta P_{l}}\right),
@@ -269,12 +268,12 @@ The residue vector is $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} -
 
 remembering that the vectorization transforms the $(i, j)$ indices in the $k$ index.
 
-This numerical calculation dominates the running time for the LOCO algorithm, since for each individual parameters to be varied, the model \gls{orm} must be calculated to obtain the residue vector. The total jacobian calculation time is approximately $\delta t_{\mathsf{ORM}} \times \mathrm{N}_{\mathrm{knobs}}$, where $\Delta t_{\mathsf{ORM}}$ is the time required to calculate the \gls{orm}. Thus, optimizing the \gls{orm} calculation directly reduces the LOCO running time.
+This numerical calculation dominates the running time for the LOCO algorithm, whereas for each individual parameters that is varied, the model \gls{orm} must be calculated to obtain the residue vector. The total jacobian calculation time is approximately $\Delta t_{\mathsf{ORM}} \times \mathrm{N}_{\mathrm{param.}}$, where $\Delta t_{\mathsf{ORM}}$ is the time required to calculate the \gls{orm}. Thus, optimizing the \gls{orm} calculation directly reduces the LOCO running time. 
 
-By default, the BPMs and steering magnets gains are always included as fit parameters, both for finding errors or calculating the corrections. The reason for this is that these calibrations have a specific signature in the residue vector and not including the gains would force the other parameters to compensate these errors. In this case, even if the the measured \gls{orm} is perfectly fitted, the adjusted parameters are inconsistent. 
+By default, the BPMs and steering magnets gains are always included as fit parameters, both for finding errors or calculating the corrections. The reason for this is that the gains calibrations have a specific signature in the residue vector and not including the gains would force the other parameters to compensate these systematic errors. In this case, even if the measured \gls{orm} is perfectly fitted, the adjusted parameters are unrealistic. 
 
 \subsection{Finding Errors}
-The fit parameters to be included in the LOCO algorithm and its interpretation are directly related to the goal that must be achieved. 
+The fit parameters to be included in the LOCO algorithm and its interpretation are directly related to the goal that is wanted to be achieved with the method. 
 
 As discussed in the Section~\ref{perturbations}, there are various sources of errors that perturbs the storage ring linear optics: the betatron and dispersion functions. The \gls{orm} depends on these functions, so fitting the measured \gls{orm} is fundamentally equivalent to obtain a model that represents the real machine on the optics functions subject.
 
@@ -285,19 +284,19 @@ Let's use the fit parameters described in the previous subsection~\ref{subsec:fi
 \begin{itemize}
     \item quadrupoles gradients: discrepancies between the gradient applied by the control system and the actual field that affects the beam dynamics,
     \item dipoles gradients: difference between the expected gradients in the dipole model in the simulated magnetic lattice and the actual gradients affecting the beam,
-    \item sextupoles gradients: the major contribution is due to horizontal transverse alignment errors or horizontal orbit distortions in the sextupoles, leading to feed-down effects that produces gradients. The difference between magnet model and real magnets field also plays a role so it may be difficult to distinguish the effects, 
+    \item sextupoles gradients: the major contribution is due to horizontal transverse alignment errors or horizontal orbit distortions in the sextupoles, leading to feed-down effects that produces normal gradients. The difference between magnet model and real magnets field also plays a role so it may be difficult to distinguish the effects, 
     \item quadrupoles skew gradients: rotation errors in normal quadrupoles,
     \item dipoles skew gradients: rotation errors in dipoles,
-    \item sextupoles skew gradients: the major contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produces gradients. 
+    \item sextupoles skew gradients: the major contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produces skew gradients. 
     \end{itemize}
     
-The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the algorithm. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in the section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains from the fit parameters. The BPMs roll angles are related mainly to electrical coupling between the device channels and cables.
+The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the algorithm. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in the section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains. The BPMs roll angles are related mainly to electrical coupling between the device channels and cables.
 
 \subsection{Correcting Errors}
 
-Finding the errors sources with LOCO algorithm is a strategy to obtain a model representation in the computer for the real storage ring. This LOCO functionality can be used as a diagnostic tool, for example after a machine shutdown where there was some interventions in the storage ring. Running the LOCO after a shutdown including all parameters in the fitting might show non-trivial problems in the machine may perturb the beam, pointing out specific errors and facilitating interventions to correct them.
+Finding the errors sources with LOCO algorithm is a strategy to obtain a model representation in the computer for the real storage ring. This LOCO functionality can be used as a diagnostic tool, for example, after a machine shutdown in which there was some interventions in the storage ring. Running the LOCO after a shutdown including all parameters in the fitting might show non-trivial problems in the machine that might perturb the beam. Thus the LOCO analysis may point out specific errors and facilitate targeted interventions to correct them.
 
-Among the fit parameters described in section~\ref{subsec:fit_params}, there are some parameters that cannot be directly varied in the real machine. In that way, even though the errors sources are obtained, their corrections cannot be made by simply applying the opposite variations in the machine. Therefore, to effectively correct the errors, a subset with adjustable fit parameters in the real storage ring must be used. These subset of parameters are commonly called knobs.
+Among the fit parameters described in section~\ref{subsec:fit_params}, there are some parameters that cannot be directly varied in the real machine. In that way, even though the errors sources are obtained, their corrections cannot be made by simply applying the opposite variations in the machine. Therefore, to effectively correct the errors, a subset with adjustable fit parameters in the real storage ring must be used. This subset of adjustable parameters are commonly called knobs.
 
 The knobs final variations obtained with this LOCO setup are interpreted as the effective corrections that restores the real storage ring to the nominal linear optics and symmetry. The knobs used for correction the linear optics are the quadrupoles trim coils and the knobs used to correct the betatron coupling are the skew quadrupoles. 
 
@@ -323,20 +322,18 @@ Suppose that there are two fit parameters with the same signature in the \gls{or
 \Delta \vec{V} = \dfrac{\partial \vec{V}}{\partial P_{1}} \Delta P_{1} + \dfrac{\partial \vec{V}}{\partial P_{2}} \Delta P_{2} + \sum_{l \neq \left\{1,2\right\}}\dfrac{\partial \vec{V}}{\partial P_{l}} \Delta P_{l}.
 \end{equation}
 
-If $P_1$ and $P_2$ are degenerate with respect to $\vec{V}$, in the LOCO jacobian matrix, this can be seen as two columns that are linearly dependent. For example, in the extreme case that $\dfrac{\partial \vec{V}}{\partial P_{2}} = \rho \dfrac{\partial \vec{V}}{\partial P_{1}}$, where $\rho \in \mathbb{R}$ is a constant, then we can write:
+If $P_1$ and $P_2$ are degenerate with respect to $\vec{V}$, in the LOCO jacobian matrix this can be seen as two columns that are linearly dependent. For example, in the extreme case that $\dfrac{\partial \vec{V}}{\partial P_{2}} = \rho \dfrac{\partial \vec{V}}{\partial P_{1}}$, where $\rho \in \mathbb{R}$ is a constant, we can write:
 
 \begin{equation}
 \Delta \vec{V} = \dfrac{\partial \vec{V}}{\partial P_{1}} \Delta P_{1}\left(1 + \rho \dfrac{\Delta P_2}{\Delta P_1}\right) + \sum_{l \neq \left\{1,2\right\}}\dfrac{\partial \vec{V}}{\partial P_{l}} \Delta P_{l}.
 \label{eq:two_params_deg}
 \end{equation}
 
-From~\eqref{eq:two_params_deg} we observe that no matter how the parameter $P_1$ varies, if the variations satisfy $\Delta P_1 = - \rho \Delta P_2$, the variation $\Delta \vec{V}$ is the same. If the summation part keeps generating variations that reduces the residue vector, this allows for great variations on the parameter $P_1$ and consequently on the parameter $P_2$ as well, in the opposite direction given by $-\rho$. 
+From~\eqref{eq:two_params_deg} we observe that no matter how the parameters $P_1$ and $P_2$ change, if the variations satisfy $\Delta P_1 = - \rho \Delta P_2$, the variation $\Delta \vec{V}$ is the same. If the summation part keeps generating variations that reduces the residue vector, this allows for great changes on the parameter $P_1$ and consequently on the parameter $P_2$ as well, in the opposite direction given by $-\rho$, without increasing $\chi^2$.
 
-The degeneracy problem may lead to non-physical fit parameters. The effect may still be problematic to the fitting for quasi-degenerate parameters, since it may be susceptible to noise in measured data. For the exact degeneracy case, as exemplified in the parameters $P_1$ and $P_2$, the LOCO jacobian matrix is rank deficient. In this case, as discussed in the appendix~\ref{appendix:svd}, the \gls{svd} will provide a null singular value. For quasi-degenerate parameters, the \gls{svd} provides very small singular values, compared to the first one (the maximum). These small singular value represents directions in the parameter space where the parameters may be varied and there is no significant variation in the residue vector. 
+The degeneracy problem may lead to non-physical fit parameters. The effect may still be problematic to the fitting for quasi-degenerate parameters, since it may be susceptible to noise in the measured data. For the exact degeneracy case, as exemplified in the parameters $P_1$ and $P_2$, the LOCO jacobian matrix is rank deficient. In this case, as discussed in the Appendix~\ref{appendix:svd}, the \gls{svd} will provide a null singular value. For quasi-degenerate parameters, the \gls{svd} provides very small singular values, compared to the first one (the maximum). These small singular values represents directions in the parameter space where the parameters may be varied and there is no significant variation in the residue vector. 
 
-A common strategy to avoid the negative effect of degeneracies is the singular value selection. This can be done by explicitly removing the singular values in the singular matrix in the pseudo-inversion process. Alternatively, one can use a criteria that the singular values that satisfy $\dfrac{\sigma_i}{\mathrm{max}\left(\sigma_i\right)} < \Delta$ may be removed, for a minimum threshold $\Delta$.
-
-Another strategy to circumvent the degeneracy problems is including constraints in the minimization problem. This will be discussed in the next section~\ref{sec:constraint}. 
+A common strategy to avoid the negative effect of degeneracies is the singular value selection. This can be done by explicitly removing the singular values in the singular matrix in the pseudo-inversion process. Alternatively, one can use a criteria that the singular values that satisfy $\dfrac{\sigma_i}{\mathrm{max}\left(\sigma_i\right)} < \Delta$ may be removed, for a minimum threshold $\Delta$. Another strategy to circumvent the degeneracy problems is including constraints in the minimization problem. This will be discussed in the next section~\ref{sec:constraint}. 
 
 There is a well-known degeneracy related to the BPM and steering magnets gains. The transformation that applies the gains in the measured \gls{orm} is given by 
 
@@ -350,40 +347,42 @@ Including the orbit response due to a variation in the \gls{rf} frequency as a c
 
 \section{Constraints and Weights}\label{sec:constraint}
 
-The first and common example where the degeneracy becomes a problem is when the fit parameters are quadrupoles. The trims coils in quadrupoles are used to correct the storage ring linear optics and the expected strengths variations required to achieve that goal are typically less than a few percent. This expectation is commonly based on magnetic measurements and alignment tolerances. Thus, the fit quadrupoles variations obtained from the LOCO algorithm must be compatible to this range of values. 
+The first common example where the degeneracy becomes a problem is when the fit parameters are quadrupoles. The trims coils in quadrupoles are used to correct the storage ring linear optics and the expected strengths variations required to achieve that goal are typically less than a few percent. This expectation is commonly based on magnetic measurements and alignment specifications. Thus, the fit quadrupoles variations obtained from the LOCO algorithm must be compatible to this range of values. 
 
-For compact magnetic lattices, as can be found in 4\ts{th} generation synchrotron light sources, some adjacent quadrupoles may be very close to each other. If the betatron phase advance between these quadrupoles is small, a localized error in one quadrupole will perturb the linear optics with a signature that is very similar to the signature generated by its neighbor. Hence, these fit parameters may be quasi-degenerate and the LOCO algorithm may fit the measured \gls{orm} by the cost of finding unrealistic variations for quadrupoles trim coils.
+For compact magnetic lattices, as can be found in 4\ts{th} generation synchrotron light sources, some adjacent quadrupoles may be very close to each other. If the betatron phase advance between these quadrupoles is small, a localized error in one quadrupole will perturb the linear optics with a signature that is very similar to the signature generated by its neighbor. Hence, these fit parameters may be quasi-degenerate and the LOCO algorithm may fit the measured \gls{orm} by the cost of finding large variations for quadrupoles trim coils. Typically these large variations are unrealistic.
 
-As discussed, singular values selection may be a strategy to circumvent the degeneracy problem. However, finding the best set of selected singular values may be very heuristic and time consuming \cite{icfa_laurent}. A more effective approach is including the quadrupoles variations in the minimization problem as a constraint. In that way, the LOCO algorithm goal is fitting the measured \gls{orm} with a solution that also minimizes the quadrupoles variations. 
+As discussed, singular values selection may be a strategy to circumvent the degeneracy problem. However, finding the best set of selected singular values may be a very heuristic and time consuming process \cite{icfa_laurent}. A more effective approach is including the quadrupoles variations in the minimization problem as a constraint. In that way, the LOCO algorithm goal is fitting the measured \gls{orm} with a solution that also minimizes the quadrupoles variations. 
 
-Let the fit parameters that represents the quadrupoles variation be $K_{q}$, where $1 \leq q \leq \mathrm{N}_{\mathrm{quads}}$ is the index. The constraints are included in the minimization problem by:
+Let the fit parameters that represents the quadrupoles variation be $K_{q}$, where $q$ is the sub-index satisfying $1 \leq q \leq \mathrm{N}_{\mathrm{quads}}$. The constraints are included in the minimization problem by:
 
 \begin{equation}
     \chi^2 = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 + \dfrac{1}{\sigma_{\Delta K}^2}\sum_q \left(w_q \Delta K_q\right)^2 =: \sum_{{k = (i,j, q)}} V_{k}^2,
     \label{eq:chi2_constraint}
 \end{equation}
 
-where $\sigma_{\Delta K}$ is a normalization constant and $w_q$ are individual weights factors. With the adjusts of individual weights $w_q$ one can control the constraint on specific quadrupoles variations $\Delta K_q$, according to the magnetic lattice configuration.
+where $\sigma_{\Delta K}$ is a normalization constant and $w_q$ are individual weights factors. Adjusting the individual weights $w_q$ one can control the constraint on specific quadrupoles variations $\Delta K_q$, according to the magnetic lattice configuration.
 
-Observe that the residue vector $\vec{V}$ is extended in this constrained problem. It includes the additional $\mathrm{N}_{\mathrm{quads}}$ elements $\dfrac{w_q}{\sigma_{\Delta K}}\Delta K_q$, then the residue vector dimension is $\mathrm{N}_{\mathrm{data}} + \mathrm{N}_{\mathrm{quads}}$. Since the LOCO jacobian matrix is derived from the residue vector, the following elements are added in the jacobian:
+Observe that the residue vector $\vec{V}$ is extended in this constrained problem. It includes the additional $\mathrm{N}_{\mathrm{quads}}$ elements $\dfrac{w_q}{\sigma_{\Delta K}}\Delta K_q$, then the residue vector new dimension is $\mathrm{N}_{\mathrm{data}} + \mathrm{N}_{\mathrm{quads}}$. Since the LOCO jacobian matrix is derived from the residue vector, the following elements are added in the jacobian:
 
 \begin{equation}
     J_{\mathrm{N}_{\mathrm{data}} + q, q} = \dfrac{w_q}{\sigma_{\Delta K}}.
 \end{equation}
 
-In that way, the LOCO jacobian matrix dimension is $\left(\mathrm{N}_{\mathrm{data}} + \mathrm{N}_{\mathrm{quads}}\right) \times \mathrm{N}_{\mathrm{knobs}}$. 
+In that way, the LOCO jacobian matrix new dimension is $\left(\mathrm{N}_{\mathrm{data}} + \mathrm{N}_{\mathrm{quads}}\right) \times \mathrm{N}_{\mathrm{param.}}$. 
 
-The minimization problem in the LOCO algorithm can be adapted to use weights factors too. The weights in BPMs and steering magnets are applied in the same manner that the gains. Let $\vec{W}^{\mathrm{BPM}}$ and $\vec{W}_{\mathrm{corr}}$ be the weight vectors, whose elements are $w^{\mathrm{BPM}}_{i}$ and $w^{\mathrm{corr}}_{i}$, respectively. The weights are inserted in the minimization problem by the transformation
+The minimization problem in the LOCO algorithm can be adapted to use other types of weights factors too. The weights in BPMs and steering magnets are applied in the same manner that the gains. Let $\vec{W}^{\mathrm{BPM}}$ and $\vec{W}_{\mathrm{corr}}$ be the weight vectors, whose elements are $w^{\mathrm{BPM}}_{i}$ and $w^{\mathrm{corr}}_{j}$, respectively, where $1 \leq i \leq 2\mathrm{N}_{\mathrm{BPM}}$ and $1 \leq j \leq \mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}} + 1$. The weights are inserted in the minimization problem by the transformation
 
 \begin{equation}
     M_{ij} \rightarrow w^{\mathrm{BPM}}_{i}M_{ij}w^{\mathrm{corr}}_{j}, 
 \end{equation}
 
-both in the model and measured \gls{orm}s. This changes the residue vector as well. The jacobian matrix also must be transformed:
+applied in the model and measured \gls{orm}s. The weights change the residue vector and consequently the LOCO jacobian matrix as well. 
 
-\begin{equation}
-    \mathbf{J}_{\mathrm{LOCO}} \rightarrow \mathrm{vec}\left(\vec{W}^{\mathrm{BPM}} \vec{W}_{\mathrm{corr}}^{\mathsf{T}}\right) \mathbf{J}_{\mathrm{LOCO}}.
-\end{equation}
+% The jacobian matrix also must be transformed:
+
+% \begin{equation}
+%     \mathbf{J}_{\mathrm{LOCO}} \rightarrow \mathrm{vec}\left(\vec{W}^{\mathrm{BPM}} \vec{W}_{\mathrm{corr}}^{\mathsf{T}}\right) \mathbf{J}_{\mathrm{LOCO}}.
+% \end{equation}
 
 A common weight used for the BPMs is the following. Suppose that $w^{\mathrm{BPM}}_{i} = 1/\sigma^{\mathrm{BPM}}_{i}$, where $\sigma^{\mathrm{BPM}}_{i}$ is the measured noise level for the $i$-th BPM. With this weight, the minimization problem is:
 
@@ -392,4 +391,9 @@ A common weight used for the BPMs is the following. Suppose that $w^{\mathrm{BPM
     \label{eq:chi2_original}
 \end{equation}
 
-This was the original problem proposed by the author in~\cite{safranek1997}, where BPMs with greater measurement noises will be less important to the fitting.
+This was the original figure of merit proposed by the author in~\cite{safranek1997}. The ideia behind including these weights is that data obtained with BPMs with greater measurement noises should be less important to the fitting.
+
+The correctors weights can be used mainly to control the importance of the dispersion function in the fitting. This is done by changing the value of the last element of $\vec{W}^{\mathrm{corr}}$. Since the last column in the \gls{orm} corresponds to the \gls{rf} orbit response, it contains the information of $\eta(s)$. 
+
+One can use a combination of BPM and correctors weights to prioritize the certain parts of the \gls{orm}. For example, if the first $\mathrm{N}_{\mathrm{BPM}}$ weights in $\vec{W}^{\mathrm{BPM}}$ and the first $\mathrm{N}_{\mathrm{CH}}$ weights in $\vec{W}_{\mathrm{corr}}$ are set to be greater than the remaining weights, the horizontal block $\mathbf{M}^{xx}$ will be predominant in the LOCO fitting. Other three independent combinations of weights can be performed to increase the importance of each block $\mathbf{M}^{yy}$, $\mathbf{M}^{xy}$ or $\mathbf{M}^{yx}$.
+
