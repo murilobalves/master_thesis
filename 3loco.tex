@@ -48,11 +48,11 @@ Following the sorting used in the \gls{orm}, the orbit distortions and the dipol
 
 $\mathrm{N}_{\mathrm{BPM}}$ are the number of \gls{bpm}s, $\mathrm{N}_{\mathrm{CH}}$ are the number of horizontal correctors (CH) and $\mathrm{N}_{\mathrm{CV}}$ the number of vertical correctors (CV). The orbit correction budget for Sirius storage ring has $\mathrm{N}_{\mathrm{BPM}} = 160$, $\mathrm{N}_{\mathrm{CH}} = 120$ and $\mathrm{N}_{\mathrm{CV}} = 160$. 
 
-In this vectorial form, the equation \eqref{eq:discrete_orbit_distortion} is $\Delta \vec{u} = \mathbf{M} \Delta \vec{\theta}$, so the \gls{orm} has dimension $2 \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}\right)$. 
+In this vectorial form, the equation~\eqref{eq:discrete_orbit_distortion} is $\Delta \vec{u} = \mathbf{M} \Delta \vec{\theta}$, so the \gls{orm} has dimension $2 \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}\right)$. 
 
-Suppose that the \gls{bpm}s measure the orbit distortion $\vec{u}_{\mathrm{d}}$. With the dipolar correctors it is possible to produce a orbit variation that cancels the measured orbit distortion. From $\vec{u}_{\mathrm{d}} + \Delta \vec{u} = 0$, we can calculate that the required kicks variations are $\Delta \vec{\theta} = -\mathbf{M}^{-1}\vec{u}_{\mathrm{d}}$. Since the actual problem is non-linear, the corrections must be calculated and applied iteratively until convergence. Generally, $2\mathrm{N}_{\mathrm{BPM}} \neq \mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}$, then the \gls{orm} is a rectangular matrix and $\mathbf{M}^{-1}$ is not an ordinary inverse. In this case, a pseudo-inverse \gls{orm} may be obtained with the method of \gls{svd} pseudo-inversion which is described in Appendix~\ref{appendix:svd}. Fundamentally this is a minimization of squares method and, depending on the number of fit parameters compared to the number of data points, it also minimizes the parameters variations required to minimize the figure of merit, in this case, the orbit distortion.
+Suppose that the \gls{bpm}s measure the orbit distortion $\vec{u}_{\mathrm{d}}$. With the dipolar correctors it is possible to produce a orbit variation that cancels the measured orbit distortion. From $\vec{u}_{\mathrm{d}} + \Delta \vec{u} = 0$, one can calculate that the required kicks variations are $\Delta \vec{\theta} = -\mathbf{M}^{-1}\vec{u}_{\mathrm{d}}$. Since the actual problem is non-linear, the corrections must be calculated and applied iteratively until convergence. Generally, $2\mathrm{N}_{\mathrm{BPM}} \neq \mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}$, then the \gls{orm} is a rectangular matrix and $\mathbf{M}^{-1}$ is not an ordinary inverse. In this case, a pseudo-inverse \gls{orm} may be obtained with the method of \gls{svd} pseudo-inversion which is described in Appendix~\ref{appendix:svd}. Fundamentally this is a minimization of squares method and, depending on the number of fit parameters compared to the number of data points, it also minimizes the parameters variations required to minimize the figure of merit, in this case, the orbit distortion.
 
-It is common to also include the \gls{rf} frequency as a knob in the orbit correction budget. It can be done by adding in the last column of the \gls{orm} the orbit distortion vector produced after a variation in the RF frequency. From \eqref{eq:delta_freq} and using $\Delta u_i = \eta_u(s_i) \delta$, we obtain:
+It is common to also include the \gls{rf} frequency as a knob in the orbit correction budget. It can be done by adding in the last column of the \gls{orm} the orbit distortion vector produced after a variation in the RF frequency. From equation~\eqref{eq:delta_freq} and using $\Delta u_i = \eta_u(s_i) \delta$, we obtain:
 
 \begin{equation}
     \dfrac{\Delta u_i}{ \Delta f_{\mathrm{rf}}} = - \dfrac{\eta_u(s_i)}{\alpha f_{\mathrm{rf}}}.
@@ -63,7 +63,15 @@ In this way, the correction calculations for the orbit distortions also provides
 
 The \gls{orm} with the RF frequency column added is then a matrix with dimension $2 \mathrm{N}_{\mathrm{BPM}} \times \left(\mathrm{N}_{\mathrm{CH}} + \mathrm{N}_{\mathrm{CV}}+1\right)$. For the Sirius storage ring, the \gls{orm} is a $320 \times 281$ matrix. Beyond the practical function of calculating the corrections for orbit distortions, the \gls{orm} contains a lot of information about the linear optics (betatron function, phase advance and horizontal dispersion function) and rotation errors (betatron coupling and the vertical dispersion function). The \gls{loco} algorithm explores precisely the information contained in the \gls{orm}.
 
+Based on the phase stability principle, for a fixed \gls{rf} frequency, the orbit length is constant as well. On the other hand, one can notice that a dipolar kick located in a dispersive region produces a change in the orbit length given by $\Delta x = -\eta_x(s_j)\theta^x_j$, where $s_j$ is the corrector longitudinal position. To maintain the orbit length fixed the electron energy must change. The orbit length change for a given energy deviation is $\Delta L = \alpha L_0 \delta$, then to obtain $\Delta L + \Delta x = 0$, the corresponding energy shift is $\delta = \dfrac{\eta_x(s_j) \theta^x_j}{\alpha L_0}$. 
 
+If the \gls{orm} numerical calculation is performed using only the transverse components, disregarding the energy loss and gain processes, the energy shifts due to the dipolar kicks are not included in the \gls{orm} elements. The energy shift $\delta$ generates the orbit distortion given by $\Delta x_i = \eta_x(s_i)\delta$, therefore the elements of $\mathbf{M}^{xx}$ must be changed by~\cite{huang2019beam}:
+
+\begin{equation}
+    M_{ij}^{xx} \rightarrow M_{ij}^{xx} + \dfrac{\eta_x(s_i)\eta_x(s_j)}{\alpha L_0}.
+\end{equation}
+
+If the \gls{orm} calculation includes the radiation loss and the energy gain by the \gls{rf} cavity, the orbit length is fixed by the phase stability principle and the energy shifts contributions in the \gls{orm} is automatically included\footnote{The calculations performed with transverse coordinates are typically called 4D simulations and when it includes the transverse and longitudinal coordinates it is called 6D simulations.}.
 
 % \begin{align}
 %     u_i\left({\theta_j^u+\Delta\theta_j^u}\right) = u_i\left(\theta_j^u\right) + \dfrac{\partial u_i}{\partial \theta_j^u} \Delta \theta_j^u
@@ -102,6 +110,15 @@ The residue vector $\vec{V}$ has $2 \times \mathrm{N}_{\mathrm{BPM}} \times \lef
 \end{equation}
 
 Let the dimension of $\vec{V}$ be denoted by $\mathrm{N}_{\mathrm{data}}$. For the Sirius storage ring, $\mathrm{N}_{\mathrm{data}} = 2 \times 160 \times 281 = 89920$.
+
+If the relative orbit response due to the \gls{rf} frequency variation $\dfrac{\Delta u_i}{\Delta f_{\mathrm{rf}}}$ is included as a \gls{orm} column, from equation~\eqref{eq:rf_column}, the minimization problem can be factored as
+
+\begin{equation}
+    \chi^2 = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 + \dfrac{1}{\alpha^2 f_{\mathrm{rf}}^2}\sum_{i}\left(\eta^{\mathrm{measured}}_{i} - \eta^{\mathrm{model}}_{i}\right).
+    \label{eq:chi2_disp}
+\end{equation}
+
+The BPM index $i$ covers the horizontal dispersion function for $1 \leq i \leq \mathrm{N}_{\mathrm{BPM}}$ and the range $\mathrm{N}_{\mathrm{BPM}}+1 \leq i \leq 2\mathrm{N}_{\mathrm{BPM}}$ refers to the vertical dispersion. Therefore, in this way the dispersion functions are also included in the fitting.
 
 The minimization is performed by changing some parameters in the computational model, so the model \gls{orm} $\mathbf{M}^{\mathrm{model}}$ is also changed and the square difference $\chi^2$, i.e., the modulus of the residue vector $\vec{V}$, might be reduced. Two methods are commonly used to calculate the parameters variations that minimizes $\chi^2$: \gls{gn} and \gls{lm}.
 
@@ -159,7 +176,7 @@ It is important to mention that if the initial model \gls{orm} is far from the m
 
 The \gls{lm} algorithm is a damped least squares method. It is combination between the \gls{gn} algorithm and the gradient descent, being more robust than \gls{gn} since it converges to the solution even if the initial guess is far from the final values \cite{numerical_recipes}. The \gls{lm} method is also viewed as the \gls{gn} method adapted to use the trust region approach.
 
-While the \gls{gn} solves the linear algebra problem given by $\mathbf{J}^{\mathsf{T}}\mathbf{J}\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}} \vec{V}$ for a given residue vector $\vec{V}$. The \gls{lm} method solves the modified equation:
+While the \gls{gn} solves the linear algebra problem given by $\mathbf{J}^{\mathsf{T}}\mathbf{J}\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}} \vec{V}$ for a given residue vector $\vec{V}$. The \gls{lm} method solves the modified equation\footnote{The method was proposed by K. Levenberg in the paper~\cite{levenberg} originally as $\left(\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathbf{I} \right)\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}}\vec{V}$. Later D. Marquardt in \cite{marquardt} replaced the identity matrix $\mathbf{I}$ by $\mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right)$, making the method scale-independent.}:
 
 \begin{equation}
     \left(\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) \right)\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}}\vec{V},
@@ -178,9 +195,9 @@ where $\lambda > 0$ is a constant. The diagonal operator acts on a $2\times 2$ m
  \end{bmatrix}.
 \end{equation}
 
-Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, the equation \eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, the equation \eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
+Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, the equation~\eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, the equation~\eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
 
-The parameter $\lambda$ may be chosen in a heuristic manner. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa_huang} is begin with small values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor 10 if the iteration reduces $\chi^2$ and multiply $\lambda$ by $10$ if $\chi^2$ is increased and keep increasing the parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$.
+The parameter $\lambda$ may be chosen in a heuristic manner for the specific problem. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa_huang, huang2019beam} is begin with small values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor (for example, by 10) if the iteration reduces $\chi^2$ and increase $\lambda$ by a scale if $\chi^2$ is increased and keep increasing this parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$. One disadvantage of the \gls{lm} algorithm is that for high values of $\lambda$, the algorithm convergence is typically very slow. Therefore, once the fitting is reasonably close to the minimum, it may be helpful to decrease the value of $\lambda$ for the sake of increasing the convergence speed.
 
 \section{Functionalities}
 
@@ -236,7 +253,7 @@ BPMs gains and rolls can be viewed as adjustments to the measurements given by t
 \label{eq:bpm_gain1}
 \end{equation}
 
-$g_{i, x}$ are the horizontal gains and $g_{i, y}$ the vertical gains for the $i$-th BPM. $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting the equation \eqref{eq:bpm_gain1} as:
+$g_{i, x}$ are the horizontal gains and $g_{i, y}$ the vertical gains for the $i$-th BPM. $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting the equation~\eqref{eq:bpm_gain1} as:
 
 \begin{equation}
     \vec{u}_{i, \mathrm{real}} = \mathbf{R}^{\mathrm{BPM}}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}},
@@ -290,7 +307,7 @@ Let's use the fit parameters described in the previous subsection~\ref{subsec:fi
     \item sextupoles skew gradients: the major contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produces skew gradients. 
     \end{itemize}
     
-The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the algorithm. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in the section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains. The BPMs roll angles are related mainly to electrical coupling between the device channels and cables.
+The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the algorithm. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in the section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains. The BPMs roll angles are related to electrical coupling between the device channels and cables and rotation errors in the devices installation.
 
 \subsection{Correcting Errors}
 
@@ -322,16 +339,24 @@ Suppose that there are two fit parameters with the same signature in the \gls{or
 \Delta \vec{V} = \dfrac{\partial \vec{V}}{\partial P_{1}} \Delta P_{1} + \dfrac{\partial \vec{V}}{\partial P_{2}} \Delta P_{2} + \sum_{l \neq \left\{1,2\right\}}\dfrac{\partial \vec{V}}{\partial P_{l}} \Delta P_{l}.
 \end{equation}
 
-If $P_1$ and $P_2$ are degenerate with respect to $\vec{V}$, in the LOCO jacobian matrix this can be seen as two columns that are linearly dependent. For example, in the extreme case that $\dfrac{\partial \vec{V}}{\partial P_{2}} = \rho \dfrac{\partial \vec{V}}{\partial P_{1}}$, where $\rho \in \mathbb{R}$ is a constant, we can write:
+If $P_1$ and $P_2$ are degenerate with respect to $\vec{V}$, in the LOCO jacobian matrix this can be seen as two columns that are linearly dependent. For example, in the extreme case that $\dfrac{\partial \vec{V}}{\partial P_{2}} = \rho \dfrac{\partial \vec{V}}{\partial P_{1}}$, where $\rho \in \mathbb{R}$ is a constant, then 
 
 \begin{equation}
 \Delta \vec{V} = \dfrac{\partial \vec{V}}{\partial P_{1}} \Delta P_{1}\left(1 + \rho \dfrac{\Delta P_2}{\Delta P_1}\right) + \sum_{l \neq \left\{1,2\right\}}\dfrac{\partial \vec{V}}{\partial P_{l}} \Delta P_{l}.
 \label{eq:two_params_deg}
 \end{equation}
 
-From~\eqref{eq:two_params_deg} we observe that no matter how the parameters $P_1$ and $P_2$ change, if the variations satisfy $\Delta P_1 = - \rho \Delta P_2$, the variation $\Delta \vec{V}$ is the same. If the summation part keeps generating variations that reduces the residue vector, this allows for great changes on the parameter $P_1$ and consequently on the parameter $P_2$ as well, in the opposite direction given by $-\rho$, without increasing $\chi^2$.
+From equation~\eqref{eq:two_params_deg} we observe that no matter how the parameters $P_1$ and $P_2$ change, if the variations satisfy $\Delta P_1 = - \rho \Delta P_2$, the variation $\Delta \vec{V}$ is the same. If the summation part keeps generating variations that reduces the residue vector, this allows for great changes on the parameter $P_1$ and consequently on the parameter $P_2$ as well, in the opposite direction given by $-\rho$, without increasing $\chi^2$.
 
 The degeneracy problem may lead to non-physical fit parameters. The effect may still be problematic to the fitting for quasi-degenerate parameters, since it may be susceptible to noise in the measured data. For the exact degeneracy case, as exemplified in the parameters $P_1$ and $P_2$, the LOCO jacobian matrix is rank deficient. In this case, as discussed in the Appendix~\ref{appendix:svd}, the \gls{svd} will provide a null singular value. For quasi-degenerate parameters, the \gls{svd} provides very small singular values, compared to the first one (the maximum). These small singular values represents directions in the parameter space where the parameters may be varied and there is no significant variation in the residue vector. 
+
+Calculating correlation between the LOCO jacobian matrix columns may be very insightful to study the possible degeneracies of the problem. The correlation coefficient between two column-vectors $\vec{J}_i$ and $\vec{J}_j$ is
+
+\begin{equation}
+    C_{ìj} = \dfrac{\vec{J}_i^{\mathsf{T}}\vec{J}_j}{|\vec{J}_i||\vec{J}_j|},
+\end{equation}
+
+where $|\cdot|$ denotes the euclidean norm of the vector. The coefficient $C_{ij}$ satisfies $0 \leq C_{ij} \leq 1$ and it indicates the correlation between the signatures of the parameters $P_i$ and $P_j$ in the \gls{orm}.
 
 A common strategy to avoid the negative effect of degeneracies is the singular value selection. This can be done by explicitly removing the singular values in the singular matrix in the pseudo-inversion process. Alternatively, one can use a criteria that the singular values that satisfy $\dfrac{\sigma_i}{\mathrm{max}\left(\sigma_i\right)} < \Delta$ may be removed, for a minimum threshold $\Delta$. Another strategy to circumvent the degeneracy problems is including constraints in the minimization problem. This will be discussed in the next section~\ref{sec:constraint}. 
 
@@ -341,9 +366,9 @@ There is a well-known degeneracy related to the BPM and steering magnets gains. 
     \mathbf{M}^{\mathrm{real}} = \mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\mathbf{G}^{-1}_{\mathrm{corr}}.
 \end{equation}
 
-This transformation changes the \gls{orm} elements by $M_{ij} \rightarrow g_{i}^{\mathrm{BPM}}g_{j}^{\mathrm{corr}}M_{ij}$. Therefore, if the BPM gain is scaled up by $g_{i}^{\mathrm{BPM}} \rightarrow \rho g_{i}^{\mathrm{BPM}}$, and the corrector gain is scale down by $g_{i}^{\mathrm{corr}} \rightarrow g_{i}^{\mathrm{corr}}/\rho$, the \gls{orm} is invariant. That degeneracy limits the LOCO algorithm to determine only the relative gains for BPMs and steering magnets. The degeneracy between BPM and correctors gains is manifested as two very small singular values in the LOCO jacobian matrix \gls{svd}, one for each plane, horizontal and vertical.
+This transformation changes the \gls{orm} elements by $M_{ij} \rightarrow g_{i}^{\mathrm{BPM}}g_{j}^{\mathrm{corr}}M_{ij}$. Therefore, if the BPM gain is scaled up by $g_{i}^{\mathrm{BPM}} \rightarrow \rho g_{i}^{\mathrm{BPM}}$, and the corrector gain is scale down by $g_{j}^{\mathrm{corr}} \rightarrow g_{j}^{\mathrm{corr}}/\rho$, the \gls{orm} remains the same. That degeneracy limits the LOCO algorithm to determine only the relative gains for BPMs and steering magnets. The degeneracy between BPM and correctors gains is manifested as two very small singular values in the LOCO jacobian matrix \gls{svd}, one for each plane, horizontal and vertical.
 
-Including the orbit response due to a variation in the \gls{rf} frequency as a column in the \gls{orm} matrix may break the gain degeneracy. The variation in the \gls{rf} frequency is extremely precise, so the correspondent measured orbit response contains the errors related to the BPM gains only. This additional column depends on the dispersion function $\eta(s)$, as can be seen in equation~\eqref{eq:rf_column}. Since ideally there is only horizontal dispersion function $\eta_x(s)$, including this column in the \gls{orm} may break the degeneracy between horizontal BPM and correctors gains and its absolute values may be determined. In the case that there is a substantial vertical dispersion function $\eta_y(s)$, it may be possible to determine the absolute gains for vertical BPMs and correctors as well. Actually, increasing intentionally the vertical dispersion function and performing the LOCO analysis is a possible strategy to determine the absolute gains for both planes.
+Including the orbit response due to a variation in the \gls{rf} frequency as a column in the \gls{orm} matrix may break the gain degeneracy. The variation in the \gls{rf} frequency in storage rings is extremely precise, so the correspondent measured orbit response contains basically only the errors related to the BPM gains. This additional column depends on the dispersion function $\eta(s)$, as can be seen in equation~\eqref{eq:rf_column}. Since ideally there is only horizontal dispersion function $\eta_x(s)$, including this column in the \gls{orm} may break the degeneracy between horizontal BPM and correctors gains and its absolute values may be determined. In the case that there is a substantial vertical dispersion function $\eta_y(s)$, it may be possible to determine the absolute gains for vertical BPMs and correctors as well. Actually, increasing intentionally the vertical dispersion function and performing the LOCO analysis is a possible strategy to determine the absolute gains for both planes.
 
 \section{Constraints and Weights}\label{sec:constraint}
 
@@ -393,7 +418,7 @@ A common weight used for the BPMs is the following. Suppose that $w^{\mathrm{BPM
 
 This was the original figure of merit proposed by the author in~\cite{safranek1997}. The ideia behind including these weights is that data obtained with BPMs with greater measurement noises should be less important to the fitting.
 
-The correctors weights can be used mainly to control the importance of the dispersion function in the fitting. This is done by changing the value of the last element of $\vec{W}^{\mathrm{corr}}$. Since the last column in the \gls{orm} corresponds to the \gls{rf} orbit response, it contains the information of $\eta(s)$. 
+The correctors weights can be used mainly to control the importance of the dispersion function in the fitting. This is done by changing the value of the last element of $\vec{W}^{\mathrm{corr}}$. Since the last column in the \gls{orm} corresponds to the \gls{rf} frequency orbit response, changing the last corrector weight denoted by $w_{\eta}$ changes the minimization problem in equation~\eqref{eq:chi2_disp}, where the dispersion contribution to the figure of merit is then multiplied by the factor $w_{\eta}$.
 
 One can use a combination of BPM and correctors weights to prioritize the certain parts of the \gls{orm}. For example, if the first $\mathrm{N}_{\mathrm{BPM}}$ weights in $\vec{W}^{\mathrm{BPM}}$ and the first $\mathrm{N}_{\mathrm{CH}}$ weights in $\vec{W}_{\mathrm{corr}}$ are set to be greater than the remaining weights, the horizontal block $\mathbf{M}^{xx}$ will be predominant in the LOCO fitting. Other three independent combinations of weights can be performed to increase the importance of each block $\mathbf{M}^{yy}$, $\mathbf{M}^{xy}$ or $\mathbf{M}^{yx}$.
 

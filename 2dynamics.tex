@@ -58,7 +58,7 @@ The transverse dynamics describes the motion of the electrons in the 4D phase sp
 
 A simpler version of a magnetic lattice is composed by dipoles and quadrupoles only. The dipoles bends the electrons path around the ring and defines an ideal orbit. The dipole field can be seen as the zero-order expansion of the lattice magnetic fields. The next terms of the expansion are field gradients, mainly related to the quadrupoles. This setup composes the linear magnetic lattice, where the magnetic field expansion is up to first order.
 
-Assuming this linear approximation and that the transverse directions are independent, i.e., there is no transverse coupling terms, the Hamiltonian of an electron in the storage ring is \footnote{This approximated Hamiltonian is obtained from the Hamiltonian of a relativistic charged particle on dipolar and quadrupolar magnetic fields.}:
+Assuming this linear approximation and that the transverse directions are independent, i.e., there is no transverse coupling terms, the Hamiltonian of an electron in the storage ring is \footnote{The approximated transverse Hamiltonian is obtained from the Hamiltonian of a relativistic charged particle on magnetic fields: $H = q\phi + c\sqrt{m^2c^2 + \left(\vec{p} - q\vec{A}\right) }$.}:
 
 \begin{equation}
     H \approx \dfrac{{x'}^2}{2} + \dfrac{{y'}^2}{2} + \left(K(s)- G^{2}(s)\right)\dfrac{{x}^2}{2} - K(s) \frac{y^2}{2} - G(s) x \delta.
@@ -76,7 +76,7 @@ where $p_0$ is the ideal electron momentum. The dipoles magnetic field $B(s)$ mu
 
 % The quantity $R = B(s)\rho(s) = \dfrac{p_0}{e} \approx \dfrac{E_0}{ec}$ is called magnetic rigidity and it is a property of the stored electron. For the Sirius storage ring the electron magnetic rigidity is approximately 10.
 
-From the Hamiltonian \eqref{transv_hamilton}, the equations of motion are:
+From the Hamiltonian in equation~\eqref{transv_hamilton}, the equations of motion are:
 
 \begin{align}
     x'' + \left(K(s) - G^{2}(s)\right)x &= G(s) \delta, \\
@@ -96,7 +96,7 @@ u'' + K_u(s) u = 0,
 
 where $u = x$ or $y$, $K_x(s) = K(s) - G^2(s)$ and $K_y(s) = -K(s)$. Note that $K_x \approx -K_y$ if we consider $G^2/K \ll 1$, which is a good approximation for strong-focusing magnetic lattices. This reflects the fact that a focusing quadrupole in $x$ plane is necessarily defocusing in the $y$ plane and vice-versa. 
 
-The homogeneous equation \eqref{hill} is called Hill equation, which is similar to a simple harmonic oscillator equation, except for the important fact that the term $K_u$ is $s-$dependent and periodic. The authors in~\cite{CourantSnyder1958} proposed a pseudo-harmonic solution for the Hill equation \eqref{hill}:
+The homogeneous equation~\eqref{hill} is called Hill equation, which is similar to a simple harmonic oscillator equation, except for the important fact that the term $K_u$ is $s-$dependent and periodic. The authors in~\cite{CourantSnyder1958} proposed a pseudo-harmonic solution for the Hill equation:
 
 \begin{equation}
     u_{\beta}(s) = \sqrt{2 J_u \beta_u (s)} \cos \left(\varphi_u(s) - \phi_u\right).
@@ -116,7 +116,7 @@ and also that the betatron function and phase advance are related by
 \varphi_u(s) = \int_{0}^{s} \dfrac{1}{\beta_u(\bar{s})} \dif \bar{s}.
 \end{equation}
 
-In storage rings, the betatron function is a periodic solution for equation \eqref{beta_equation}.
+In storage rings, the betatron function is a periodic solution for equation~\eqref{beta_equation}.
 
 The parameters $J_u$ and $\phi_u$ are constants defined by the electron initial conditions. One can show that the constant $J_u$ is written in terms of $(u, u')$ by:
 
@@ -127,7 +127,7 @@ The parameters $J_u$ and $\phi_u$ are constants defined by the electron initial 
 
 for every longitudinal position $s$ and using the identities $\alpha_u(s) = -\beta_u'(s)/2$ and $\gamma_u(s) = (1 + \alpha_u^2(s))/\beta_u(s)$. These three functions $\left\{\alpha_u(s), \beta_u(s), \gamma_u(s)\right\}$ are called Twiss functions and depends only on the magnetic lattice.
 
-In the equation \eqref{invariant} it is shown that, for each position $s$, the betatron oscillations performed by the electrons  in the storage ring over the turns draws a ellipse in the phase space $(u, u')$. Since the assumptions made so far allows us to consider the system as conservative, the Liouville theorem applies, therefore the area of this ellipse is invariant. From equation \eqref{invariant}, the ellipse area is $A_u = 2 \pi J_u$, following that $J_u$ is a invariant of motion. It is also possible to obtain this result applying the canonical transformation of action-angle variables in the Hamiltonian \eqref{transv_hamilton}, identifying the action with $J_u$ (in this case, it is an invariant by construction), and the phase variable with $\varphi_u$.
+In the equation~\eqref{invariant} it is shown that, for each position $s$, the betatron oscillations performed by the electrons  in the storage ring over the turns draws a ellipse in the phase space $(u, u')$. Since the assumptions made so far allows us to consider the system as conservative, the Liouville theorem applies, therefore the area of this ellipse is invariant. From equation~\eqref{invariant}, the ellipse area is $A_u = 2 \pi J_u$, following that $J_u$ is a invariant of motion. It is also possible to obtain this result applying the canonical transformation of action-angle variables in the Hamiltonian~\eqref{transv_hamilton}, identifying the action with $J_u$ (in this case, it is an invariant by construction), and the phase variable with $\varphi_u$.
 
 Once these concepts are presented, we define the particle emittance as $\varepsilon_u = 2J_u$. In this way, the particle emittance can be interpreted as the area of the ellipse that electron follows in the 4D phase space during betatron oscillations, divided by $\pi$:
 
@@ -159,7 +159,7 @@ The tune fractional part is closely related to resonances. If the fractional par
     \label{resonance}
 \end{equation}
 
-where $m, n, r \in \mathbb{Z}$. The order of resonance is $|m| + |n|$ and the resonance strength decays with the increase of its order, thus the lower order resonances are more harmful to the beam stability. The equation \eqref{resonance} determines resonance lines in the space $(\nu_x, \nu_y)$ that must be avoided to prevent the electron beam from this type of instability. The tunes values must be carefully chosen for the machine operation point. The Sirius storage ring tunes are $\nu_x = 49.0962$ and $\nu_y=14.1520$.
+where $m, n, r \in \mathbb{Z}$. The order of resonance is $|m| + |n|$ and the resonance strength decays with the increase of its order, thus the lower order resonances are more harmful to the beam stability. The equation~\eqref{resonance} determines resonance lines in the space $(\nu_x, \nu_y)$ that must be avoided to prevent the electron beam from this type of instability. The tunes values must be carefully chosen for the machine operation point. The Sirius storage ring tunes are $\nu_x = 49.0962$ and $\nu_y=14.1520$.
 
 
 \subsection{Dispersion function}
@@ -200,7 +200,7 @@ An electron with $\delta > 0$ is less deflected by the dipoles, following a path
     \label{slip}
 \end{equation}
 
-where $\alpha$ is called the momentum compaction factor. The term $\alpha - \dfrac{1}{(v/c)^2\gamma^2}$ is known as slip factor and, for ultra-relativistic electrons, it is very close to $\alpha$. For example, on Sirius storage ring $\alpha = 1.6 \times 10^{-4}$, $v/c \approx 1$ and $\gamma = 5871$, so the difference between the slip factor and $\alpha$ is only $3 \times 10^{-8}$. Using $\delta \approx \dfrac{\Delta p}{p_0}$, the equation \eqref{slip} is commonly written as:
+where $\alpha$ is called the momentum compaction factor. The term $\alpha - \dfrac{1}{(v/c)^2\gamma^2}$ is known as slip factor and, for ultra-relativistic electrons, it is very close to $\alpha$. For example, on Sirius storage ring $\alpha = 1.6 \times 10^{-4}$, $v/c \approx 1$ and $\gamma = 5871$, so the difference between the slip factor and $\alpha$ is only $3 \times 10^{-8}$. Using $\delta \approx \dfrac{\Delta p}{p_0}$, the equation~\eqref{slip} is commonly written as:
 
 \begin{equation}
     \frac{\Delta L}{L_0} \approx \alpha \delta.
@@ -251,7 +251,7 @@ We are interested in deviations from the synchronous electron, then the absolute
     \label{approx2}
 \end{equation}
 
-Now we are ready to obtain the differential equation for the longitudinal motion. Observe that from equation \eqref{orbitlen} the orbit length (and the revolution time) depends on the energy deviation $\delta$. Let the sub-index $n$ denote the turn number. In successive turns the relative position $z(t)$ changes by $\Delta z = z_{n+1} - z_n = \alpha\delta_n L_0$. Converting it to time variables, then $\Delta \tau = \alpha \delta_n T_0$, where $T_0$ is the revolution period. As mentioned, the longitudinal dynamics time scale is much greater than the time involved in one turn, then longitudinal changes in consecutive turns divided by the revolution time $T_0$ can be regarded as derivatives. Hence
+Now we are ready to obtain the differential equation for the longitudinal motion. Observe that from equation~\eqref{orbitlen} the orbit length (and the revolution time) depends on the energy deviation $\delta$. Let the sub-index $n$ denote the turn number. In successive turns the relative position $z(t)$ changes by $\Delta z = z_{n+1} - z_n = \alpha\delta_n L_0$. Converting it to time variables, then $\Delta \tau = \alpha \delta_n T_0$, where $T_0$ is the revolution period. As mentioned, the longitudinal dynamics time scale is much greater than the time involved in one turn, then longitudinal changes in consecutive turns divided by the revolution time $T_0$ can be regarded as derivatives. Hence
 
 \begin{equation}
 \dfrac{\dif \tau}{\dif t} = \alpha \delta.
@@ -265,16 +265,16 @@ From the electron energy balance $\Delta E = E_{n+1} - E_n = eV(\tau_n) - U_{\ma
     \label{long_diff2}.
 \end{equation}
 
-The two coupled differential equations \eqref{long_diff1} and \eqref{long_diff2} describes the longitudinal dynamics in the phase space $(\tau, \delta)$.
+The two coupled differential equations~\eqref{long_diff1} and~\eqref{long_diff2} describes the longitudinal dynamics in the phase space $(\tau, \delta)$.
 
-With the linear approximations \eqref{approx1} and \eqref{approx2}, the differential equations can be cast in the following form:
+With the linear approximations made in equations~\eqref{approx1} and~\eqref{approx2}, the differential equations can be cast in the following form:
 
 \begin{equation}
     \Ddot{v} + 2\alpha_{z} \dot{v} + \omega_{z}^2 v = 0.
     \label{damped}
 \end{equation}
 
-where $v=\tau$ or $\delta$ and the dot represents the time derivative. The equation \eqref{damped} describes a damped harmonic oscillator, with frequency $\omega_z = \sqrt{\dfrac{\alpha e}{E_0 T_0} \dfrac{\dif V_{\mathrm{rf}}}{\dif \tau}}$, called synchrotron frequency. The term $\alpha_z = \dfrac{1}{2T_0} \dfrac{\dif U_{\mathrm{rad}}}{\dif \delta}$ is positive, represents the effect of radiation damping and it is typically small. 
+where $v=\tau$ or $\delta$ and the dot represents the time derivative. The equation~\eqref{damped} describes a damped harmonic oscillator, with frequency $\omega_z = \sqrt{\dfrac{\alpha e}{E_0 T_0} \dfrac{\dif V_{\mathrm{rf}}}{\dif \tau}}$, called synchrotron frequency. The term $\alpha_z = \dfrac{1}{2T_0} \dfrac{\dif U_{\mathrm{rad}}}{\dif \delta}$ is positive, represents the effect of radiation damping and it is typically small. 
 
 In the small oscillation limit, the phase-space trajectories are ellipses with decreasing radius towards $\tau = \delta = 0$. In the general case of large oscillations, the longitudinal dynamics is not equivalent to a damped oscillator anymore and the dynamics is non-linear. The electrons trajectories in phase space are divided in two classes: 1) closed, limited and stable and 2) open, unlimited and unstable. The stable regions in the phase space are called \gls{rf} buckets and a separatrix delimits the stable from the unstable region, where the limit is the stable trajectory with largest amplitudes.
 
@@ -288,13 +288,13 @@ Since $\omega_{\mathrm{rf}} = h \omega_0$, where $\omega_0$ is the angular revol
 
 The principle of phase stability is a fundamental concept to the realization of synchrotron light sources. It establishes a mechanism that guarantees that electrons with energy or longitudinal phase deviations will be forced towards the synchronous condition.
 
-It will be helpful to convert the equation \eqref{orbitlen} in terms of revolution times, writing as $\Delta T/T_0 = \alpha \delta$. Suppose an electron with energy deviation $\delta > 0$ in a storage ring, then it will take more time to this electron perform one turn, to reach the \gls{rf} cavity and from the convention used to the coordinate definition, $\tau < 0$ to this electron. Since the \gls{rf} potential derivative must be positive at $\tau = 0$, the energy gain $U_{\mathrm{rf}}$ for $\tau < 0$ is less than $U_0$; moreover, $U_{\mathrm{rad}} > U_0$ for electrons with $\delta > 0$. Thus, the energy balance for this electron will be negative, leading it to lower values of $\delta$ and also $\tau$.
+It will be helpful to convert the equation~\eqref{orbitlen} in terms of revolution times, writing as $\Delta T/T_0 = \alpha \delta$. Suppose an electron with energy deviation $\delta > 0$ in a storage ring, then it will take more time to this electron perform one turn, to reach the \gls{rf} cavity and from the convention used to the coordinate definition, $\tau < 0$ to this electron. Since the \gls{rf} potential derivative must be positive at $\tau = 0$, the energy gain $U_{\mathrm{rf}}$ for $\tau < 0$ is less than $U_0$; moreover, $U_{\mathrm{rad}} > U_0$ for electrons with $\delta > 0$. Thus, the energy balance for this electron will be negative, leading it to lower values of $\delta$ and also $\tau$.
 
 The analysis is basically the same for electrons initially with $\delta < 0$. These electrons will perform each turn faster than the synchronous electron does, having $\tau > 0$ and gaining more energy from the cavity than it is lost by radiation. This positive energy balance will increase the values of $\delta$ and $\tau$.
 
 The phase stability principle guarantees that the electrons will oscillate around the longitudinal fixed point $(\tau = 0, \delta = 0)$. The radiation damping effect says that the longitudinal deviations might be eventually damped to this fixed point. On the counterpart, the quantum nature of radiation emission produces an excitation effect and the balance between damping and excitation creates an equilibrium configuration.
 
-Since the synchronism condition is $f_{\mathrm{rf}} = h f_0$ the equation \eqref{orbitlen} can be adapted to:
+Since the synchronism condition is $f_{\mathrm{rf}} = h f_0$ the equation~\eqref{orbitlen} can be adapted to:
 
 \begin{equation}
     \dfrac{\Delta f_{\mathrm{rf}}}{f_{\mathrm{rf}}} = -\alpha \delta.
@@ -380,7 +380,7 @@ Including the damping and excitation effects, the natural equilibrium transverse
 
 where $C_q = \dfrac{55}{32 \sqrt{3}}\dfrac{\hbar}{mc} \approx \SI{3.84e-13}{\metre}$ and $J_x$ is the horizontal damping partition number.
 
-From the equation \eqref{eq:emittance} and the definition of the integral $I_5$ in equation \eqref{eq:integral5}, it is evident that the equilibrium emittance depends strongly on the dispersion function at the dipoles. Therefore, minimizing the values of the functional $\mathcal{H}(\eta, \eta')$ at the dipoles is one approach that can be taken in order to minimize the natural emittance for a storage ring. One would expect this intuitively knowing that the photon emission occurs at the dipoles, then if the dispersion is as low as possible at these magnets, the quantum excitation contribution to the transverse action may be reduced.
+From the equation~\eqref{eq:emittance} and the definition of the integral $I_5$ in equation~\eqref{eq:integral5}, it is evident that the equilibrium emittance depends strongly on the dispersion function at the dipoles. Therefore, minimizing the values of the functional $\mathcal{H}(\eta, \eta')$ at the dipoles is one approach that can be taken in order to minimize the natural emittance for a storage ring. One would expect this intuitively knowing that the photon emission occurs at the dipoles, then if the dispersion is as low as possible at these magnets, the quantum excitation contribution to the transverse action may be reduced.
 
 Ideally the vertical dispersion function is zero and the horizontal and vertical dynamics are uncoupled, then the horizontal emittance is equal to the natural emittance and the vertical emittance is zero. If there are some field or rotation errors in the magnets, the betatron oscillations might be coupled. In this case of betatron coupling, the horizontal emittance is shared with the vertical emittance. One of the definitions of the betatron coupling is the emittance ratio $\kappa = \varepsilon_y/\varepsilon_x$. The nominal emittance is $\varepsilon_0 = \varepsilon_x + \varepsilon_y$ and the transverse emittances are
 
@@ -393,7 +393,7 @@ If there is a considerable vertical dispersion function in the storage ring, the
 
 \subsection{Beam size and divergence}
 
-The equilibrium transverse beam dimensions are also a result from the balance between the excitation and damping processes. The transverse displacements for the particles in the beam can be regarded also as gaussian distributions, so their standard deviations can be used to characterize the beam dimensions. From the betatron oscillation expression in equation \eqref{eq:beta_oscillation} and their derivatives one can calculate:
+The equilibrium transverse beam dimensions are also a result from the balance between the excitation and damping processes. The transverse displacements for the particles in the beam can be regarded also as gaussian distributions, so their standard deviations can be used to characterize the beam dimensions. From the betatron oscillation expression in equation~\eqref{eq:beta_oscillation} and their derivatives one can calculate:
 
 \begin{align}
     \langle u_{\beta}^2 \rangle &= \beta_u(s) \langle J_u \rangle,  \\
@@ -446,7 +446,7 @@ The typical sources of dipolar errors are:
     \item Horizontal dipolar fields, which should be ideally zero, due to rotation errors in the dipoles magnets.
 \end{itemize}
 
-We will study how a dipolar error $\Delta G_u$ (where $u=x, y$), localized in a small longitudinal region $\Delta s$, affects the closed orbit solution. The additional term $\Delta G_u$ can be regarded as a perturbation in the Hamiltonian \eqref{transv_hamilton} for the transverse dynamics. An approximation can be made to consider the dipolar error as a localized ``kick'': 
+We will study how a dipolar error $\Delta G_u$ (where $u=x, y$), localized in a small longitudinal region $\Delta s$, affects the closed orbit solution. The additional term $\Delta G_u$ can be regarded as a perturbation in the Hamiltonian~\eqref{transv_hamilton} for the transverse dynamics. An approximation can be made to consider the dipolar error as a localized ``kick'': 
 
 \begin{equation*}
     \lim_{\Delta s \rightarrow 0}\Delta G_u(s)\Delta s = \theta_{s_0} \delta(s - s_0),
@@ -499,7 +499,7 @@ Quadrupolar (or gradient) errors disturbs the focusing functions in the magnetic
     \item Feed-down effects from horizontal alignment errors in sextupoles magnets. An electron with the deviation $x$ passing through a focusing sextupole perfectly aligned to the reference orbit will receive a force $-Sx^2$ in the horizontal plane. If the sextupole center is misplaced from the center by $x_0$, the force will be $-S(x - x_0)^2$, therefore the misalignment introduces an additional horizontal focusing term $ Sx_0 x$, where the focusing strength is given by $Sx_0$, and a dipolar term $-S x_0^2$, which will influence the electrons every time they pass through this sextupole.
 \end{itemize}
  
-A gradient error $\Delta K_u$ (where $u=x, y$), localized in a small longitudinal region $\Delta s$ will change the conditions in the differential equation \eqref{beta_equation} that the betatron function must satisfy. Therefore this error will disturb the betatron function solution, consequently the betatron phase advance and finally the betatron tunes.
+A gradient error $\Delta K_u$ (where $u=x, y$), localized in a small longitudinal region $\Delta s$ will change the conditions in the differential equation~\eqref{beta_equation} that the betatron function must satisfy. Therefore this error will disturb the betatron function solution, consequently the betatron phase advance and finally the betatron tunes.
 
 An approximation can be made to consider the single gradient error as a thin lens. The focal length added in this case is $1/f_u = \Delta K_u \Delta s$. If the gradient error is on a quadrupole with length $L$, the focal length is the obtained from the integrated field along the quadrupole, $1/f_u = \Delta K_u L$. With this approximation the gradient error effect can be regarded as an impulse $\Delta K_u(s) = \Delta K_u \delta(s-s_0)$ located at $s_0$.
 
@@ -517,7 +517,7 @@ For a general gradient error distribution around the ring, the tune change is:
     \Delta \nu_u = \dfrac{1}{4 \pi} \oint \beta_u ({s}) \Delta K_u ({s})\dif {s}.
 \end{equation}
 
-The solution for the equation \eqref{beta_equation} in the presence of a distribution of gradient errors provides the relative change in the betatron function given by
+The solution for the equation~\eqref{beta_equation} in the presence of a distribution of gradient errors provides the relative change in the betatron function given by
 
 \begin{equation}
     \dfrac{\Delta \beta_u(s)}{\beta_u(s)} = \dfrac{1}{2\sin\left(2\pi \nu_u\right)} \oint \Delta K_u(\bar{s}) \beta_u(\bar{s}) \cos\left(2\left(|\varphi_{u}(s) - \varphi_{u}(\bar{s})| - \pi\nu_{u} \right)\right) \dif \bar{s}.
@@ -527,7 +527,7 @@ The ratio $\Delta \beta/\beta$ is called beta-beating and it is a measurement of
 
 Observe that the beta-beating diverges if the tune fractional part is a half-integer. Thus, it can be seen the association between gradient fields errors and half-integer resonances.
 
-The dispersion function $\eta(s)$ may be changed in the presence of dipolar of quadrupolar errors as well, since it must satisfy the differential equation \eqref{eq:dispersion}, which depends on the lattice functions $G(s)$ and $K(s)$. An analytical expression for the dispersion variation in the presence of these errors are not very insightful to be presented here, but it is important to keep in mind that lattice imperfections may disturb the $\eta(s)$ function and the most direct parameter that may be affected by these errors is the beam emittance.
+The dispersion function $\eta(s)$ may be changed in the presence of dipolar of quadrupolar errors as well, since it must satisfy the differential equation~\eqref{eq:dispersion}, which depends on the lattice functions $G(s)$ and $K(s)$. An analytical expression for the dispersion variation in the presence of these errors are not very insightful to be presented here, but it is important to keep in mind that lattice imperfections may disturb the $\eta(s)$ function and the most direct parameter that may be affected by these errors is the beam emittance.
 
 \subsection{Linear Coupling}\label{subsec:linear_coupling}
 
@@ -557,7 +557,7 @@ the Hamiltonian for the linearly coupled motion is
 
 \begin{equation*}
     H = H_0 + K_S(s) xy,
-\end{equation*},
+\end{equation*}
 
 and the the term $H_1 = K_S(s) xy$ can be viewed as a perturbation Hamiltonian.
 
@@ -567,7 +567,7 @@ Applying a convenient canonical transformation with the action-angle variables $
     H_1 = \dfrac{K_S(s)}{2}\sqrt{\beta_x(s)\beta_y(s)} \sqrt{a_x a_y} \sum_{lx, ly \in (-1, 1)} e^{i\left[l_x(\varphi_x + \phi_x) + ly(\varphi_y + \phi_y)\right]}.
 \end{equation*}
 
-From this form, we are able to separate constants and slowly varying terms from fast oscillating terms. Using the period properties for the functions in a storage ring, we rewrite the Hamiltonian as:
+From this form, we are able to separate constants and slowly varying terms from fast oscillating terms. Using periodic properties for the functions in a storage ring, we rewrite the Hamiltonian as:
 
 \begin{equation*}
     H_1 = \dfrac{A(s)}{2} \sqrt{a_x a_y} \sum_{lx, ly \in (-1, 1)} e^{i\left[\left(l_x\nu_x + l_y\nu_y\right)2\pi s/L_0 + l_x\phi_x + l_y\phi_y\right]}.

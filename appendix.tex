@@ -164,7 +164,11 @@ Since the steering magnet gain was defined by equation~\eqref{eq:app-corr_gain},
     J_{kl}^{\mathrm{corr}-\mathrm{gain}} = \delta_{jl}M^{\mathrm{meas.}}_{ij}.
 \end{equation}
 
-The index $j$ is related to correctors index (columns of \gls{orm}) and it is used to be compared with the index $l$ of the jacobian matrix columns. Once again, $i$ and $j$ are converted by vectorization to obtain the index $k$.
+The index $j$ is related to correctors index (columns of \gls{orm}) and it is used to be compared with the index $l$ of the jacobian matrix columns. Once again, $i$ and $j$ are converted by vectorization to obtain the index $k$. Since the correctors is sorted column-wise in the \gls{orm}, the related gains blocks are organized as $\mathbf{G}_{\mathrm{corr}} =
+    \begin{bmatrix}
+    \mathbf{G}^x & \mathbf{G}^x \\
+    \mathbf{G}^y & \mathbf{G}^y
+    \end{bmatrix}$.
 
 If the corrector gain was defined alternatively as $\theta_{j, \mathrm{real}}^u = g_{j, u}^{\mathrm{corr}}\theta_{j, \mathrm{applied}}^u$, the jacobian matrix would contain non-linear elements like $-1/g_{i}^2$, obtained from the derivative of $1/g_{i}$.
 
