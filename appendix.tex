@@ -3,21 +3,17 @@
 \chapter{Singular Value Decomposition - SVD}\label{appendix:svd}
 
 Let $\mathbf{M}$ be a real $m \times n$ matrix. The Singular Value Decomposition (SVD) is a factorization that generalizes the eigenvalues decomposition and it states that every matrix can be decomposed in the following form:
-
 \begin{equation}
     \mathbf{M} = \mathbf{U} \Sigma \mathbf{V}^{\mathsf{T}},
     \label{eq:svd}
 \end{equation}
-
 where $\mathbf{U}$ is a $m \times m$ matrix, $\mathbf{V}$ is a $n \times n$ matrix and $\Sigma$ is a $m \times n$ positive-definite rectangular diagonal matrix. $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices:
-
 \begin{align}
     \mathbf{U}\mathbf{U}^{\mathsf{T}} = \mathbf{U}^{\mathsf{T}}\mathbf{U} &= \mathbf{I}_{m} \\
     \mathbf{V}\mathbf{V}^{\mathsf{T}} = \mathbf{V}^{\mathsf{T}}\mathbf{V} &= \mathbf{I}_{n}. 
 \end{align}
 
 Manipulating the equation \eqref{eq:svd} and using the matrices properties we obtain
-
 \begin{align}
     \mathbf{M}\mathbf{M}^{\mathsf{T}} &= \mathbf{U} \Sigma^2 \mathbf{U}^{\mathsf{T}} \\
     \mathbf{M}^{\mathsf{T}}\mathbf{M} &=  \mathbf{V} \Sigma^2 \mathbf{V}^{\mathsf{T}}.
@@ -30,14 +26,11 @@ The diagonal elements $\sigma_i := \Sigma_{ii} \geq 0$ are called singular value
 A common procedure to avoid degeneracies in the calculations is the singular values selection. This can be done by setting explicitly the unwanted singular values to zero. This can be done in a more insightful way by defining a minimum threshold $\Delta$ and setting to zero the singular values that satisfy $\dfrac{\sigma_i}{\mathrm{max}\left(\sigma_i\right)} < \Delta$. This methods eliminates the less important directions defined by the columns of $\mathbf{U}$ and $\mathbf{V}$ as compared to the direction with higher singular values. 
 
 Since $\Sigma$ is a diagonal matrix, its inverse is obtained simply by $\Sigma^{-1}_{ii} = 1/\sigma_{i}$. For the case that $\sigma_{i} = 0$, one can define $\Sigma^{-1}_{ii} = 0$. Hence, the matrix $n \times m$
-
 \begin{equation}
     \mathbf{M}^{-1} = \mathbf{V} \Sigma^{-1} \mathbf{U}^{\mathsf{T}},
     \label{eq:svd_inverse}
 \end{equation}
-
 is the pseudo-inverse of $\mathbf{M}$ as can be checked by
-
 \begin{align}
     \mathbf{M}^{-1}\mathbf{M} =  \left(\mathbf{V} \Sigma^{-1} \mathbf{U}^{\mathsf{T}} \right)\left(\mathbf{U} \Sigma \mathbf{V}^{\mathsf{T}}\right) &= \mathbf{I}_{n} \\
     \mathbf{M}\mathbf{M}^{-1} =  \left(\mathbf{U} \Sigma \mathbf{V}^{\mathsf{T}}\right)\left( \mathbf{V} \Sigma^{-1} \mathbf{U}^{\mathsf{T}} \right)&= \mathbf{I}_{m}. 
@@ -48,17 +41,13 @@ The matrix $\mathbf{M}^{-1}$ is also known as Moore-Penrose pseudo-inverse \cite
 A useful version of SVD is the so-called ``economy SVD''. Let $r = \mathrm{min}\left(m, n\right)$, then one can observe that $\Sigma_{ij} = 0$ for $i > r$ ou $j > r$. In this way, all these zero rows or columns in the rectangular $m \times n$ matrix $\Sigma$ can be removed to build a smaller square matrix $\hat{\Sigma}$ with dimension $r \times r$. Doing that allows for reducing the dimension of $\mathbf{U}$ as well, obtaining a rectangular $m \times r$ matrix $\hat{\mathbf{U}}$. The matrix $\mathbf{V}$ is unchanged. In this version, the new matrix $\hat{\mathbf{U}}$ is semi-orthogonal, i.e., $\hat{\mathbf{U}}^{\mathsf{T}}\hat{\mathbf{U}} = \mathbf{I}_r$ but $\hat{\mathbf{U}}\hat{\mathbf{U}}^{\mathsf{T}} \neq \mathbf{I}_m$ in general. The economy SVD is very interesting for numerical purposes, since it is common that $m \gg n$ or $m \ll n$, then using only the minimum useful data contained in the SVD matrices is very computationally beneficial.
 
 The \gls{svd} pseudo-inversion is a powerful tool to solve generic linear systems of equations given by
-
 \begin{equation}
     \mathbf{A} \vec{x} = \vec{b},
     \label{eq:linear_system}
 \end{equation}
-
 where $\mathbf{A}$ is a $m \times n$ matrix, $\vec{x}$ a $n \times 1$ column vector and $\vec{b}$ a $m \times 1$ column vector. The case that $m=n$ may be exactly solvable, if $\mathrm{det}\left(\mathbf{A}\right) \neq 0$ the exact solution is obtained by normal inversion. Other two cases that may not have an exact solution occur:
-
 \begin{itemize}
     \item Underdeterminated: $m < n$ and the system has infinitely many solutions, given a generic vector $\vec{b}$. The system does not have enough information given by the elements of $\vec{b}$ to obtain the exact unknowns $\vec{x}$. With the pseudo-inversion it is possible to obtain a solution $\vec{x}_s$ to the linear system such that $|\vec{x}_s|^2 = \sum_{i=1}^{n}x^2_{s, i}$ is minimized. This is called the minimum-norm solution.
-    
     \item Overdeterminated: $m > n$ and the system has no solution, given a generic vector $\vec{b}$. The system has more equations than unknowns, so the system is overconstrained and it is not possible to satisfy exactly and simultaneously all the equations. In this case, with the pseudo-inversion it is obtained an approximate solution $\vec{x}_s$ that minimizes the difference $|\mathbf{A}\vec{x}_s - \vec{b}|$. This is called the least squares solution.
 \end{itemize}
 
@@ -67,20 +56,17 @@ The idea in the LOCO algorithm is applying linear approximations to convert a le
 \chapter{BPMs and Correctors Gains}\label{appendix:gains}
 
 The starting point to obtain the LOCO jacobian matrix for the BPMs gains and rolls is the linear transformation:
-
 \begin{equation}
     \vec{u}_{i, \mathrm{real}} = \mathbf{R}^{\mathrm{BPM}}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}}.
     \label{eq:gain_bpm_app}
 \end{equation}
 
 If the orbit vector is viewed as a function $\vec{u}_i = \vec{u}_i\left(\theta_j, \alpha_i, g_{i, x}, g_{i, y}\right)$, the \gls{orm} is $\vec{M}_{ij} = \dfrac{\partial \vec{u}_i}{\partial \theta_j}$. The vector is just a notation to use $\vec{u}_i = (x_i, y_i)$ and $\vec{M}_{ij} = \left(M_{ij}^x, M_{ij}^y\right)$. Moreover, the matrices $\mathbf{R}\left(\alpha_i\right)$ and $\mathbf{G}_{i}^{\mathrm{BPM}}$ satisfies
-
 \begin{equation*}
 \dfrac{\partial \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{ \partial  \theta_j} = \dfrac{\partial \mathbf{G}_{i}^{\mathrm{BPM}}}{ \partial \theta_j} = 0.
 \end{equation*}
 
 Thus it is possible to obtain from~\eqref{eq:gain_bpm_app} that
-
 \begin{equation}
     \vec{M}_{ij}^{\mathrm{real}} = \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{M}_{ij}^{\mathrm{meas.}}.
     \label{eq:gain_bpm_orm}
@@ -89,22 +75,17 @@ Thus it is possible to obtain from~\eqref{eq:gain_bpm_app} that
 The transformation represented in equation~\eqref{eq:gain_bpm_orm} must be applied in the measured \gls{orm} as the LOCO algorithm updates the values of $\left(\alpha_i, g_{x, i}, g_{y, i}\right)$. 
 
 The residue vector is defined as $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} - \mathbf{M}^{\mathrm{model}}\right)$. Since $\mathbf{M}^{\mathrm{measured}}$ must be corrected by the transformation that includes BPM gains and rolls, the new residue vector is elements are 
-
 \begin{equation}
     {V}_k^{\mathrm{real}} = \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} {M}^{\mathrm{meas.}}_{ij} - \mathbf{M}^{\mathrm{model}}_{ij},
 \end{equation}
-
 where the index $k$ is obtained from $i$ and $j$ by the vectorization. 
 
 To calculate the LOCO jacobian matrix one needs to calculate the derivatives of $\vec{V}^{\mathrm{real}}$ relative to the fit parameters $\left(\alpha_i, g_{x, i}, g_{y, i}\right)$, which are assumed to be independent parameters, obtaining:
-
 \begin{align}
-    J_{kl}^{\mathrm{BPMroll}} = \dfrac{\partial {V}_k^{\mathrm{real}}}{\partial \alpha_l} &= \delta_{il}\dfrac{\dif \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{\dif \alpha_l} \mathbf{G}_{i}^{\mathrm{BPM}} {M}^{\mathrm{meas.}}_{ij} \\
-    J_{kl}^{\mathrm{BPMgain}} = \dfrac{\partial {V}_k^{\mathrm{real}}}{\partial g_{l, u}} &= \delta_{il}\mathbf{R}^\mathrm{BPM}\left(\alpha_i\right){M}^{\mathrm{meas.}}_{ij}
+    J_{kl}^{\mathrm{BPMroll}} = \dfrac{\partial {V}_k^{\mathrm{real}}}{\partial \alpha_l} &= \delta_{il}\dfrac{\dif \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{\dif \alpha_l} \mathbf{G}_{i}^{\mathrm{BPM}} {M}^{\mathrm{meas.}}_{ij}, \\
+    J_{kl}^{\mathrm{BPMgain}} = \dfrac{\partial {V}_k^{\mathrm{real}}}{\partial g_{l, u}} &= \delta_{il}\mathbf{R}^\mathrm{BPM}\left(\alpha_i\right){M}^{\mathrm{meas.}}_{ij},
 \end{align}
-
 where $\delta_{il}$ is the Kronecker delta and 
-
 \begin{equation*}
     \dfrac{\dif \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{\dif \alpha_i} =
     \begin{bmatrix}
@@ -114,52 +95,44 @@ where $\delta_{il}$ is the Kronecker delta and
 \end{equation*}
 
 Due to the sorting used in the \gls{orm} that the horizontal measurements are in the upper blocks and the vertical measurements are in the lower blocks, the transformation matrices of gains and rolls are reorganized as
-
 \begin{align*}
     \mathbf{R}^\mathrm{BPM}_{\alpha} &=
     \begin{bmatrix}
     \mathbf{C}^\alpha &  \mathbf{S}^\alpha \\
      -\mathbf{S}^\alpha & \mathbf{C}^\alpha
-    \end{bmatrix} \\
+    \end{bmatrix}, \\
     \dfrac{\dif \mathbf{R}^\mathrm{BPM}_{\alpha}}{\dif \alpha} &=
     \begin{bmatrix}
     -\mathbf{S}^\alpha &  \mathbf{C}^\alpha \\
     -\mathbf{C}^\alpha & -\mathbf{S}^\alpha
-    \end{bmatrix} \\
+    \end{bmatrix}, \\
     \mathbf{G}^{\mathrm{BPM}} &=
     \begin{bmatrix}
     \mathbf{G}^x & \mathbf{G}^y \\
     \mathbf{G}^x & \mathbf{G}^y
     \end{bmatrix},
 \end{align*}
-
 formed with diagonal sub-matrices ${C}^{\alpha}_{ii} = \cos\alpha_i$, ${S}^{\alpha}_{ii} = \sin\alpha_i$, ${G}^{x}_{ii} = g_{i, x}$, ${G}^{y}_{ii} = g_{i, y}$. The transformation in this form is very useful to be applied directly in the measured \gls{orm} and to calculate the jacobian matrix elements:
-
 \begin{align}
-    \mathbf{M}^{\mathrm{real}} &= \mathbf{R}^\mathrm{BPM}_\alpha\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}} \\
-    J_{kl}^{\mathrm{BPMroll}} &= \delta_{il}\left(\dfrac{\dif \mathbf{R}^\mathrm{BPM}_{\alpha}}{\dif \alpha}\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\right)_{ij} \\
-    J_{kl}^{\mathrm{BPMgain}} &= \delta_{il}\left(\mathbf{R}^\mathrm{BPM}_\alpha \mathbf{M}^{\mathrm{meas.}}\right)_{ij}
+    \mathbf{M}^{\mathrm{real}} &= \mathbf{R}^\mathrm{BPM}_\alpha\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}, \\
+    J_{kl}^{\mathrm{BPMroll}} &= \delta_{il}\left(\dfrac{\dif \mathbf{R}^\mathrm{BPM}_{\alpha}}{\dif \alpha}\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\right)_{ij}, \\
+    J_{kl}^{\mathrm{BPMgain}} &= \delta_{il}\left(\mathbf{R}^\mathrm{BPM}_\alpha \mathbf{M}^{\mathrm{meas.}}\right)_{ij},
 \end{align}
-
 the index $i$ is related to BPM index (rows of \gls{orm}) and it is used to be compared with the index $l$ of the jacobian matrix columns. Again, $i$ and $j$ are converted by vectorization to obtain the index $k$.
 
 For the steering magnets gain the analysis is straightforward. The transformation is
-
 \begin{equation}
     \theta_{j, \mathrm{applied}}^u = g_{j, u}^{\mathrm{corr}}\theta_{j, \mathrm{real}}^u,
     \label{eq:app-corr_gain}
 \end{equation}
-
 where the ``applied'' sub-index is the equivalent for the ``measured'' in BPMs.
 
-This transformation can be also cast in a matrix form, with diagonal gain matrices. However, since the kicks are in the denominator of the \gls{orm} with $M_{ij} = \dfrac{\Delta u_i}{\Delta \theta_j}$, the correct way to implement the corrector gain transformation in the \gls{orm} is by its inverse. 
-
+This transformation can be also cast in a matrix form, with diagonal gain matrices. However, since the kicks are in the denominator of the \gls{orm} with $M_{ij} = \dfrac{\Delta u_i}{\Delta \theta_j}$, the correct way to implement the corrector gain transformation in the \gls{orm} is by its inverse
 \begin{equation}
-        \mathbf{M}^{\mathrm{real}} = \mathbf{G}^{-1}_{\mathrm{corr}} \mathbf{M}^{\mathrm{meas.}}
+        \mathbf{M}^{\mathrm{real}} = \mathbf{G}^{-1}_{\mathrm{corr}} \mathbf{M}^{\mathrm{meas.}}.
 \end{equation}
 
 Since the steering magnet gain was defined by equation~\eqref{eq:app-corr_gain}, the diagonal elements of $\mathbf{G}_{\mathrm{corr}}$ are $G^{\mathrm{corr}}_{ii} = 1/g_{i}$ so the inverse elements are $g_{i}$. This is convenient to obtain the jacobian matrix elements in a linear form, in the same manner that was obtained for the BPMs gains:
-
 \begin{equation}
     J_{kl}^{\mathrm{corr}-\mathrm{gain}} = \delta_{jl}M^{\mathrm{meas.}}_{ij}.
 \end{equation}
@@ -173,7 +146,6 @@ The index $j$ is related to correctors index (columns of \gls{orm}) and it is us
 If the corrector gain was defined alternatively as $\theta_{j, \mathrm{real}}^u = g_{j, u}^{\mathrm{corr}}\theta_{j, \mathrm{applied}}^u$, the jacobian matrix would contain non-linear elements like $-1/g_{i}^2$, obtained from the derivative of $1/g_{i}$.
 
 The final transformation, containing the BPMs and correctors gains and also the BPM roll is
-
 \begin{equation}
     \mathbf{M}^{\mathrm{real}} = \mathbf{R}^\mathrm{BPM}_\alpha\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\mathbf{G}^{-1}_{\mathrm{corr}}.
     \label{eq:full_transf}
