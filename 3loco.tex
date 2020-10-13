@@ -62,7 +62,7 @@ If the \gls{orm} numerical calculation is performed using only the transverse co
     M_{ij}^{xx} \rightarrow M_{ij}^{xx} + \dfrac{\eta_x(s_i)\eta_x(s_j)}{\alpha L_0}.
 \end{equation}
 
-If the \gls{orm} calculation includes the radiation loss and the energy gain by the \gls{rf} cavity, the orbit length is fixed by the phase stability principle and the energy shifts contributions in the \gls{orm} is automatically included\footnote{The calculations performed with transverse coordinates are typically called 4D simulations and when it includes the transverse and longitudinal coordinates it is called 6D simulations.}.
+If the \gls{orm} calculation includes the radiation loss and the energy gain by the \gls{rf} cavity, the orbit length is fixed by the phase stability principle and the energy shifts contributions in the \gls{orm} is automatically included\footnote{The numerical calculations performed with transverse coordinates are typically called 4D simulations and when it includes the transverse and longitudinal coordinates it is called 6D simulations.}.
 
 % \begin{align}
 %     u_i\left({\theta_j^u+\Delta\theta_j^u}\right) = u_i\left(\theta_j^u\right) + \dfrac{\partial u_i}{\partial \theta_j^u} \Delta \theta_j^u
@@ -74,7 +74,7 @@ If the \gls{orm} calculation includes the radiation loss and the energy gain by 
 % \end{equation}
 
 % $M_{ij} = \dfrac{\partial u_i}{\partial \theta_j^u} + O(3)$.
-\section{Minimization problem}
+\section{Minimization Problem}
 To implement the LOCO algorithm, a computational model of the storage ring is required. In this model, it is possible to calculate the nominal \gls{orm}. That can be done by simulating numerically the measurement process which consists in varying the correctors strength and getting the corresponding orbit distortion in all BPMs, for every corrector in the lattice. The nominal \gls{orm} calculation can be perfomed also using the transfer matrices of the lattice. In this formalism, which is much faster computationally, the \gls{orm} elements can be obtained by the composition of the transfer matrices of the elements between the correctors and the \gls{bpm}s. If non-linear effects in the orbit distortion can be disregarded, the two calculation methods produces very similar \gls{orm}s, thus, for the sake of sparing computation time, the transfer matrices approach is often used.
 
 The LOCO algorithm can be viewed as a model dependent minimization problem. The main goal is to find a set of parameters in the computational model that best reproduce the measured \gls{orm}. Equivalently, it seeks for the global minimum of the square difference:
@@ -326,7 +326,7 @@ Let the fit parameters that represents the quadrupoles variation be $K_{q}$, whe
 \end{equation}
 where $\sigma_{\Delta K}$ is a normalization constant, $w_q$ are individual weights factors and $\chi^2$ is defined in equation~\eqref{eq:chi2}. If the dispersion function is included in the fitting, it is used $\chi^2_{\eta}$ from equation~\eqref{eq:chi2_disp}. One can control the constraint on specific quadrupole variations $\Delta K_q$ by adjusting the individual weights $w_q$.
 
-Let $\vec{K} = \left(K_1, \ldots, K_{\mathrm{N}_{\mathrm{quads}}}\right)$ be the vector that represents the quadrupoles parameters. The constraint is implemented by extending the residue vector and the LOCO jacobian matrix:
+Let $\vec{K} = \left(K_1, \ldots, K_{\mathrm{N}_{\mathrm{quads}}}\right)$ be the vector that represents the quadrupoles parameters. The constraint may be implemented by extending the residue vector and the LOCO jacobian matrix:
 \begin{align}
     \vec{V}_c &= \begin{bmatrix}
     \vec{V} \\
@@ -346,25 +346,25 @@ The constrained residue vector dimension is $\mathrm{N}_{\mathrm{data}} + \mathr
     &= \chi^2 + \chi^2_{\Delta K}.
 \end{align*}
 
-It is important to mention that $\Delta \vec{K}$ contains the predicted quadrupoles variations and satisfies $\vec{K}_{\mathrm{f}} = \vec{K}_0 + \Delta \vec{K}$, where $\vec{K}_0$ are the initial quadrupole strengths and $\vec{K}_{\mathrm{f}}$ the final ones. In that sense the constrained fitting problem calculates, at each iteration step, the quadrupoles changes that produce a better fit to the measured \gls{orm} and also minimize the changes themselves. 
+It is important to mention that the vector $\Delta \vec{K}$ contains the predicted quadrupoles variations and satisfies $\vec{K}_{n+1} = \vec{K}_n + \Delta \vec{K}$, where $\vec{K}_n$ quadrupole strengths in the iteration $n$ and $\vec{K}_{n+1}$ in the next step $n+1$. In that sense the constrained fitting problem calculates, at each iteration step, the quadrupoles changes that produce a better fit to the measured \gls{orm} and also minimize the changes themselves. 
 
-For non-zeros $w_q$ and finite $\sigma_{\Delta K}$, the solution for $\dfrac{\partial \chi^2_{\Delta K}}{\partial \left(\Delta K_q\right)} = 0$ is $\Delta K_q = 0$ for every $q$, therefore the additional elements $\vec{V}_{\Delta K}$ for the residue vector must be zeros. The additional jacobian $J_{\Delta K}$ must be kept, since it is independent of $\Delta \vec{K}$. This allows us to conclude that the $\Delta K$ constraint does not change the global minimum, since $\chi^2_c = \chi^2$ and the problem dimension is unchanged. On the other hand, the constraint does change the convergence path, allowing for a convergence with smaller step sizes.
+For non-zeros $w_q$ and finite $\sigma_{\Delta K}$, the solution for $\dfrac{\partial \chi^2_{\Delta K}}{\partial \left(\Delta K_q\right)} = 0$ is $\Delta K_q = 0$ for every $q$, therefore the additional elements $\vec{V}_{\Delta K}$ for the residue vector must be zeros. The additional jacobian $J_{\Delta K}$ must be kept in the calculation, since it is independent of $\Delta \vec{K}$. This allows us to conclude that the $\Delta K$ constraint does not change the global minimum, since $\chi^2_c = \chi^2$ and the problem dimension is unchanged. On the other hand, the constraint does change the convergence path, allowing for a convergence with smaller step sizes.
 
-The constrained version for the GN method is
-
+The constrained version for the GN method calculates the parameters variations $\Delta \vec{P}$ by solving
 \begin{equation}
 \mathbf{J}^{\mathsf{T}}_c\mathbf{J}_c\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}}_c\vec{V}_c,
 \end{equation}
-
 since $\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}$ is diagonal and $\vec{V}_{\Delta K} = \vec{0}$, it is obtained that
 \begin{equation}
     \left(\mathbf{J}^{\mathsf{T}}\mathbf{J}  + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right) \right)\Delta \vec{P} =  - \mathbf{J}^{\mathsf{T}}\vec{V}.
     \label{eq:gn_modified}
 \end{equation}
 
-Therefore, the $\Delta K$ constraints can be interpreted as modifications to the GN method that are similar to the adjusts made in the LM method. The main difference is that the constraints include a gradient-descent component in the parameters $\Delta K$, while the LM method inclues that component in all directions given by the columns of $\mathbf{J}$. The importance of this constraint component to the fitting is controlled by the magnitude of $\mathbf{J}_{\Delta K}$, i.e., by the constraint weights $w_q$ and the normalization factor $\sigma_{\Delta K}$.
+Observe that the $\Delta K$ constraints modifies the GN method with the same mathematical structure used in the LM method. The main difference is that the constraints include a gradient-descent component in the parameters $\Delta K$, while the LM method inclues that component in all directions given by the columns of $\mathbf{J}$. The importance of the constraint component to the fitting is controlled by the magnitude of $\mathbf{J}_{\Delta K}$, i.e., by the constraint weights $w_q$ and the normalization factor $\sigma_{\Delta K}$. 
 
-From equation~\eqref{eq:gn_modified}, it can be seen that the constraints can be implemented by keeping the jacobian matrix $\mathbf{J}$ unchanged, but adding only the contribution from the independent block-diagonal matrix $\mathbf{J}_{\Delta K}$ to the parameters calculations. In that way, the LM method with constraints solves the following problem
+The diagonal elements added in $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ by the constraints and by the LM contribution are manifested as a regularization for small singular values in the \gls{svd} decomposition~\cite{huang2019beam}, which is necessary for the pseudo-inversion of $\mathbf{J}^{\mathsf{T}}\mathbf{J}$. The pseudo-inversion in the GN method calculates parameters variations that depends on terms $1/\sigma_i$, where $\sigma_i$ is a singular value. If $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ is rank deficient, there will be null or very small singular values, thus $1/\sigma_i$ may be a very large number and the parameters calculation may be problematic. The singular values regularization substitutes $1/\sigma_i$ by $\sigma_i/\left(\sigma_i^2 + \alpha_i^2\right)$, thus it may prevent the small singular values damage by an appropriated choice for the factors $\alpha_i$. The LM factor $\lambda$ and the constraint weights $w_q/\sigma_{\Delta K}$ are related to these regularization factors $\alpha_i$.
+
+From equation~\eqref{eq:gn_modified}, it can be seen that the constraints can be implemented by keeping unchanged the jacobian matrix $\mathbf{J}$ and the residue vector $\vec{V}$, but adding only the contribution $\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}$ to the parameters calculations. Since the constraints do not change the minimization problem dimension, maintain the jacobian and the residue vector dimensions while applying the constraint is conceptually more appropriated. In that way, the LM method with constraints determines $\Delta \vec{P}$ solving the following problem
 \begin{equation}
 \left(\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right) \right)\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}}\vec{V},
 \end{equation}

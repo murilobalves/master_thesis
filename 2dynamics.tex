@@ -1,5 +1,5 @@
 \chapter{Beam dynamics}
-This chapter is dedicated to introduce the basic particle accelerator physics concepts and the terminology required for this dissertation. For detailed discussions about the topics presented here, the author recommends the references~\cite{sands1970physics} and \cite{wiedemann2007physics}.
+This chapter is dedicated to introduce the basic particle accelerator physics concepts and the terminology required for this dissertation. For detailed discussions about the topics presented here, the author recommends the references~\cite{sands1970physics, wiedemann2007physics}.
 
 After the storage ring coordinate system definition in the Section~\ref{coord}, the dynamics of a single electron will be described in the Sections~\ref{tranverse} and~\ref{longitudinal}. Then one can introduce the excitation and damping processes in the description and apply statistical methods to obtain equilibrium parameters for an ensemble of electrons -- the electron beam. This will be briefly done in the Section~\ref{equilibrium}. In the Section~\ref{perturbations} it is presented and discussed the perturbations on the beam dynamics, which are fundamental to this work, generated in non-ideal conditions.
 \section{Coordinate System}\label{coord}
@@ -145,7 +145,7 @@ We finally obtained the transverse displacements solutions to the equations of m
 Nominally there are dipolar fields only in the vertical direction deflecting the electrons in the horizontal plane. Then the defined dispersion function is ideally horizontal $\eta(s) = \eta_x(s)$. But in some cases, magnets imperfections or rotations errors in the storage ring could introduce horizontal dipolar fields, generating a vertical dispersion as well and the dispersion components separation in $\eta_x$ and $\eta_y$ must be done. Nevertheless, in this case the steps made to obtain the solution for the $x$ plane can be reproduced to obtain a equivalent solution to the $y$ plane. Moreover, typically it is desired to keep $\eta_y(s)$ as low as possible and there are some strategies to achieve this goal, which will be discussed in this work.
 \section{Longitudinal dynamics}\label{longitudinal}
 In the previous section it was considered that the electron energy remains constant during the transverse motion typical time scale, which is a good approximation. On the other hand, since electrons are charged particles and in a storage ring they are submitted to centripetal acceleration at dipoles and \gls{id}s, the so-called sychrotron radiation is generated and the electrons lose energy. The energy loss is then compensated by an energy gain from the accelerating eletric fields contained in the \gls{rf} cavity. During this process the electron energy oscillates and this motion is known as synchrotron oscillations.
-\subsection{Orbit length}
+\subsection{Orbit Length}
 To calculate the orbit length, one has to average the electron path over many turns. In this process the betatron oscillations occurs several times, adding and subtracting almost equally to the path length. Therefore the betatron motion does not contribute to the orbit length in first order. On the other hand, the horizontal energy-dependent term $x_{\delta}(s) = \eta(s) \delta$ has a significant contribution. 
 
 An electron with $\delta > 0$ is less deflected by the dipoles, following a path with greater radius, therefore greater length, as compared to the nominal orbit length $L_0$. The opposite happens for an electron with $\delta < 0$. This effect analyzed in detail leads to the following equation:
@@ -170,7 +170,7 @@ This type of closed integral around the ring is common during the derivation of 
 \end{equation}
 
 Then, the momentum compaction factor is written as $\alpha = I_1/L_0$.
-\subsection{Synchrotron oscillations}
+\subsection{Synchrotron Oscillations}
 Energy oscillations are not directly explored in this work, however it was considered appropriated to include the basic ideas for the sake of completeness of the presented theory.
 
 Consider the synchronous electron with the nominal energy $E_0$, following the ideal orbit through the storage ring. In each turn, this electron will radiate synchrotron light, losing the amount $U_0$ of energy. $U_0$ is typically much lower than the electron energy $E_0$. An electron with energy $E_0$ but not following the ideal orbit will perform several betatron oscillations in one turn and the transverse displacements will average to zero in first order. Hence, in this case, the energy loss per turn will be $U_0$ too. 
@@ -309,7 +309,7 @@ Ideally the vertical dispersion function is zero and the horizontal and vertical
 \end{align}
 
 If there is a considerable vertical dispersion function in the storage ring, there will be a vertical emittance even if there is no betatron coupling between the transverse planes $(\kappa = 0)$ and the natural emittance will be increased. In this case, as already mentioned, there are two integrals $I_{5, x}$ and $I_{5, y}$, each one calculated with the respective dispersion function in the functional $\mathcal{H}$. Thus, the corresponding emittances are $\varepsilon_u = C_q \gamma^2 \dfrac{I_{5, u}}{J_u I_2}$, where $u=x$ or $y$ and the natural emittance is the sum $\varepsilon_0 = \varepsilon_x + \varepsilon_y$.
-\subsection{Beam size and divergence}
+\subsection{Beam Size and Divergence}
 The equilibrium transverse beam dimensions are also a result from the balance between the excitation and damping processes. The transverse displacements for the particles in the beam can be regarded also as gaussian distributions, so their standard deviations can be used to characterize the beam dimensions. From the betatron oscillation expression in equation~\eqref{eq:beta_oscillation} and their derivatives one can calculate:
 \begin{align}
     \langle u_{\beta}^2 \rangle &= \beta_u(s) \langle J_u \rangle,  \\
