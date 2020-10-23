@@ -47,8 +47,8 @@
 \usepackage{mathrsfs}  % usado para ter o curly H
 \usepackage{xfrac}     % usado para ter o comando \sfrac
 \usepackage{bbm}
-\usepackage[chapter]{algorithm}
-\usepackage{algorithmic}
+% \usepackage[chapter]{algorithm}
+% \usepackage{algorithmic}
 \usepackage{multirow}
 \usepackage{dcolumn}        % para ter colunas alinhadas no ponto
 \usepackage{rotating}       % to make sideways figures and tables
@@ -88,8 +88,26 @@
 % Pacote para fazer desenhos
 \usepackage{tikz}
 %\usetikzlibrary{⟨list of libraries separated by commas⟩} % carrega bibliotecas adicionais
-\usetikzlibrary{calc,arrows.meta}
+% \usetikzlibrary{calc,arrows.meta,shapes,shadows}
+\usetikzlibrary{arrows.meta}
+\tikzset{%
+  >={Latex[width=2mm,length=2mm]},
+  % Specifications for style of nodes:
+            base/.style = {rectangle, rounded corners, draw=black,
+                           minimum width=4cm, minimum height=1cm,
+                           text centered},
+                           % text centered, font=\sffamily},
+  activityStarts/.style = {base, fill=blue!30},
+       startstop/.style = {base, fill=red!30},
+    activityRuns/.style = {base, fill=green!30},
+         process/.style = {base, minimum width=2.5cm, fill=orange!15}
+                        %   font=\ttfamily},
+}
+% \usepackage{bm,times}
+% \newcommand{\mx}[1]{\mathbf{\bm{#1}}} % Matrix command
+% \newcommand{\vc}[1]{\mathbf{\bm{#1}}} % Vector command
 
+\usepackage[ruled,vlined]{algorithm2e}
 
 % Pacotes de Debbuging:
 \usepackage{lipsum}     % Pacote que gera texto dummy
