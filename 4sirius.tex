@@ -1,20 +1,172 @@
 \chapter{Code Implementation for Sirius}
-To be written.
-% \section{Accelerator Physics codes}
-% % \subsection{Matlab Accelerator Toolbox}
-% \begin{description}
-%     \item[TrackC++:]
-%     \item[PyAccel:]
-%     \item[PyModels:]
-% \end{description}
-% \section{Python Implementation}
-% \section{Tests}
-% \subsection{Perturbations on Simulated Model}
-% \subsection{Initial Condition Dependence}
-% \subsection{Single Error Detection}
+This chapter is dedicated to a brief description about the LOCO method implementation for Sirius storage ring, using Python as the programming language. Some tests were performed to check the reliability of the implemented code and also to understand both the general behavior of the method and the particularities the application on the Sirius storage ring.
+\section{Accelerator Physics Codes}
+The Python frameworks mentioned in the Section~\ref{sec:master_obj} for the accelerator physics studies are related to the accelerator modelling, the so-called tracking simulations and optics calculations. The corresponding packages developed and currently used by the LNLS Accelerator Physics Group are described as follows.
 
+\begin{description}
+    \item[PyModels:] Python modelling for the accelerator where each element is defined with several properties: device type (magnet, diagnostic, etc), length, strength, pass method, etc. The element pass method is the rule that the tracking code uses to perform the transformation in the particle phase-space coordinates. The code access is open and it contains versions for the models of the Sirius accelerators: \gls{linac}, transport lines, booster and storage ring~\cite{pymodels}
+    \item[TrackCpp:] tracking code implemented in C++ language. With the accelerator model, the particle dynamics can be numerically studied using the transfer concatenated maps that are applied to the particles coordinates. Each lattice element can be represented by a map $\mathbf{T}(s|s_0)$ and it effects the particle coordinates $\vec{r}_0 = \left(x_0, x'_0, y_0, y'_0, z_0, \delta_0\right)$ at $s_0$ by changing the coordinates to $\vec{r} = \mathbf{T}(s|s_0)\vec{r}_0$. Regarding the linear dynamics, the correspondence between the matrix formalism (linearized maps) and the analytical description presented in the Chapter 2 was developed by Courant \& Snyder in~\cite{CourantSnyder1958}. The map approach is extremely useful for numerical calculations and its linearized form takes advantage on linear algebra conveniences, for example the fact that the transformation compositions are translated simply as matrix multiplications. For circular accelerators, the whole lattice transformation, called the one-turn map, is very useful for deriving global lattice properties, verify long-term stability conditions, obtain fixed points for the map, etc. The one-turn map may include only the linear contributions or non-linear effects. For general tracking code like TrackCpp, explicit symplectic integrators are applied to approximate the solutions of the equations of motions for the particles in the lattice in a sistematic way. TrackCpp is an open-source code and can be accessed in~\cite{trackcpp}.
+    \item[PyAccel:] Python integration between the accelerator modelling in PyModels and the structures in C++ implemented in TrackCpp. The package also provides the interface to calculate the optics functions for the model (the Twiss functions), perform the tracking simulations, to calculate the equilibrium parameters (emittance, bunch length, beam sizes), and other useful information for the beam dynamics studies. With this package is also possible to easily manipulate the model, setting or getting the elements properties. The open code can be accessed in~\cite{pyaccel}.
+\end{description}
 
+Since PyAccel can be seen as a ``high-level'' interface for the calculations performed in the background by TrackCpp, the accelerator physics simulations are conducted with the combined use of PyModels and PyAccel packages.
+\section{Implementation}
+The LOCO method requirements are basically a simulated model for the accelerator and a framework to perform the \gls{orm} calculations in the model. The numerical tools required for LOCO, such as matrix multiplications and SVD, are all covered by \textsc{NumPy}, a Python package largely used in scientific computing. 
 
+PyModels provides the accelerator modelling for Sirius storage ring and the \gls{orm} calculation was already implemented by the LNLS \gls{fac}, where the transfer matrices between BPMs and correctors are used to obtain the corresponding \gls{orm} elements. This approach assumes linearity, which is typically a good approximation for small variations in the correctors kicks and orbit distortions. The \gls{orm} calculation from the transfer matrices also has the advantage of being fast: it takes about $\SI{500}{\milli\second}$ to obtain the Sirius storage ring \gls{orm} in the available computers used by the LNLS \gls{fac}.
 
+Considering that an origin for the coordinate $s$ is defined, let's assume that the BPM longitudinal position is smaller than the corrector (the BPM is behind the corretor), the general transfer matrix between the two elements is
+\begin{equation}
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta x' \\
+    \Delta y' \\
+    \Delta y'
+    \end{bmatrix}_{\mathrm{BPM}}  =
+    \begin{bmatrix}
+    T_{x, x} & T_{x, x'} & T_{x, y} & T_{x, y'} \\
+    T_{x', x} & T_{x', x'} & T_{x', y} & T_{x', y'} \\
+    T_{y, x} & T_{y, x'} & T_{y, y} & T_{y, y'} \\
+    T_{y', x} & T_{y', x'} & T_{y', y} & T_{y', y'} 
+    \end{bmatrix} 
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta x' \\
+    \Delta y \\
+    \Delta y'
+    \end{bmatrix}_{\mathrm{corr}}.
+\end{equation}
 
+If the BPM is ahead the corrector, the transfer matrix is actually from the $BPM$ to the corrector, so it is the inverse of transfer matrix that must be used for consistency\footnote{Since the transfer matrices must be sympletic, their determinants are equal to one and the inverse transfer matrices exist.}. Since the corrector strength variation changes only the angles, so $\Delta x_{\mathrm{corr}}' = \Delta \theta_x \neq 0$ and $\Delta y_{\mathrm{corr}}' = \Delta \theta_y \neq 0$, and keeps the positions unchanged, $\Delta x_{\mathrm{corr}} = \Delta y_{\mathrm{corr}} = 0$, the \gls{orm} elements are obtained as 
+\begin{align*}
+    M_{xx} = \dfrac{\Delta x_{\mathrm{BPM}}}{\Delta \theta_x} = T_{x, x'}, & \hspace{1cm} M_{xy} = \dfrac{\Delta x_{\mathrm{BPM}}}{\Delta \theta_y} = T_{x, y'}, \\
+    M_{yx} = \dfrac{\Delta y_{\mathrm{BPM}}}{\Delta \theta_x} = T_{y, x'}, & \hspace{1cm} M_{yy} = \dfrac{\Delta y_{\mathrm{BPM}}}{\Delta \theta_y} = T_{y, y'}.
+\end{align*}
 
+For the uncoupled lattice, the crossed elements are null, the transfer matrix is
+\begin{equation}
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta x' \\
+    \Delta y' \\
+    \Delta y'
+    \end{bmatrix}_{\mathrm{BPM}}  =
+    \begin{bmatrix}
+    T_{x, x} & T_{x, x'} & 0 & 0  \\
+    T_{x', x} & T_{x', x'} & 0 & 0 \\
+    0 & 0  & T_{y, y} & T_{y, y'} \\
+    0 & 0 & T_{y', y} & T_{y', y'} 
+    \end{bmatrix} 
+    \begin{bmatrix}
+    \Delta x \\
+    \Delta x' \\
+    \Delta y \\
+    \Delta y'
+    \end{bmatrix}_{\mathrm{corr}},
+\end{equation}
+and it is evident that the horizontal and vertical planes can be treated independently. Also $M_{xy} = M_{yx} = 0$ as a consequence.
+
+The other approach simulates the \gls{orm} measurement, it does not necessarily assumes linearity, in principle it is more precise but, on the other hand, it requires more computing time. The idea is to calculate the \gls{orm} as a numerical derivative:
+\begin{equation}
+    M_{uv} = \dfrac{u_{\mathrm{BPM}}\left(\theta_v + \Delta \theta_v\right)-u_{\mathrm{BPM}}\left(\theta_v \right)}{\Delta \theta_v},
+    \label{eq:unipolar_respm}
+\end{equation}
+where $u, v = x$ or $y$ and $u_{\mathrm{BPM}}$ is the closed-orbit at BPMs, this is be called the monopolar calculation. The magnitude of the kick variation must be small enough to avoid non-linear effects. The \gls{orm} also can be calculated as
+\begin{equation}
+    M_{uv} = \dfrac{u_{\mathrm{BPM}}\left(\theta_v + \Delta \theta_v/2\right)-u_{\mathrm{BPM}}\left(\theta_v- \Delta \theta_v/2\right)}{\Delta \theta_v},
+    \label{eq:bipolar_respm}
+\end{equation}
+and it is called bipolar calculation.
+
+If non-linear effects are relevant, the advantage of bipolar calculation is that even powers (mainly the quadratic contributions) are cancelled out and only a third-order error remains, so $M_{uv} = \dfrac{\partial u_{\mathrm{BPM}}}{\partial \theta_v} + \mathcal{O}(3)$. For the monopolar calculation we obtain $M_{uv} = \dfrac{\partial u_{\mathrm{BPM}}}{\partial \theta_v} + \mathcal{O}(2)$. However, the bipolar approach takes twice the computation time, since it requires two closed-orbit calculations at each step while the monopolar requires only one (the values $u_{\mathrm{BPM}}\left(\theta_v \right)$ are the same for all correctors). Therefore the \gls{orm} computation time for this method depends on the time to obtain numerically the transverse fixed point for the one-turn map (the closed-orbit). With TrackCpp the 4D closed orbit is obtained in $\SI{35}{\milli\second}$ and the 6D is calculated in $\SI{50}{\milli\second}$. Therefore, the total time to obtain the \gls{orm} for Sirius storage ring in this case is $281 \times \SI{35}{\milli\second} = \SI{9.5}{\second}$ for 4D calculations and $281 \times \SI{50}{\milli\second} = \SI{14.1}{\second}$ for 6D, considering the monopolar method. The bipolar calculation takes twice as long.
+
+The computing time difference of approximately a factor of 20 for bipolar and 40 for bipolar numerical calculation as compared to the \gls{orm} from transfer matrices increases the LOCO running time roughly by the same factor. Hence, while linear approximations are valid and the numeric precision is maintained, a faster \gls{orm} calculation is preferred to be used in LOCO.
+
+\begin{algorithm}
+\SetAlgoLined
+\KwResult{Fitted model, $\chi^2$ at each step}
+ Get LOCOInput: measured ORM, $\Delta \theta_x$, $\Delta \theta_y$, $\Delta f_{\mathrm{rf}}$, $\nu_x$, $\nu_y$ and $\sigma_{\mathrm{BPM}}$.\\
+ Define LOCOConfig: fit parameters, minimization method, singular values selection, constraints, weights, $n_{\mathrm{steps}}$, $\chi^2_{\mathrm{min}}$, $\chi^2_{\mathrm{step}}$.\\
+ Change model tunes to match the measured values.\\
+ Obtain initial model ORM.\\
+ Calculate LOCO jacobian matrix.\\
+ Perform SVD and singular values filtering on jacobian matrix to obtain its pseudo-inverse.\\
+ Calculate initial reference residue vector $\vec{V}_0$ and $\chi^2_0$.\\
+ $n \leftarrow 0$ \\
+ \While{$n \leq n_{\mathrm{steps}}$}{
+  With $\vec{V}_0$, calculate parameters variations $\Delta \vec{P}$.\\
+  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
+  Calculate new residue vector $\vec{V}$ and $\chi^2$. \\
+  \eIf{$\chi^2 > \chi_0^2$ or $\chi^2 < \chi^2_{\mathrm{min}}$}{
+  \eIf{$\chi^2 > \chi^2_{\mathrm{min}}$ and LM method}{LM Fail $\leftarrow$ LM Loop.\\
+  \If{LM Fail}{Stop}
+  }{Stop}
+   }{
+   \eIf{$\chi_0^2 - \chi^2 < \chi_{\mathrm{step}}^2$}{Stop}{
+   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$.\\
+   Update model. \\
+   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$.\\
+   \If{LM method}{Decrease $\lambda$ and recalculate the jacobian pseudo-inverse}
+  }}
+  $n \leftarrow n + 1$ \\
+ }
+ Save output.
+ \caption{LOCO pseudo-algorithm}
+ \label{algo:loco}
+\end{algorithm}
+
+\begin{algorithm}
+\SetAlgoLined
+\KwResult{LM Fail}
+LM Fail $\leftarrow$ True\\
+ \While{$\lambda < \lambda_{\mathrm{max}}$}{
+ Increase $\lambda$.\\
+  Recalculate the jacobian pseudo-inverse.\\
+  Recalculate parameters variations $\Delta \vec{P}$.\\
+  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
+  Calculate new residue vector $\vec{V}$ and $\chi^2$.\\
+  \If{$\chi^2 < \chi_0^2$}{
+   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$\\
+   Update model \\
+   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$\\
+   LM Fail $\leftarrow$ False.\\
+   Stop.}
+ }
+ \caption{LM Loop}
+ \label{algo:lm_loop}
+\end{algorithm}
+% \begin{tikzpicture}[node distance=1.5cm,
+%     every node/.style={fill=white, font=\sffamily}, align=center]
+%   % Specification of nodes (position, etc.)
+%   \node (start)             [activityStarts]              {Measured ORM, $\nu_x$, $\nu_y$, $\sigma_{\mathrm{BPM}}$};
+%   \node (LOCOConfig)     [process, below of=start]          {LOCOConfig};
+%   \node (LOCOJacobian)      [process, below of=LOCOConfig]   {Jacobian calculations};
+%   \node (SVD)      [process, below of=LOCOJacobian]   {SVD and Jacobian pseudo-inversion};
+%   \node (ResidueVector)     [process, below of=SVD]   {Obtain initial residue vector $\vec{V}_0$ and $\chi^2_0$};
+%   \node (Parameters)      [process, below of=ResidueVector]
+%                                                       {Calculate parameters variations $\Delta \vec{P}$ and apply to the model};
+%   \node (NewResidue)      [process, below of=Parameters]
+%                                                       {Obtain new residue vector $\vec{V}$ and $\chi^2$};
+%   \node (ReducedChi)      [process, below of=NewResidue]
+%                                                       {$\Delta \chi^2 < 0$ ?};
+% \node (SaveStop)      [process, below of=ReducedChi]
+%                                                       {Save output and stop};                                                                             
+                                                      
+%   % Specification of lines between nodes specified above
+%   % with aditional nodes for description 
+%   \draw[->]             (start) -- (LOCOConfig);
+%   \draw[->]     (LOCOConfig) -- (LOCOJacobian);
+%   \draw[->]      (LOCOJacobian) -- (SVD);
+%   \draw[->]      (SVD) -- (ResidueVector);
+%   \draw[->]      (ResidueVector) -- (Parameters);
+%   \draw[->]      (Parameters) -- (NewResidue);
+%   \draw[->]      (NewResidue) -- (ReducedChi);
+%   \draw[->] (ReducedChi.east) -- ++(5.6,0) -- ++(0,1.5) -- ++(0,1.5) --                
+%      node[xshift=0.7cm,yshift=-1.5cm, text width=2.5cm]
+%      {Yes}(Parameters.east);
+%   \draw[->]       (ReducedChi) -- node {No} (SaveStop);
+% \end{tikzpicture}
+\section{Tests}
+\subsection{Perturbations on Simulated Model}
+\subsection{Initial Condition Dependence}
+\subsection{Single Error Detection}
