@@ -9,6 +9,7 @@ The dipoles are the elements of the magnetic lattice that defines the reference 
 \begin{figure}
     \centering
     \includegraphics[scale=0.25]{figures/reference_system.png}
+    % \includegraphics[width=\textwidth]{figures/reference_system.png}
     \caption{Coordinate system used in storage rings~\cite{madx}.}
     \label{syst}
 \end{figure}
@@ -404,6 +405,7 @@ For a quadrupole, $\Delta K_x = - \Delta K_y$, then a positive error in the focu
 For a general gradient error distribution around the ring, the tune change is:
 \begin{equation}
     \Delta \nu_u = \dfrac{1}{4 \pi} \oint \beta_u ({s}) \Delta K_u ({s})\dif {s}.
+    \label{eq:tune_shift}
 \end{equation}
 
 The solution for the Eq.~\eqref{beta_equation} in the presence of a distribution of gradient errors provides the relative change in the betatron function given by

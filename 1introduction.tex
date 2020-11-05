@@ -124,7 +124,7 @@ The Sirius facility building layout is schematically shown in Figure~\ref{fig:si
 The final design for the Sirius magnetic lattice is represented in Figure~\ref{fig:sirius_lattice}. It is a 5BA lattice with a natural emittance of \SI{0.25}{\nano\meter\radian} at \SI{3}{\giga\electronvolt} for the bare lattice (without \glspl{id}). With the installation of the planned \glspl{id}, the emittance is expected to be reduced as low as \SI{0.15}{\nano\meter\radian}.
 \begin{figure}
     \centering
-    \includegraphics[scale=0.27, trim={0 2cm 0 0}, clip]{figures/sirius_lattice.png}
+    \includegraphics[width=\textwidth, trim={0 2cm 0 0}, clip]{figures/sirius_lattice.png}
     \caption{Sirius 5BA magnetic lattice cells. The magnets are represented by colored blocks. Dipoles (B) are in blue, quadrupoles (Q) in orange and sextupoles (S) in green. The cells are characterized by their straight sections types: high-beta (A) or low-beta (B, P). The Sirius storage ring is composed by 5 super-periods, each one composed by the four cells sequence A-B-P-B~\cite{wiki}.}
     \label{fig:sirius_lattice}
 \end{figure}
@@ -132,7 +132,7 @@ The final design for the Sirius magnetic lattice is represented in Figure~\ref{f
 The optical lattice functions for one superperiod of the Sirius magnetic lattice are plotted in Figure~\ref{fig:twiss_functions}. The small values for the dispersion and betatron functions, specially at the central bending magnet, are fundamental factors to obtain the low emittance in Sirius storage ring. The zero dispersion and the low beta functions in the straight sections, combined with the low emittance, are essential to obtain small beam sizes in the beamlines. The zero dispersion also is required to the possibility of emittance reduction after \glspl{id} installation.
 \begin{figure}
     \centering
-    \includegraphics[scale=1.0]{figures/twiss_plot_refine.eps}
+    \includegraphics[width=\textwidth]{figures/twiss_plot_refine.eps}
     \caption{Lattice functions for one 5BA cell for the Sirius storage ring with a high-beta straight section in the left and a low-beta in the right.}
     \label{fig:twiss_functions}
 \end{figure}
@@ -145,7 +145,7 @@ The high-beta straight sections counts with a quadrupole doublet (QFA, QDA) for 
 
 In the Sirius lattice there are 21 families of sextupoles, whose names can be checked in Figure~\ref{fig:sirius_lattice}. The sextupoles in the arc section where the dispersion is non-zero are used for the correction of geometric chromatic errors and the sextupoles in the achromatic sections are used for the non-linear dynamics compensation. The total number of sextupoles in Sirius is 280.
 
-For the slow orbit correction budget, there are 8 \glspl{bpm} per arc section, thus totalling $8 \times 20 = 160$ \glspl{bpm} in the storage ring. There are 6 horizontal correctors (CH) and 6 vertical correctors (CV) per section, both installed inside some sextupoles magnets. There are also 2 additional vertical correctors magnets additionally installed per arc, then there are $6 \times 20 = 120$ CHs and $(6 + 2) \times 20 = 160$ CVs in the storage ring. The orbit correction is presently controlled by the \gls{sofb} and this system was implemented in-house by an Accelerator Physics Group member.
+For the slow orbit correction budget, there are 8 \glspl{bpm} per arc section, thus totalling $8 \times 20 = 160$ \glspl{bpm} in the storage ring. There are 6 horizontal correctors (CH) and 6 vertical correctors (CV) per section, both installed inside some sextupoles magnets. There are also 2 additional vertical correctors magnets additionally installed per arc, then there are $6 \times 20 = 120$ CHs and $(6 + 2) \times 20 = 160$ CVs in the storage ring. The orbit correction is presently controlled by the \gls{sofb} and this system was implemented in-house by an \gls{fac} member.
 
 For the fast orbit correction budget, there are 4 horizontal and 4 vertical fast correctors (FCH and FCV, respectively) per arc, so 80 FCH and 80 FCV in total. The fast orbit correction is planned to be controlled by the Fast Orbit Feedback (FOFB) system, currently (2020) not implemented yet for Sirius.
 
@@ -237,9 +237,9 @@ After that, LOCO has become a tool widely applied in many accelerators around th
 
 The effects of the LOCO corrections on the machine can be checked by independent beam-based measurements. It can be verified if the measured orbit response converged to the expected orbit response for the nominal lattice. Changing a quadrupole strength and measuring the corresponding shifts in the betatron tunes is a procedure to determine the beta functions at quadrupoles. The beta function at the \glspl{bpm} can be determined by applying a fast dipolar impulse in the beam (for example with a pinger) and measuring the \gls{tbt} response in the beam trajectory over the time. The dispersion function at \glspl{bpm} is determined by varying the \gls{rf} frequency in the cavity and measuring the variation in the beam orbit. Approximating the horizontal and vertical tunes and measuring its minimum distance allows to determine the global betatron coupling. The magnitude of the measured orbit response in one direction due to a dipolar variation in the perpendicular plane provides the information about the coupling distribution along the storage ring. The strength of the fast dipolar impulse can be increased until the electron beam is partially or completely lost, providing information about the dynamic aperture region. If a diagnostic beamline is available, beam emittance measurements can be performed. The injection efficiency in the storage ring is also a good indicative of performance improvement.
 \section{Master's Objectives}\label{sec:master_obj}
-The predominant programming language used in Sirius is Python. After the design studies that resulted in the Sirius lattice and the commissioning simulations, the Sirius models in MATLAB were not satisfactory explored by the \gls{lnls} Accelerator Physics Group in the actual commissioning, mainly due to inconveniences related to the different programming languages. Since there were accelerator modeling and simulations Python frameworks developed in-house and in advanced stages of implementation, the full migration of the Sirius to Python regarding the Accelerator Physics modeling and simulations were performed quite rapidly with only small adjustments.
+The predominant programming language used in Sirius is Python. After the design studies that resulted in the Sirius lattice and the commissioning simulations, the Sirius models in MATLAB were not satisfactory explored by the \gls{lnls} \gls{fac} in the actual commissioning, mainly due to inconveniences related to the different programming languages. Since there were accelerator modeling and simulations Python frameworks developed in-house and in advanced stages of implementation, the full migration of the Sirius to Python regarding the Accelerator Physics modeling and simulations were performed quite rapidly with only small adjustments.
  
-Next to this, even though the LOCO code is available in MATLAB, the \gls{lnls} Accelerator Physics Group was also seeking for an expertise development related to the method proposed in LOCO for the application on Sirius commissioning and later on the machine studies shifts. Considering the programming language migration as well, the idea of studying the LOCO method and implementing the code in Python came naturally. The author had the opportunity to conduct this task, which derived in this master's work. 
+Next to this, even though the LOCO code is available in MATLAB, the \gls{lnls} \gls{fac} was also seeking for an expertise development related to the method proposed in LOCO for the application on Sirius commissioning and later on the machine studies shifts. Considering the programming language migration as well, the idea of studying the LOCO method and implementing the code in Python came naturally. The author had the opportunity to conduct this task, which derived in this master's work. 
 
 The master's main goals can be organized as follows:
 \begin{itemize}
@@ -250,7 +250,7 @@ The master's main goals can be organized as follows:
     \item Realize linear optics and coupling studies in the Sirius storage ring during the commissioning, performing measurements and corrections using the implemented codes.
 \end{itemize}
 
-To summarize, the master's dissertation gathers the author's contributions to the Sirius storage ring commissioning regarding the first studies and results related to the linear optics and coupling measurements\footnote{Some measurement scripts used in this work were implemented by Accelerator Physics Group  colleagues but the reported measurements were performed by the author during the Sirius commissioning.} and corrections. 
+To summarize, the master's dissertation gathers the author's contributions to the Sirius storage ring commissioning regarding the first studies and results related to the linear optics and coupling measurements\footnote{Some measurement scripts used in this work were implemented by \gls{fac} colleagues but the reported measurements were performed by the author during the Sirius commissioning.} and corrections. 
 
 
 

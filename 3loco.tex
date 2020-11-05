@@ -367,6 +367,7 @@ The diagonal elements added in $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ by the constr
 From Eq.~\eqref{eq:gn_modified}, it can be seen that the constraints can be implemented by keeping unchanged the jacobian matrix $\mathbf{J}$ and the residue vector $\vec{V}$, but adding only the contribution $\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}$ to the parameters calculations. Since the constraints do not change the minimization problem dimension, maintain the jacobian and the residue vector dimensions while applying the constraint is conceptually more appropriated. In that way, the LM method with constraints determines $\Delta \vec{P}$ solving the following problem
 \begin{equation}
 \left(\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right) \right)\Delta \vec{P} = - \mathbf{J}^{\mathsf{T}}\vec{V},
+\label{eq:param_calc}
 \end{equation}
 and in the limit $\lambda = 0$, the LM and GN methods coincide again.
 
