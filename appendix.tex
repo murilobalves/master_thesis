@@ -155,6 +155,79 @@ In each iteration of the LOCO algorithm, the gains and rolls parameters are upda
 
 The matrix multiplication order is important, since the \gls{orm} dimension is $2\mathrm{N}_{\mathrm{BPM}} \times \mathrm{N}_{\mathrm{corr}}$, the BPM-related matrices dimensions are $2\mathrm{N}_{\mathrm{BPM}} \times 2\mathrm{N}_{\mathrm{BPM}}$ and the correctors-related matrix dimension is $\mathrm{N}_{\mathrm{corr}} \times \mathrm{N}_{\mathrm{corr}}$. 
 
+\chapter{Integral of Beta in Quadrupoles}
+The tune shift caused by a gradient error distribution $k(s)$ is, form Eq.~\eqref{eq:tune_shift}:
+\begin{align}
+    \Delta\nu_u &= \frac{1}{4\pi} \oint \beta_u(s) k(s) \mathrm{d}s.
+\end{align}
 
+A gradient error distributed along a quadrupole can be modeled as
+\begin{equation}
+    k(s) = 
+\begin{cases}
+\Delta K \hspace{0.2cm} \text{for} \hspace{0.1cm} s \in [0, L], \\
+0 \hspace{0.2cm} \text{for} \hspace{0.1cm} s \notin [0, L]
+\end{cases},
+\end{equation}
+where $L$ is the quadrupole length. The tune shift in this case is
+\begin{align}
+    \Delta\nu_u &= \frac{\Delta K}{4\pi} \int_{0}^{L} \beta_u(s)\mathrm{d}s.
+\end{align}
 
+If the quadrupole strength is intentionally changed by the amount $\Delta K$ and the corresponding tune shift is measured with the beam, the integral of beta function in the quadrupole can be calculated:
+\begin{align}
+\int_{0}^{L} \beta_u(s) \mathrm{d}s &= 4\pi\frac{\Delta \nu_u}{\Delta K}.
+\end{align}
 
+Typically it is convenient to use the integrate quadrupole strength $\Delta KL$, in this way, the quantity that is calculated is the integral of beta function along the quadrupole normalized by the quadrupole length:
+\begin{align}
+\dfrac{1}{L}\int_{0}^{L} \beta_u(s) \mathrm{d}s &= 4\pi\frac{\Delta \nu_u}{\Delta KL}.
+\end{align}
+
+In the approximated case when the beta function is considered constant along the quadrupole, we obtain that $\beta_u(s_q) = 4\pi \dfrac{\Delta \nu_u}{\Delta KL}$, where $s_q$ is the varied quadrupole longitudinal position.
+
+It is important to notice that considering $\Delta KL > 0$ increases the focusing forces in the horizontal plane, thus necessarily decreases the focusing forces in the vertical plane. With this strength change we will obtain $\Delta \nu_x > 0$ and $\Delta \nu_y < 0$. Since the beta function is always positive, in this case the $\Delta KL$ sign must be negative for the vertical betatron function calculation to cancel the $\Delta \nu_y$ sign.
+
+The tune-shift approach is used for the measurement of the integral of betatron functions in the quadrupoles in a storage ring.
+
+To calculate the same quantities in the storage ring model there are a numerical and an analytical approach. The numerical approach basically reproduces the measurement procedure performed in the real storage ring. It may include non-linear effects due to the gradient variation but it also has the disadvantage of computing time. For every quadrupole in the storage ring, the Twiss functions after the gradient variation must be calculated, depending on the time required to calculate the storage ring Twiss functions and on the number of quadrupoles in the lattice, the calculation time may be an inconvenient for a practical use of this numerical approach.
+
+It is also possible to calculate an analytical expression for the beta integral along the quadrupole. Let the Twiss parameters be $(\beta_0, \alpha_0, \gamma_0)$ at the quadrupole entrance. The beta function in a position $s$ along the quadrupole can be propagated as
+\begin{equation}
+\beta(s) = \beta_0 C^2(s) - 2\alpha_0 C(s)S(s) + \gamma_0S^2(s),
+\end{equation}
+where the functions $C(s)$ and $S(s)$ are
+\[
+C(s) = 
+\begin{cases}
+\cos(\sqrt{K}s) \hspace{0.2cm} \text{for} \hspace{0.1cm} K > 0, \\
+\cosh(\sqrt{|K|}s) \hspace{0.2cm} \text{for} \hspace{0.1cm} K < 0, 
+\end{cases}
+\]
+\[
+S(s) = 
+\begin{cases}
+\frac{1}{\sqrt{K}}\sin(\sqrt{K}s) \hspace{0.2cm} \text{for} \hspace{0.1cm} K > 0, \\
+\frac{1}{\sqrt{|K|}}\sinh(\sqrt{|K|}s) \hspace{0.2cm} \text{for} \hspace{0.1cm} K < 0.
+\end{cases}
+\]
+
+Therefore, calculating the $\beta(s)$ integral, we obtain the following results.
+
+For $K > 0$:
+\begin{align*}
+    \int_{0}^{L} \beta(s) \mathrm{d}s &= \frac{L}{2}\left(\beta_0 + \gamma_0/K\right) \\
+    &+ \frac{\sin\left(2\sqrt{K}L\right)}{4 \sqrt{K}}\left(\beta_0 - \gamma_0/K\right) \\
+    &- \frac{\alpha_0}{K}\sin^2\left(\sqrt{K}\right).
+\end{align*}
+
+For $K < 0$:
+\begin{align*}
+    \int_{0}^{L} \beta(s) \mathrm{d}s &= \frac{L}{2}\left(\beta_0 + \gamma_0/K\right)  \\ 
+    &+ \frac{\sinh\left(2\sqrt{|K|}L\right)}{4 \sqrt{|K|}}\left(\beta_0 - \gamma_0/K\right) \\
+    &- \frac{\alpha_0}{|K|L}\sinh^2\left(\sqrt{|K|}\right).
+\end{align*}
+
+It is worth to mention again that $K > 0$ for the $x$ plane corresponds to $K < 0$ for the $y$ plane. 
+
+With the analytical approach, the Twiss parameters calculation is required only once to obtain $(\beta_0, \alpha_0, \gamma_0)$ at the quadrupoles entrances, and with the quadrupole strength $K$ and length $L$, the integrals are calculated with the above presented formulae.
