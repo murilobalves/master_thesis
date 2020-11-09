@@ -157,17 +157,18 @@ The Table~\ref{tab:sirius_elements} summarizes the number of elements for each t
         \caption{Number of elements for each type in Sirius storage ring.}
         \label{tab:sirius_elements}
         \begin{tabular}{cc}
-            Element Type & \# of Elements \\
             \toprule\toprule
+            Element Type & \# of Elements \\
+            \hline
             Dipole              & 100 \\
             Quadrupole          & 270 \\
             Sextupole           & 280 \\
-            \hline
+            % \hline
             BPM & 160 \\
             H. Slow Corrector & 120 \\
             V. Slow Corrector & 160 \\
             Skew Quadrupole & 100 \\
-            \hline
+            % \hline
             H. Fast Corrector & 80 \\
             V. Fast Corrector & 80 \\
             \bottomrule\bottomrule
@@ -180,8 +181,9 @@ The main global parameters for the Sirius storage ring can be found in Table~\re
         \caption{Main parameters of the Sirius storage ring. Adapted from \cite{Sa2018}.}
         \label{tab:sirius_main_parameters}
         \begin{tabular}{lccccl}
+            \toprule\toprule
             \mr{2}{*}{Parameter} &  \mr{2}{*}{Symbol} & \mc{3}{c}{Operation Phases}& \mr{2}{*}{Unit}\\\cmidrule{3-5}
-                                 &                    &Commiss. & Phase 1 & Phase 2& \\\toprule\toprule
+                                 &                    &Commiss. & Phase 1 & Phase 2& \\\hline
             Energy               & $E_0$     & \mc{3}{c}{3.0}    & \si{\giga\electronvolt}\\
             Gamma factor         & $\gamma$  & \mc{3}{c}{5871}& \\
             Circumference        & $L_0$     & \mc{3}{c}{518.396}  & \si{\meter}\\
@@ -199,7 +201,7 @@ The main global parameters for the Sirius storage ring can be found in Table~\re
             RF cavity            &  & 1 7-Cell & \mc{2}{c}{2 SC-RF}  \\
             Voltage gap          & $\hat{V}_{\mathrm{rf}}$     & 1.8   & \mc{2}{c}{3.0}& \si{\mega\volt} \\
             Natural bunch length & $\sigma_z$& 3.2 (10.7) & \mc{2}{c}{2.5 (8.2)}& \si{\milli\meter} (\si{\pico\second}) \\
-            Synchrotron Tune     & $\nu_z$& \SI{3.56e-3} & \mc{2}{c}{\SI{4.6e-3}}& \\\bottomrule\bottomrule
+            Synchrotron tune     & $\nu_z$& \SI{3.56e-3} & \mc{2}{c}{\SI{4.6e-3}}& \\\bottomrule\bottomrule
         \end{tabular}
     \end{table}
 
