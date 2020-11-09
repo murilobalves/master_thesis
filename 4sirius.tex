@@ -1,4 +1,4 @@
-\chapter{Code Implementation for Sirius}
+\chapter{Code Implementation for Sirius}\label{chap:code_studies}
 This chapter is dedicated to a brief description about the LOCO method implementation for Sirius storage ring, using Python as the programming language. Some tests were performed to check the reliability of the implemented code and also to understand both the general behavior of the method and the particularities the application on the Sirius storage ring.
 \section{Accelerator Physics Codes}
 The Python frameworks mentioned in the Section~\ref{sec:master_obj} for the accelerator physics studies are related to the accelerator modelling, the so-called tracking simulations and optics calculations. The corresponding packages developed and currently used by the LNLS \gls{fac} are described as follows.
@@ -153,8 +153,9 @@ The fit parameters that has been used in the regular LOCO analysis performed in 
     \caption{Fit parameters used in LOCO for Sirius storage ring.}
     \label{tab:fit_params}
     \begin{tabular}{cc}
-        Fit parameter & \# of elements \\
         \toprule\toprule
+        Fit parameter & \# of elements \\
+        \hline
         Normal quadrupole gradient & 270 \\
         H. BPM gain & 160 \\
         V. BPM gain & 160 \\
@@ -210,7 +211,7 @@ In Figure~\ref{subfig:constraint}, the singular values for several constraint ma
 
 Limiting too much the $\Delta K$ step variation may increase unnecessarily the number of iterations required for LOCO convergence. Hence it is recommended to use the maximum value of $\sigma_{\Delta K}$ that still produces a significant change in the singular values, aiming to balance the $\Delta K$ constraints and the number of iterations, therefore reducing the LOCO running time whenever it is worth it. For Sirius storage ring, the optimum value was determined to be $\sigma_{\Delta K} = 10^{-3}$, thus $c_{\Delta K} = 10^{3}$.
 
-Notice that with $c_{\Delta K}=10^{3}$ the last singular value was even smaller compared to the unconstrained case. This can be solved by combining the constrained case with the~\gls{lm} minimization, since it was seen that the~\gls{lm} contribution raises the singular values. The singular values distribution for the chosen values of $\lambda$ and $c_{\Delta K}$ compared to the original distribution can be found in Figure~\ref{fig:compare_svs}.
+Notice that with $c_{\Delta K}=10^{3}$ the last singular value was even smaller compared to the unconstrained case. This can be solved by combining the constrained case with the~\gls{lm} minimization, since it was seen that the~\gls{lm} contribution raises the singular values. The singular values distribution for the chosen values of $\lambda$ and $c_{\Delta K}$ compared to the original distribution can be found in Figure~\ref{fig:compare_svs}. With this choice, the only singular value that should be removed is the last one, which is well-known to be associated with the gain degeneracy between vertical~\glspl{bpm} and correctors.
 \begin{figure}
 \centering
 \includegraphics[width=0.75\textwidth]{figures/sing_vals_chosen.eps}
@@ -219,47 +220,93 @@ Notice that with $c_{\Delta K}=10^{3}$ the last singular value was even smaller 
 \end{figure}
 
 \subsection{Detecting Distributed Errors}
-The first test to check the implemented code is perturbing the simulated storage ring model, obtain the corresponding~\gls{orm} and then trying to determine the input errors from the fit parameters by the LOCO analysis. In this way, since the planted errors perturbs the~\gls{orm} and~\gls{loco} tries to adjust the fit parameters until the goal~\gls{orm} is fitted, once the perturbed~\gls{orm} is explained by~\gls{loco} analysis, the corresponding changes in the fit parameters should match the input errors. 
+The first test to check the implemented code consist in perturbing the simulated storage ring model, obtain the corresponding~\gls{orm} and then trying to determine the input errors from the fit parameters with LOCO analysis. In this way, since the planted errors perturbs the~\gls{orm} and~\gls{loco} tries to adjust the fit parameters until the goal~\gls{orm} is fitted, once the perturbed~\gls{orm} is explained by~\gls{loco}, the corresponding changes in the fit parameters should match the input errors. 
 
-This test uses the~\gls{loco} method as a diagnostic tool. However, since the only errors in the simulated model are in the elements that are already adjusted in~\gls{loco}, subtracting the negative fit values in the perturbed model cancels out the input errors and in this way the~\gls{loco} may also be viewed as a correction tool.
+This test simulates the usage of~\gls{loco} as a diagnostic tool. However, since the only errors in the simulated model was included in the elements that was already adjusted in~\gls{loco}, subtracting the negative fit values in the perturbed model cancels out the input errors and in this way the~\gls{loco} also can be viewed as a correction tool.
 
-It is important to point out that this test works nicely if the errors are included in the elements that are used as fit parameters in LOCO method. For example, if gradient errors are added in the sextupoles but only quadrupoles strengths are fitted, the quadrupoles will be changed in order to best fit the~\gls{orm}. Thus, even if the $\chi^2$ is reduced, the final quadrupoles variations will not match the planted gradient errors in the sextupoles. In this case, the fitted values must be interpreted as the gradient changes in quadrupoles that best explain the perturbed \gls{orm} and the~\gls{loco} is used as a correction tool. Clearly this type of compensation reaches a limit of correction effectiveness. Therefore, whenever is possible, the most appropriated approach is to identify and then to minimize the other errors sources and only after that apply the~\gls{loco} analysis to obtain the corrections.
+It is important to point out that this test should work properly if the errors are included in the elements that are used as fit parameters in LOCO method. For example, if gradient errors are added in the sextupoles but only quadrupoles strengths are fitted, the quadrupoles will be changed in order to best fit the~\gls{orm}. Thus, even if the $\chi^2$ is reduced, the final quadrupoles variations will not match the planted gradient errors in the sextupoles, since these elements are in different position around the ring. In this case, the fitted values must be interpreted only as the gradient changes in quadrupoles that best explain the perturbed \gls{orm} and the~\gls{loco} is viewed as a correction tool. Clearly this type of compensation should reach a limit of correction effectiveness. Therefore, whenever it is possible, the most appropriated approach is to identify and then to minimize the errors sources (or also called systematic errors) and, only after that, apply the~\gls{loco} analysis to obtain appropriated corrections.
 
-Ten sets of errors were generated with random normal distributions with $\sigma$ cutoff, included in the simulated model and then ten~\gls{orm}s were calculated. The LOCO analysis were performed for the~\gls{orm}s, fitting all the parameters described in Table~\ref{tab:fit_params}. The standard deviations $\sigma$ used in the distribution to generate the error for each parameter are presented in Table~\ref{tab:errors}.
+A hundred sets of errors were generated following a random normal distributions with $3\sigma$ cutoff, included in the simulated model and then the corresponding hundred~\gls{orm}s were calculated. The LOCO analysis were performed for these~\gls{orm}s, fitting all the parameters described in Table~\ref{tab:fit_params}. The~\gls{std} $\sigma$ used in the normal distribution to generate random errors for each parameter are presented in Table~\ref{tab:errors}.
 \begin{table}
     \centering
-    \caption{Random errors included in the simulated model.}
+    \caption{Random errors included in the simulated model ($3\sigma$ cutoff).}
     \label{tab:errors}
-    \begin{tabular}{cc}
-        Parameter & $\sigma$ of errors \\ 
+    \begin{tabular}{ccc}
         \toprule\toprule
-        Normal quadrupole gradient & 0.25\% \\
-        Skew quadrupole gradient & $\SI{1e-4}{\meter^{-1}}$ \\
-        H. BPM gain &  10\% \\
-        V. BPM gain &  10\% \\
-        BPM roll angle & $\SI{1}{\milli\radian}$ \\ 
-        H. Corrector gain & 10\% \\
-        V. Corrector gain &  10\% \\
+        Parameter & $\sigma$ of distribution & Unit\\ 
+        \hline
+        Normal quadrupole gradient & 0.1 &\% \\
+        H. and V. BPM gain &  2.5 & \% \\
+        H. and V. Corrector gain & 5.0 &\% \\
+        Skew quadrupole gradient & $10^{-3}$ &$\SI{}{\meter^{-1}}$ \\
+        % V. BPM gain &  10 & \% \\
+        BPM roll angle & 10 & $\SI{}{\milli\radian}$ \\ 
+        % V. Corrector gain &  10 &\% \\
         \bottomrule\bottomrule
     \end{tabular}
 \end{table}
 
+The goal of this test is to compare the fitted variations determined from~\gls{loco} with the random errors included in the model. The statistics related to the differences between these two sets of values are presented in Table~\ref{tab:diff_target}, where the difference was normalized by the~\gls{std} $\sigma$ used to generate the random errors.
+% \begin{table}
+%     \centering
+%     \caption{Differences (normalized by $\sigma$) between planted errors and fitted variations obtained from LOCO analysis for 100 sets of random errors.}
+%     \label{tab:diff_target}
+%     \begin{tabular}{ccc}
+%         \toprule\toprule
+%         Parameter & mean difference$/\sigma$ & peak-to-valley difference$/\sigma$  \\ 
+%         \hline
+%         Normal quadrupole gradient & \num{9.8e-3}& $\SI{3.4e-2}{}$\\
+%         H. BPM gain & $\SI{1.9e-4}{}$  & $\SI{7.9e-4}{}$\\
+%         H. Corrector gain & $\SI{7.5e-5}{}$ &  $\SI{2.7e-4}{}$ \\
+%         V. BPM gain & $\SI{7.7e-4}{}$ & $\SI{1.7e-3}{}$\\
+%         V. Corrector gain & $\SI{7.7e-4}{}$ & $\SI{1.7e-3}{}$ \\
+%         Skew quadrupole gradient & $\SI{3.9e-3}{}$  & $\SI{1.4e-2}{}$ \\
+%         BPM roll angle & $\SI{3.8e-3}{}$ & $\SI{1.3e-2}{}$ \\
+%         \bottomrule\bottomrule
+%     \end{tabular}
+% \end{table}
+
 \begin{table}
     \centering
-    \caption{Difference between the input errors and the fit values obtained from LOCO analysis for ten random error sets.}
+    \caption{Differences (normalized by $\sigma$) between planted errors and fitted variations obtained from LOCO analysis for 100 sets of random errors.}
     \label{tab:diff_target}
-    \begin{tabular}{cc}
-        Parameter & std difference [\%] \\ 
+    \begin{tabular}{ccc}
         \toprule\toprule
-        Normal quadrupole gradient &  \\
-        Skew quadrupole gradient &  \\
-        H. BPM gain &   \\
-        V. BPM gain &   \\
-        BPM roll angle &  \\ 
-        H. Corrector gain &  \\
-        V. Corrector gain &   \\
+        Parameter & std difference$/\sigma$ & peak-to-valley difference$/\sigma$  \\ 
+        \hline
+        Normal quadrupole gradient & \num{1.1e-2}& \num{5.9e-2}\\
+        H. BPM gain & \num{2.8e-4} & \num{1.6e-3} \\
+        H. Corrector gain & \num{1.0e-4}  & \num{5.5e-4}  \\
+        V. BPM gain & \num{7.8e-4} & \num{3.2e-3} \\
+        V. Corrector gain & \num{7.9e-4} & \num{3.2e-3} \\
+        Skew quadrupole gradient & \num{4.9e-3} & \num{2.3e-2} \\
+        BPM roll angle & \num{4.7e-3} & \num{2.2e-2} \\
         \bottomrule\bottomrule
     \end{tabular}
 \end{table}
-\subsection{Localized Errors Detection}
+
+From the results in Table~\ref{tab:diff_target} it can be seen that for the normal quadrupoles, skew quadrupoles and BPM roll angles, target and obtained errors normalized by $\sigma$ agrees to within a few percent. For the gains of horizontal correctors and BPM, the difference is a few parts in ten thousand and for the vertical ones, it is a few parts in a thousand. The dispersion function was included in the fitting to break the horizontal gains degeneracy, which explains the fact that the gains determination for the horizontal plane is more efficient than for the vertical plane.
+\begin{figure}
+\centering
+\begin{subfigure}[t]{0.49\textwidth}
+\includegraphics[width=1.0\textwidth]{figures/chi_seeds.pdf}
+    \caption{$\chi$ convergence.}
+    \label{subfig:chi_seeds}
+\end{subfigure}
+ \begin{subfigure}[t]{0.49\textwidth}
+\includegraphics[width=1.0\textwidth]{figures/chi_versus_score.pdf}
+    \caption{Fitting mismatch versus fitting level.}
+    \label{subfig:chi_versus_score}
+\end{subfigure}
+\caption{Fitting over 100 random~\gls{orm} obtained from the simulated model.}
+\label{fig:fitting_seeds}
+\end{figure}
+The average initial $\chi$ for these 100 sets of random errors was $\SI{11.6}{\micro\meter}$ and after the fitting, the average final $\chi$ was $\SI{6.2}{\nano\meter}$. Such level of fitting is only possible because in these tests the~\gls{orm} was obtained without any noise in the data and the process is not subjected to measurement errors. For real measurements, it is desired to achieve a final value for $\chi$ that is close to the BPM accuracy, which with the current technology is typically from hundreds of nanometers to a few micrometers.
+
+In Figure~\ref{subfig:chi_seeds} the convergence of $\chi$ for the 100 fittings is presented. The maximum number of iterations was limited to 25. It can be seen that at about 15 iterations $\chi$ already converged for all the 100 cases. Figure~\ref{subfig:chi_versus_score} shows the relation between the fitting level, represented by the ratio $\chi_{\mathrm{final}}/\chi_{\mathrm{initial}}$, and the fitting mismatch for each realization, obtained by $\sqrt{\sum_{p}d_p^2}$, where $d_p$ is the difference between target and fitted errors normalized by $\sigma$ for the parameter $p$, covering all the 7 fit parameters used in the LOCO runs. The mismatch in the fitting grows linearly with the fitting level, with a proportionality factor of about 50. The code would be unreliable if the fitting level was good but the corresponding mismatch was large. Such cases were not observed in the 100 random realizations.
+\subsection{Detecting Localized Errors}
+
+
+
+
 \subsection{Initial Condition Dependence}
