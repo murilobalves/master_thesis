@@ -231,3 +231,38 @@ For $K < 0$:
 It is worth to mention again that $K > 0$ for the $x$ plane corresponds to $K < 0$ for the $y$ plane. 
 
 With the analytical approach, the Twiss parameters calculation is required only once to obtain $(\beta_0, \alpha_0, \gamma_0)$ at the quadrupoles entrances, and with the quadrupole strength $K$ and length $L$, the integrals are calculated with the above presented formulae.
+
+\chapter{Feed-down Effect}\label{appendix:feed-down}
+The magnetic fields in a storage ring acting on the electron beam depends on the deviation between the beam position transverse position and the magnet magnetic center. If there this type of deviation is present, for example from magnets misalignment or beam orbit distortions, the so-called feed-down effect takes place. The largest the transverse deviations and the magnetic field strengths in a storage ring, the higher is the feed-down effect that, uncontrolled, spoils the beam dynamics. Since this effect should be mitigated as much as possible, this is one of the main reasons behind the very strict magnets alignment specifications in a storage ring, specially for 4\ts{th} generation machines. With transverse displacements, when the beam reaches a magnet which the main field order is $n$ (for $n>1$), the electrons will also be affected by all fields of order $n-1$. The main contributions to the feed-down effect in a storage ring usually come from quadrupoles and sextupoles. 
+
+The effect for quadrupoles can be derived from the hamiltonian in Eq.~\eqref{transv_hamilton}, where it is assumed that the reference orbit are localized at $x=y=0$. 
+\begin{equation}
+    H_0 = \dfrac{{x'}^2}{2} + \dfrac{{y'}^2}{2} + \left(K(s)- G^{2}(s)\right)\dfrac{{x}^2}{2} - K(s) \frac{y^2}{2} - G(s) x \delta.
+\end{equation}
+
+If the reference orbit is transformed by $x(s) \rightarrow x(s) - x_0(s)$ and $y(s) \rightarrow y(s) - y_0(s)$, the corresponding change in the hamiltonian is
+\begin{equation}
+    H_0 \rightarrow H_0 - K(s)\left(x_0x - y_0y\right) + \dfrac{K(s)}{2}\left(x_0^2 - y_0^2\right).
+\end{equation}
+
+Thus, it can be seen that dipolar contributions both in horizontal and vertical planes appears, whose bending magnitudes are given by $K(s)x_0$ and $K(s)y_0$, respectively. Horizontal displacements in quadrupoles produce additional horizontal bending and the vertical displacement in quadrupoles creates vertical bending in the storage ring. The additional constant terms in the hamiltonian does not contribute to the equations of motion. The additional horizontal bending may perturb the horizontal dispersion function $\eta_x$ and also distort the closed orbit. The vertical contribution creates a vertical dispersion $\eta_y$, which might increase the vertical beam emittance, decrease the light source brightness and disturb the closed orbit as well.
+
+The other important contribution comes from sextupoles. The non-linear transverse hamiltonian in the presence of sextupoles is given by:
+\begin{equation}
+    H_S = H_0 + \dfrac{S(s)}{6}\left(x^3 - 3xy^2\right),
+\end{equation}
+where $S(s)$ is the sextupolar function around the storage ring.
+
+Applying the coordinate transformation $x(s) \rightarrow x(s) - x_0(s)$, one can calculate that the related change in the hamiltonian is
+\begin{equation}
+    H_S \rightarrow H_S - \dfrac{S(s)x_0}{2}\left(x^2 - y^2\right) + \dfrac{S(s)x_0^2}{2}x - \dfrac{S(s)x_0^3}{6}.
+\end{equation}
+
+Therefore, horizontal displacements in sextupoles produce additional focusing forces, changing the focusing function by $K(s) \rightarrow K(s) - S(s)x_0(s)$ and perturbing the storage ring linear optics, i.e., betatron and dispersion functions. These deviations in sextupoles also create dipolar contributions but its strength depends on $x^2_0(s)$, so this is a second order effect. Again, the additional constant term does not affect the dynamics.
+
+With the transformation in the vertical plane $y(s) \rightarrow y(s) - y_0(s)$, the change in the non-linear hamiltonian is
+\begin{equation}
+    H_S \rightarrow H_S + S(s)y_0 xy - \dfrac{S(s)y_0^2}{2}x,
+\end{equation}
+which allows us to conclude that vertical deviations in sextupole produce coupled terms that add skew gradients in the storage ring, introducing perturbations in the lattice related to the transverse betatron coupling. Once again, there is a dipolar perturbation, which depends on $y^2_0(s)$ and is typically less important.
+
