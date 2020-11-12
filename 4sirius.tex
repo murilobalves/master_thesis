@@ -190,12 +190,12 @@ To study the LOCO jacobian matrix, \gls{svd} was applied in the matrix $\mathbf{
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/sing_vals_LM.eps}
+\includegraphics[width=1.0\textwidth]{figures/lm_singular_values.pdf}
     \caption{Levenberg-Marquardt.}
     \label{subfig:lm}
 \end{subfigure}
  \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/sing_vals_constraint.eps}
+\includegraphics[width=1.0\textwidth]{figures/constraint_singular_values.pdf}
     \caption{$\Delta K$ constraint, $c_{\Delta K} = w_{\Delta K}/\sigma_{\Delta K}$.}
     \label{subfig:constraint}
 \end{subfigure}
@@ -214,7 +214,7 @@ Limiting too much the $\Delta K$ step variation may increase unnecessarily the n
 Notice that with $c_{\Delta K}=10^{3}$ the last singular value was even smaller compared to the unconstrained case. This can be solved by combining the constrained case with the~\gls{lm} minimization, since it was seen that the~\gls{lm} contribution raises the singular values. The singular values distribution for the chosen values of $\lambda$ and $c_{\Delta K}$ compared to the original distribution can be found in Figure~\ref{fig:compare_svs}. With this choice, the only singular value that should be removed is the last one, which is well-known to be associated with the gain degeneracy between vertical~\glspl{bpm} and correctors.
 \begin{figure}
 \centering
-\includegraphics[width=0.75\textwidth]{figures/sing_vals_chosen.eps}
+\includegraphics[width=0.75\textwidth]{figures/chosen_singular_values.pdf}
 \caption{Singular values distributions between \gls{gn} unconstrained method and \gls{lm} constrained method with chosen parameters.}
 \label{fig:compare_svs}
 \end{figure}
@@ -289,12 +289,12 @@ From the results in Table~\ref{tab:diff_target} it can be seen that for the norm
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/chi_seeds.pdf}
+\includegraphics[width=1.0\textwidth]{figures/chi_seeds_grid.pdf}
     \caption{$\chi$ convergence.}
     \label{subfig:chi_seeds}
 \end{subfigure}
  \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/chi_versus_score.pdf}
+\includegraphics[width=1.0\textwidth]{figures/chi_versus_score_grid.pdf}
     \caption{Fitting mismatch versus fitting level.}
     \label{subfig:chi_versus_score}
 \end{subfigure}
@@ -304,9 +304,5 @@ From the results in Table~\ref{tab:diff_target} it can be seen that for the norm
 The average initial $\chi$ for these 100 sets of random errors was $\SI{11.6}{\micro\meter}$ and after the fitting, the average final $\chi$ was $\SI{6.2}{\nano\meter}$. Such level of fitting is only possible because in these tests the~\gls{orm} was obtained without any noise in the data and the process is not subjected to measurement errors. For real measurements, it is desired to achieve a final value for $\chi$ that is close to the BPM accuracy, which with the current technology is typically from hundreds of nanometers to a few micrometers.
 
 In Figure~\ref{subfig:chi_seeds} the convergence of $\chi$ for the 100 fittings is presented. The maximum number of iterations was limited to 25. It can be seen that at about 15 iterations $\chi$ already converged for all the 100 cases. Figure~\ref{subfig:chi_versus_score} shows the relation between the fitting level, represented by the ratio $\chi_{\mathrm{final}}/\chi_{\mathrm{initial}}$, and the fitting mismatch for each realization, obtained by $\sqrt{\sum_{p}d_p^2}$, where $d_p$ is the difference between target and fitted errors normalized by $\sigma$ for the parameter $p$, covering all the 7 fit parameters used in the LOCO runs. The mismatch in the fitting grows linearly with the fitting level, with a proportionality factor of about 50. The code would be unreliable if the fitting level was good but the corresponding mismatch was large. Such cases were not observed in the 100 random realizations.
-\subsection{Detecting Localized Errors}
-
-
-
-
-\subsection{Initial Condition Dependence}
+% \subsection{Detecting Localized Errors}
+% \subsection{Initial Condition Dependence}
