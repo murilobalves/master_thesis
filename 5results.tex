@@ -2,61 +2,29 @@
 
 This final chapter is dedicated to the application of the theory and code presented and discussed in the previous chapters on Sirius storage ring. A few tests were performed with measured~\glspl{orm} using the electron beam in the storage ring. The stored current used during the measurements was $\SI{10}{\milli\ampere}$, which is a value that provides a good accuracy for~\gls{bpm} readings and the beam stability is guaranteed as well.
 
-The~\gls{orm} measurement procedure is controlled by~\gls{sofb}, the same software that controls the orbit correction system and the bipolar method is used. Both horizontal and vertical kicks variations used for the measurements were $\Delta \theta_x = \Delta \theta_y = \SI{15}{\micro\meter}$ and the variation in~\gls{rf} frequency was $\Delta f_{\mathrm{rf}} = \SI{80}{\hertz}$. These variations are intermediate in the sense that they provide a compromise between sufficient orbit distortion for accurate~\gls{bpm} measurements and keeping small variations to avoid non-linear effects. Nominally, the peak orbit distortions at~\glspl{bpm} for half of correctors variations are $\Delta x = \SI{196}{\micro\meter}$ and $\Delta y = \SI{134}{\micro\meter}$. The peak horizontal distortion for a $\SI{40}{\hertz}$ variation in~\gls{rf} frequency is $\Delta x = \SI{38}{\micro\meter}$. The~\gls{orm} typical measurement time for Sirius storage ring is $40$ minutes.
+The~\gls{orm} measurement procedure using  bipolar method is controlled by~\gls{sofb}, the same software that controls the orbit correction system. Both horizontal and vertical kicks variations used for the measurements were $\Delta \theta_x = \Delta \theta_y = \SI{15}{\micro\meter}$ and the variation in~\gls{rf} frequency was $\Delta f_{\mathrm{rf}} = \SI{80}{\hertz}$. These variations are intermediate in the sense that they provide a compromise between sufficient orbit distortion for accurate~\gls{bpm} measurements and also keep variations small enough to avoid non-linear effects. Nominally, the peak orbit distortions at~\glspl{bpm} for half of correctors variations are $\Delta x = \SI{196}{\micro\meter}$ and $\Delta y = \SI{134}{\micro\meter}$. The peak horizontal distortion for a $\SI{40}{\hertz}$ variation in~\gls{rf} frequency is $\Delta x = \SI{38}{\micro\meter}$. The~\gls{orm} typical measurement time for Sirius storage ring is $40$ minutes.
 
-The beam orbit was measured  with the~\glspl{bpm} during $\SI{10}{\second}$ and the average variation obtained for each plane was $\sigma_{\mathrm{BPM}, x} = \SI{162(6)}{\nano\meter}$ and $\sigma_{\mathrm{BPM}, x} = \SI{233(7)}{\nano\meter}$.
-
-% \begin{figure}
-% \centering
-% \begin{subfigure}[t]{0.49\textwidth}
-% \includegraphics[width=1.0\textwidth]{figures/loco_surface_iter0_before.eps}
-%     \caption{Before.}
-%     \label{subfig:ondiag}
-% \end{subfigure}
-%  \begin{subfigure}[t]{0.49\textwidth}
-% \includegraphics[width=1.0\textwidth]{figures/loco_surface_iter0_after.eps}
-%     \caption{After.}
-%     \label{subfig:offdiag}
-% \end{subfigure}
-% \caption{\gls{orm} error distribution before and after LOCO fitting.}
-% \label{fig:hist}
-% \end{figure}
-
-%The kicks used for conversion are $\Delta \theta_x = \Delta \theta_y = \SI{15}{\micro\meter}$.
-
-% \begin{figure}
-% \centering
-% \begin{subfigure}[t]{0.49\textwidth}
-% \includegraphics[width=1.0\textwidth]{figures/histogram_iter0_ondiag.eps}
-%     \caption{On-diagonal.}
-%     \label{subfig:ondiag}
-% \end{subfigure}
-%  \begin{subfigure}[t]{0.49\textwidth}
-% \includegraphics[width=1.0\textwidth]{figures/histogram_iter0_offdiag.eps}
-%     \caption{Off-diagonal.}
-%     \label{subfig:offdiag}
-% \end{subfigure}
-% \caption{\gls{orm} error histograms.}
-% \label{fig:hist}
-% \end{figure}
+After BBA. Study shift with IDs installed, start-to-end emulating LOCO for the first time. LOCO already proven to be a useful tool.
 
 \section{Tests on Measured Data}
 
-\subsection{Determine LOCO Configuration}\label{subsec:loco_config}
+The beam orbit was measured  with the~\glspl{bpm} during $\SI{10}{\second}$ and the average variation obtained for each plane was $\sigma_{\mathrm{BPM}, x} = \SI{162(6)}{\nano\meter}$ and $\sigma_{\mathrm{BPM}, x} = \SI{233(7)}{\nano\meter}$.
+
+\subsection{Determining LOCO Configuration}\label{subsec:loco_config}
 From tests with simulated model and jacobian matrix analysis discussed in Chapter~\ref{chap:code_studies}, the chosen LOCO configuration was: include the parameters presented in Table~\ref{tab:fit_params} in the fitting, use~\gls{lm} method as the minimization algorithm setting $\lambda = 10^{-3}$ initially, use the $\Delta K$ constraints with weight $c_{\Delta K} = 10^{3}$ and remove only the last singular value for pseudo-inversion of LOCO jacobian matrix. 
 
 In order to check if this setup is appropriated for LOCO analysis in the real Sirius storage ring a simple test was performed. Without any optics or coupling corrections applied in the storage ring, an~\gls{orm} was measured and it was used to apply the LOCO method with two setups: without any modification (using~\gls{gn} method and no constraint on $\Delta K$) and with the chosen configuration described previously. The initial $\chi$ for the measured~\gls{orm} was $\SI{24.6}{\micro\meter}$ and for both LOCO fittings, $\chi$ converged to values close to $\SI{0.9}{\micro\meter}$. However there is a great difference between the two calibrated models regarding the quadrupole deviations from the nominal values. As discussed in the Chapter~\ref{chap:loco}, without constraints on $\Delta K$, the LOCO process tries to minimize $\chi$ without concern on the quadrupoles deviations, which may lead to large excursions in these parameters due to the quasi-degeneracies in LOCO jacobian. With constraints on $\Delta K$, the convergence path for $\chi$ is changed also minimize the step size of quadrupole deviations. This difference in the fitting behavior can be revealed with a plot of $\chi$ versus the euclidean norm of quadrupole variations over iterations, as presented in Figure~\ref{fig:chi_vs_dkl}.
 \begin{figure}
 \centering
-\includegraphics[width=0.75\textwidth]{figures/chi_versus_dk.eps}
-\caption{$\chi$ versus the euclidean norm $||\Delta K/K||$ throughout 10 LOCO iterations. The black dashed line corresponds to $\chi = \SI{908}{\nano\meter}$, the value used as reference for convergence.}
+\includegraphics[width=0.75\textwidth]{figures/chi_versus_dk_grid.pdf}
+\caption{$\chi$ versus the euclidean norm $||\Delta K/K||$ throughout 10 LOCO iterations. The gray dashed line corresponds to $\chi = \SI{908}{\nano\meter}$, the value used as reference for convergence.}
 \label{fig:chi_vs_dkl}
 \end{figure}
 
 The comparison of final fit variations for the 270 quadrupoles in Sirius storage ring in this test is plotted in Figure~\ref{fig:dkl_compare}. The variations reaching $\SI{7.5}{\%}$ are clearly unrealistic, based on available magnetic measurements data of these quadrupoles, which indicates a good gradient field quality with variations as low as $\SI{0.1}{\%}$. The solution obtained with constraints demands much less of quadrupole variations and also adjusts the measured~\gls{orm} in the same level. The variations obtained for the other parameters included in the fitting agrees for the two setups within the error bars, which was expected since basically the major difference is related to the constraints on quadrupoles strengths.
 \begin{figure}
 \centering
-\includegraphics[width=1.0\textwidth]{figures/delta_kl_comparison_better.eps}
+\includegraphics[width=1.0\textwidth]{figures/delta_kl_comparison_better_grid.pdf}
 \caption{Comparison of quadrupoles variations obtained from LOCO with two calculation methods.}
 \label{fig:dkl_compare}
 \end{figure}
@@ -87,7 +55,7 @@ The~\gls{loco} analysis was performed in these 10 measured~\glspl{orm} with the 
 \end{table}
 \begin{table}
     \centering
-    \caption{Variations in lattice functions obtained from calibrated models after LOCO analysis of 10 ORM measurements performed in Sirius storage ring.}
+    \caption{Variations in lattice functions obtained from LOCO calibrated models of 10 ORM measurements performed in Sirius storage ring.}
     \label{tab:twiss_var}
     \begin{tabular}{cccc}
         \toprule\toprule
@@ -103,21 +71,34 @@ The~\gls{loco} analysis was performed in these 10 measured~\glspl{orm} with the 
 
 The variations for the dispersion functions are calculated as absolute values because $\eta_x$ is zero in the straight sections, so it is not possible to divide the variations by the average values and then obtain a finite relative variation. To compare the variations in Table~\ref{tab:twiss_var}, the average and~\gls{std} of $\eta_x$ around the Sirius storage ring is $\SI{2.1}{\cm}$ and the peak-to-valley value is $\SI{8.3}{\cm}$. In the case of betatron functions, which always assumes positive values by definition, it is possible to obtain the relative variations.
 
-
-\subsection{Finding Planted Errors}
-
-
-\section{Linear Optics and Coupling Correction}
+\begin{table}
+    \centering
+    \caption{Variations in lattice functions for 10 sequential measurements performed in Sirius storage ring.}
+    \label{tab:twiss_var_meas}
+    \begin{tabular}{cccc}
+        \toprule\toprule
+        Lattice function & std variation & peak-to-valley variation & Unit \\
+        \hline
+        $\beta_x$ & \num{0.8}& \num{4.3} & \%\\
+        $\beta_y$ & \num{0.5} & \num{4.2}& \% \\
+        $\eta_x$ & \num{0.2} & \num{0.9} & \SI{}{\milli\meter}\\
+        $\eta_y$ & \num{0.3} & \num{1.3} & \SI{}{\milli\meter} \\
+        \bottomrule\bottomrule
+    \end{tabular}
+\end{table}
+% \subsection{Finding Planted Errors}
+\section{Linear Optics and Coupling Corrections}
+During the Sirius storage ring commissioning, operating the machine with nominal betatron tunes $\nu_x = 49.096$ and $\nu_y = 14.152$ produced a very low injection efficiency. After scanning these two parameters, the values that provided a better injection efficiency were $\nu_x = 49.075$ $\nu_y = 14.134$. Without optics and coupling correction the injection efficiency was on the order of $20\%$ on average.
 
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/bpm_gains_iter0.eps}
+\includegraphics[width=1.0\textwidth]{figures/bpm_gains_iter0_grid.pdf}
     \caption{BPM gains and roll angles.}
     \label{subfig:bpm_fit}
 \end{subfigure}
  \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/corr_gains_iter0.eps}
+\includegraphics[width=1.0\textwidth]{figures/corr_gains_iter0_grid.pdf}
     \caption{Correctors gains.}
     \label{subfig:corr_fit}
 \end{subfigure}
@@ -127,62 +108,116 @@ The variations for the dispersion functions are calculated as absolute values be
 
 \begin{figure}
 \centering
-\includegraphics[width=1.0\textwidth]{figures/loco_quad_skewquad_corrections.eps}
+\includegraphics[width=1.0\textwidth]{figures/loco_quad_skewquad_corrections2.pdf}
 \caption{Normal and skew quadrupoles corrections for three LOCO iterations.}
 \label{fig:loco_corrections}
 \end{figure}
+\begin{table}
+    \centering
+    \caption{Corrections strengths over LOCO iterations.}
+    \label{tab:corr_converge}
+    \begin{tabular}{ccccc}
+        \toprule\toprule
+        Knobs variation (std) & corr. \#1 & corr. \#2 & corr. \#3 & Unit \\
+        \hline
+        Quadrupoles & \num{0.33} & \num{0.21} & \num{0.07} &\SI{}{\%}\\
+        Skew Quadrupoles & \num{2.7e-3} & \num{5e-4} & \num{4e-4} & \SI{}{\meter^{-1}} \\
+        \bottomrule\bottomrule
+    \end{tabular}
+\end{table}
 
 \begin{figure}
 \centering
-\begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/surface_before_loco.pdf}
-    \caption{Before.}
-    \label{subfig:ondiag}
-\end{subfigure}
- \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/surface_after_loco.pdf}
-    \caption{After.}
-    \label{subfig:offdiag}
-\end{subfigure}
-\caption{Orbit response matrix error surface before and after LOCO corrections.}
-\label{fig:hist}
+\includegraphics[width=1.0\textwidth]{figures/loco_quad_skewquad_corrections_errorbar.pdf}
+\caption{Normal and skew quadrupoles final corrections after two LOCO iterations.}
+\label{fig:loco_corrections_final}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=1.0\textwidth]{figures/histogram_loco_iterations.pdf}
+\includegraphics[width=1.0\textwidth]{figures/final_quads_correction_families.pdf}
+\caption{Quadrupoles families final variations after two LOCO iterations. The continuous lines indicate the family average variation and the dashed lines correspond to $\pm$ std.}
+\label{fig:loco_corrections_final_families}
+\end{figure}
+
+% \begin{figure}
+% \centering
+% \begin{subfigure}[t]{0.49\textwidth}
+% \includegraphics[width=1.0\textwidth]{figures/surface_before_loco.pdf}
+%     \caption{Before.}
+%     \label{subfig:ondiag}
+% \end{subfigure}
+%  \begin{subfigure}[t]{0.49\textwidth}
+% \includegraphics[width=1.0\textwidth]{figures/surface_after_loco.pdf}
+%     \caption{After.}
+%     \label{subfig:offdiag}
+% \end{subfigure}
+% \caption{Orbit response matrix error surface before and after LOCO corrections.}
+% \label{fig:hist}
+% \end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1.0\textwidth]{figures/histogram_loco_iterations3_grid.pdf}
 \caption{Histogram for the errors between measured and nominal orbit response matrices for each LOCO iteration. The blue data refers to the measured ORM without corrections applied. The orange data was obtained after the first application of LOCO corrections. The green data is related to the second and last LOCO round applied.}
 \label{fig:histogram}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=1.0\textwidth]{figures/nominal_measured_after_before_loco.eps}
+\includegraphics[width=1.0\textwidth]{figures/nominal_measured_after_before_loco_grid.pdf}
 \caption{Orbit Response Matrix rows for the first CH and CV. The blue curve is the nominal ORM, the orange curve represents the measured ORM before LOCO corrections and the green curve is from measured ORM after LOCO.}
 \label{fig:orm_rows}
 \end{figure}
 
+
+
+\section{Independent Measurements}
+\subsection{Dispersion Function}
+
 \begin{figure}
 \centering
-\includegraphics[width=1.0\textwidth]{figures/nominal_measured_dispersion_after_before_loco.eps}
-\caption{Dispersion measurements and difference from nominal values (blue curves), before (orange curves) and after (green curves) LOCO corrections.}
+\includegraphics[width=1.0\textwidth]{figures/dispersion_after_before_loco_grid2.pdf}
+\caption{Measured dispersion functions on BPMs and its differences from nominal values (blue), before (orange) and after (green) LOCO corrections.}
 \label{fig:disp_error}
 \end{figure}
 
 
-\section{Independent Measurements}
 \subsection{Betatron Function}
-\subsection{Betatron Coupling}
-
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/coupling_before_loco.eps}
+\includegraphics[width=1.0\textwidth]{figures/beta_tuneshift_before_loco.pdf}
+    \caption{Before.}
+    \label{subfig:beta_before}
+\end{subfigure}
+ \begin{subfigure}[t]{0.49\textwidth}
+\includegraphics[width=1.0\textwidth]{figures/beta_tuneshift_after_loco.pdf}
+    \caption{After.}
+    \label{subfig:beta_after}
+\end{subfigure}
+\caption{Nominal (blue) and measured (orange) betatron functions before and after LOCO corrections.}
+\label{fig:beta_tuneshift}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=1.0\textwidth]{figures/beta_beating_progress2.pdf}
+\caption{Comparsion of beta-beating before and after optics corrections.}
+\label{fig:beta_beating_progress}
+\end{figure}
+
+\subsection{Betatron Coupling}
+\begin{figure}
+\centering
+\begin{subfigure}[t]{0.49\textwidth}
+\includegraphics[width=1.0\textwidth]{figures/coupling_before_loco_grid.pdf}
     \caption{Before.}
     \label{subfig:coup_before}
 \end{subfigure}
  \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/coupling_after_loco.eps}
+\includegraphics[width=1.0\textwidth]{figures/coupling_after_loco_grid.pdf}
     \caption{After.}
     \label{subfig:coup_after}
 \end{subfigure}
@@ -193,22 +228,41 @@ The variations for the dispersion functions are calculated as absolute values be
 \subsection{Horizontal Dynamic Aperture}
 \begin{figure}
 \centering
-\includegraphics[width=0.75\textwidth]{figures/xdynamic_aperture.eps}
+\includegraphics[width=0.75\textwidth]{figures/xdynamic_aperture_grid.pdf}
 \caption{Comparison of horizontal dynamic aperture measurement before and after LOCO corrections.}
 \label{fig:xdynap}
 \end{figure}
 
 Setting $5\%$ as the beam loss limit to estimate the dynamic aperture, after the application of LOCO corrections on linear optics and coupling, the horizontal dynamic aperture was increased from $\SI{7.6}{\milli\meter}$ to $\SI{8.3}{\milli\meter}$, which is an optimization of approximately $10\%$.
 
+\subsection{Injection Efficiency}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.75\textwidth]{figures/injeff_grid.pdf}
+\caption{Beam accumulation before and after LOCO corrections.}
+\label{fig:injeff}
+\end{figure}
 
+From a linear fitting applied on the data presented in Figure~\ref{fig:injeff}, the angular coefficient increased from $\SI{196}{\micro\ampere\second^{-1}}$ to $\SI{677}{\micro\ampere\second^{-1}}$. The Sirius injection rate is $\SI{2}{\hertz}$ and the current delivered by booster to the storage ring is $\SI{500}{\micro\ampere}$ on average, i.e, with an injection without any losses, the accumulation rate would be approximately $\SI{1}{\milli\ampere\second^{-1}}$. Therefore, with optics and coupling corrections, the average injection efficiency was increased from $19.6\%$ to $67.7\%$, which is improvement of a factor $3.4$.
 
+\begin{table}[h!]
+    \centering
+    \caption{Storage ring parameters before and after LOCO corrections}
+    \label{tab:params_corr}
+    \begin{tabular}{ccccc}
+        \toprule\toprule
+        Parameter & Before Corr. & After Corr. & Unit & Improvement Factor\\
+        \hline
+        $\Delta\beta_x/\beta_x$ (std) & \num{12.8(8)} & \num{5.1(8)} & \SI{}{\%} & \num{2.51} \\
+        $\Delta\beta_y/\beta_y$ (std) & \num{10.4(5)} & \num{5.2(5)} & \SI{}{\%} & \num{2.00} \\
+        $\Delta\eta_x$ (std) &  \num{10.2(2)} &  \num{1.6(2)} & \SI{}{\milli\meter} & \num{6.38} \\
+        $\Delta\eta_y$ (std) &  \num{2.8(3)} &  \num{1.9(3)} & \SI{}{\milli\meter}& \num{1.47} \\
+        Betatron Coupling $|\kappa|$ &  \num{0.78(4)} & \num{0.07(1)} & \SI{}{\%} & \num{11.14} \\
+        H. Dynamic Aperture  & \num{7.6} & \num{8.3} & \SI{}{\milli\meter} & \num{1.09} \\
+        Injection Efficiency (mean)  & \num{19.6} & \num{67.7} & \SI{}{\%} & \num{3.45} \\
+        \bottomrule\bottomrule
+    \end{tabular}
+\end{table}
 
-
-% \section{Orbit response matrix}
-% \section{Transverse Linear Coupling}
-% \section{Betatron Function}
-% \section{Dispersion Function}
-% % \section{Emittance}
-% \section{Dynamical Aperture}
-% \section{Injection Efficiency}
+\section{Orbit Effect on Linear Optics}
