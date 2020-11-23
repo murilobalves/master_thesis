@@ -12,6 +12,8 @@ The Python frameworks mentioned in the Section~\ref{sec:master_obj} for the acce
 Since PyAccel can be seen as a ``high-level'' interface for the calculations performed in the background by TrackCpp, the accelerator physics simulations are conducted with the combined use of PyModels and PyAccel packages.
 \section{Implementation}
 
+Currently the LOCO code for Sirius is a Python package. This package is used in a Python script that gathers the necessary input data, starts the fitting and saves the output. At the time of writing, this script is executed via terminal. The detailed implementation of LOCO Python package is completely open for access in the GitHub Repository website~\cite{locosirius}. A functional and tested code version was obtained during the master's work, however the LOCO code is susceptible to changes and improvements based on the experience acquired during the application in Sirius commissioning and machine studies. The upcoming versions will be constantly updated in the website~\cite{locosirius}, open to the community access.
+
 \subsection{Orbit Response Matrix Calculation}
 The LOCO method requirements are basically a simulated model for the accelerator and a framework to perform the \gls{orm} calculations in the model. The numerical tools required for LOCO, such as matrix multiplications and SVD, are all covered by \textsc{NumPy}, a Python package largely used in scientific computing. 
 
@@ -86,66 +88,8 @@ The larger~\gls{orm} computing time (approximately a factor of 20 for bipolar an
 
 The~\gls{orm} calculation for the Sirius booster and storage ring was implemented by an~\gls{fac} colleague as a Python class and it is used extensively in the LOCO code.
 \subsection{The Algorithm}
-The LOCO implementation in Python realized by the author follows the pseudo-algorithm described in Algorithm~\ref{algo:loco}. For the case of \gls{lm} minimization method, there is an inner loop to deal with the parameter $\lambda$ for the case of $\chi^2$ reduction failure. This \gls{lm} loop is described in Algorithm~\ref{algo:lm_loop}.
-\begin{algorithm}[h!]
-\scriptsize
-\footnotesize
-\SetAlgoLined
-\KwResult{Fitted model, $\chi^2$ at each step}
- Get LOCOInput: measured ORM, $\Delta \theta_x$, $\Delta \theta_y$, $\Delta f_{\mathrm{rf}}$, $\nu_x$, $\nu_y$ and $\sigma_{\mathrm{BPM}}$.\\
- Define LOCOConfig: fit parameters, minimization method, singular values selection, constraints, weights, $n_{\mathrm{steps}}$, $\chi^2_{\mathrm{min}}$, $\chi^2_{\mathrm{step}}$, initial $\lambda$, $\lambda_{\mathrm{min}}$, $\lambda_{\mathrm{max}}$.\\
- Change model tunes to match the measured values.\\
- Obtain initial model ORM.\\
- Calculate or load LOCO jacobian matrix.\\
- Perform SVD and singular values filtering on jacobian matrix to obtain its pseudo-inverse.\\
- Calculate initial reference residue vector $\vec{V}_0$ and $\chi^2_0$.\\
- $n \leftarrow 0$ \\
- \While{$n \leq n_{\mathrm{steps}}$}{
-  With $\vec{V}_0$, calculate parameters variations $\Delta \vec{P}$.\\
-  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
-  Calculate new residue vector $\vec{V}$ and $\chi^2$. \\
-  \eIf{$\chi^2 > \chi_0^2$ or $\chi^2 < \chi^2_{\mathrm{min}}$}{
-  \eIf{$\chi^2 > \chi^2_{\mathrm{min}}$ and LM method}{LM Fail $\leftarrow$ LM Loop().\\
-  \If{LM Fail}{Stop}
-  }{Stop}
-   }{
-   \eIf{$\chi_0^2 - \chi^2 < \chi_{\mathrm{step}}^2$}{Stop}{
-   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$.\\
-   Update model. \\
-   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$.\\
-   \If{LM method}{Decrease $\lambda$ and recalculate the jacobian pseudo-inverse}
-  }}
-  $n \leftarrow n + 1$ \\
- }
- Save output.
- \caption{LOCO pseudo-algorithm}
- \label{algo:loco}
-\end{algorithm}
-\begin{algorithm}[h!]
-% \footnotesize
-\scriptsize
-\SetAlgoLined
-\KwResult{LM Fail}
-LM Fail $\leftarrow$ True\\
- \While{$\lambda > \lambda_{\mathrm{min}}$ and $\lambda < \lambda_{\mathrm{max}}$}{
- Increase $\lambda$.\\
-  Recalculate the jacobian pseudo-inverse.\\
-  Recalculate parameters variations $\Delta \vec{P}$.\\
-  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
-  Calculate new residue vector $\vec{V}$ and $\chi^2$.\\
-  \If{$\chi^2 < \chi_0^2$}{
-   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$\\
-   Update model \\
-   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$\\
-   LM Fail $\leftarrow$ False.\\
-   Stop.}
- }
- \caption{\gls{lm} Loop pseudo-algorithm}
- \label{algo:lm_loop}
-\end{algorithm}
+The LOCO implementation in Python realized by the author follows the pseudo-algorithm described in Algorithm~\ref{algo:loco} that can be found in Appendix~\ref{appendix:algo}. For the case of \gls{lm} minimization method, there is an inner loop to deal with the parameter $\lambda$ for the case of $\chi^2$ reduction failure. This \gls{lm} loop is described in Algorithm~\ref{algo:lm_loop}, also in Appendix~\ref{appendix:algo}.
 % \normalsize
-
-The detailed implementation in Python is completely open for access in the GitHub Repository website~\cite{locosirius}. A functional and tested code version was obtained during the master's work, however the LOCO code is susceptible to changes and improvements based on the experience acquired during the application in Sirius commissioning and machine studies. The upcoming versions will be constantly updated in the website~\cite{locosirius}, open to the community access.
 
 The fit parameters that has been used in the regular LOCO analysis performed in Sirius storage ring are organized in Table~\ref{tab:fit_params}. The first 5 parameters refers to the fitting of the~\gls{orm} on-diagonal elements, related to the linear optics, the other 2 fit parameters between horizontal lines are related to the~\gls{orm} off-diagonal elements adjustment, which corresponds to the linear coupling errors. Typically both the on and off-diagonal elements are included in the fitting, thus the total number of fit parameters for LOCO in Sirius Storage ring is 1110.
 \begin{table}
@@ -190,12 +134,12 @@ To study the LOCO jacobian matrix, \gls{svd} was applied in the matrix $\mathbf{
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/lm_singular_values.pdf}
+\includegraphics[width=1.0\textwidth]{figures/lm_singular_values_big.pdf}
     \caption{Levenberg-Marquardt.}
     \label{subfig:lm}
 \end{subfigure}
  \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/constraint_singular_values.pdf}
+\includegraphics[width=1.0\textwidth]{figures/constraint_singular_values_big.pdf}
     \caption{$\Delta K$ constraint, $c_{\Delta K} = w_{\Delta K}/\sigma_{\Delta K}$.}
     \label{subfig:constraint}
 \end{subfigure}
@@ -289,12 +233,12 @@ From the results in Table~\ref{tab:diff_target} it can be seen that for the norm
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/chi_seeds_grid.pdf}
+\includegraphics[width=1.0\textwidth]{figures/chi_seeds_grid_big.pdf}
     \caption{$\chi$ convergence.}
     \label{subfig:chi_seeds}
 \end{subfigure}
  \begin{subfigure}[t]{0.49\textwidth}
-\includegraphics[width=1.0\textwidth]{figures/chi_versus_score_grid.pdf}
+\includegraphics[width=1.0\textwidth]{figures/chi_versus_score_grid_big.pdf}
     \caption{Fitting mismatch versus fitting level.}
     \label{subfig:chi_versus_score}
 \end{subfigure}
@@ -304,5 +248,99 @@ From the results in Table~\ref{tab:diff_target} it can be seen that for the norm
 The average initial $\chi$ for these 100 sets of random errors was $\SI{11.6}{\micro\meter}$ and after the fitting, the average final $\chi$ was $\SI{6.2}{\nano\meter}$. Such level of fitting is only possible because in these tests the~\gls{orm} was obtained without any noise in the data and the process is not subjected to measurement errors. For real measurements, it is desired to achieve a final value for $\chi$ that is close to the BPM accuracy, which with the current technology is typically from hundreds of nanometers to a few micrometers.
 
 In Figure~\ref{subfig:chi_seeds} the convergence of $\chi$ for the 100 fittings is presented. The maximum number of iterations was limited to 25. It can be seen that at about 15 iterations $\chi$ already converged for all the 100 cases. Figure~\ref{subfig:chi_versus_score} shows the relation between the fitting level, represented by the ratio $\chi_{\mathrm{final}}/\chi_{\mathrm{initial}}$, and the fitting mismatch for each realization, obtained by $\sqrt{\sum_{p}d_p^2}$, where $d_p$ is the difference between target and fitted errors normalized by $\sigma$ for the parameter $p$, covering all the 7 fit parameters used in the LOCO runs. The mismatch in the fitting grows linearly with the fitting level, with a proportionality factor of about 50. The code would be unreliable if the fitting level was good but the corresponding mismatch was large. Such cases were not observed in the 100 random realizations.
-% \subsection{Detecting Localized Errors}
-% \subsection{Initial Condition Dependence}
+\subsection{Detecting Localized Errors}
+
+Detecting single errors is very useful to identify, in a more specific way, malfunctioning elements or a problematic region in the storage ring. A functional diagnostic tool that provides this localized detection can spare a considerable amount of time in the investigation of problems that are degrading the machine performance, thus being a useful tool for the commissioning stage and regular operation of a synchrotron light source as well, since installation and maintenance intervention occurs several times during machine lifetime.
+
+The goal of the tests reported in the present subsection is to check the LOCO ability to identify localized errors on quadrupoles, BPMs and correctors. 
+
+\subsubsection{Single Gradient}
+Suppose that amongst random gradient errors in quadrupoles, there is a single quadrupole with greater deviation to its nominal value. Single quadrupole errors are not expected, since magnetic measurements are performed before the assembly in storage ring to guarantee that mechanical and magnetic properties meet the specifications for all magnets. However, after the magnets assembly some kind of problem in a specific magnet coils or in its power supply may appear, leading to a localized error.
+
+The following error distribution was generated and applied in Sirius storage ring model: gaussian random errors in gradient strengths with std $\sigma=\SI{0.25}{\%}$ and $\SI{2.0}{\%}$ of error in the 215\ts{th} quadrupole. Errors in others parameters were not included. An~\gls{orm} was calculated with this perturbed model and it was used as input for LOCO analysis, including all fit parameters. The results for variations in quadrupoles fitted by LOCO compared to the target errors are in Figure~\ref{fig:single_quad_detec}.
+\begin{figure}
+\centering
+\includegraphics[width=1.0\textwidth]{figures/single_quaderror_detection_big.pdf}
+\caption{Fitted and target quadrupoles variations, including a higher error of 2\% in the 215\ts{th} quadrupole.}
+\label{fig:single_quad_detec}
+\end{figure}
+
+From Figure~\ref{fig:single_quad_detec} it can be seen that the input errors were accurately determined, including the single large gradient error. The maximum difference between fitted and target error for quadrupoles was $\num{1e-8}$. The final value of $\chi$ in this fitting was very low, around $\SI{1e-6}{\micro\meter}$. The remaining fit parameters were varied in much lower level, the maximum variation of BPM gains and correctors was $\num{3e-6}$ and for skew quadrupoles strengths $\SI{1e-16}{\meter^{-1}}$, on the order of computer numeric precision.
+
+It is clear that this level of error determination is only possible for tests in the simulated model, were the goal~\gls{orm} is obtained without noise and measurement errors. Nevertheless, in the limit that these practical limitations are set as low as possible in real measurements, it would still be possible to identify single errors with reasonable accuracy.
+\subsubsection{Single Gain}
+The same tests were performed with BPMs and correctors gains. Such type of error in gains may be associated with malfunctioning in\glspl{bpm} antennas, electrical interference or software issues. For correctors the outliers in gains may indicate problems in the coils of magnet or in its power supplies. For BPMs, the problems are typically easier to detect since they can be identified directly with unrealistic position measurements. For correctors, the effect on the beam produced by localized problems may be more subtle to identify directly. Measuring the~\gls{orm} and performing the LOCO analysis is usually a good indirect procedure to detect the aforementioned errors.
+
+Gaussian random errors with std $\sigma=\SI{10}{\%}$ were applied both for horizontal and vertical gains. BPM roll angle errors were included following a gaussian random distribution with std $\sigma=\SI{1}{\milli\radian}$.  The corresponding gains for 7\ts{th} BPM, CH and CV were increased by a $1.5$ factor. This means that the nominal~\gls{orm}, after applying the random gains errors, had the 7\ts{th} and 167\ts{th} rows (for the 7\ts{th} BPM) and 7\ts{th} and 127\ts{th} columns (for the 7\ts{th} CH and CV) multiplied by $1.5$. This altered~\gls{orm} were set as the goal matrix for LOCO fitting, where all fit parameters were included again. The fitting results for this test are shown in Figure~\ref{fig:gain_greater}.
+\begin{figure}
+\centering
+\begin{subfigure}[t]{0.49\textwidth}
+\includegraphics[width=1.0\textwidth]{figures/bpm_gains_1p5gain_7th_bpm_grid_big.pdf}
+    \caption{BPM gains and roll angles.}
+    \label{subfig:bpm_fit_gain_greater}
+\end{subfigure}
+ \begin{subfigure}[t]{0.49\textwidth}
+\includegraphics[width=1.0\textwidth]{figures/corr_gains_chcv_1p5_grid_big.pdf}
+    \caption{Correctors gains.}
+    \label{subfig:corr_fit_gain_greater}
+\end{subfigure}
+\caption{Fitted values for BPM gains, roll errors and correctors (CH and CV) gains, where the 7\ts{th} BPM, CH and CV gains are greater by a 1.5 factor. Gray $\times$ represents the target errors.}
+\label{fig:gain_greater}
+\end{figure}
+
+Once again, the input errors were determined precisely and the larger planted gains were identified, both for BPM and correctors. The maximum difference between fitted and target error for horizontal gains (BPM and CH) was $\SI{0.2}{\%}$ and for vertical gains (BPM and CV) was $\SI{0.1}{\%}$. The other parameters were changed again in a lower level, the maximum variation for quadrupoles was $\SI{2e-6}{}$ and for skew quadrupoles $\SI{4e-9}{\meter^{-1}}$.
+
+% \subsubsection{Elements Swap}
+% The last test regarding localized errors detection is swapping of elements in a storage ring. Even tough the elements installation and communication with the control system are performed and checked carefully, due to the large number of devices, some errors may remain. This type of problem may be found mainly in early commissioning stages. However, interventions in the devices, for maintenance, elements replacement or software updates in the control system, may produce a non-zero chance of element swapping. A quite common type of devices swapping found in storage ring is related to BPMs, in cables or in control system. 
+
+% \gls{bpm} and correctors swap can be simulated simply by swapping the corresponding~\gls{orm} rows and columns. To simulate an exchange between 6\ts{th} and 7\ts{th} BPM, the nominal~\gls{orm} had its 6\ts{th} and 166\ts{th} rows swapped with 7\ts{th} and 167\ts{th} rows and this manipulated matrix was set as input for LOCO. In this way it was simulated only the effect of element swap, since all the fit parameters are exactly equal to the nominal values. 
+
+% The initial $\chi$ between swapped~\gls{bpm} matrix and the nominal one in this case was $\SI{15}{\micro\meter}$. The LOCO realized only 2 iterations, reducing only to $\chi = \SI{2.3}{\micro\meter}$, i.e., the goal matrix could not be explained in a typical fitting level. In Figure~\ref{fig:swap_bpm}, the gains obtained from this fitting are presented.
+% \begin{figure}
+% \centering
+% \includegraphics[width=1.0\textwidth]{figures/corr_gains_swap_bpm_25_26.pdf}
+% \caption{25\ts{th} and 26\ts{th} BPMs}
+% \label{fig:swap_bpm}
+% \end{figure}
+
+% % \begin{figure}
+% % \centering
+% % \begin{subfigure}[t]{0.49\textwidth}
+% % \includegraphics[width=1.0\textwidth]{figures/bpm_gains_swap_6with7_grid.pdf}
+% %     \caption{BPM gains and roll angles.}
+% %     \label{subfig:bpm_fit_swap_bpm}
+% % \end{subfigure}
+% %  \begin{subfigure}[t]{0.49\textwidth}
+% % \includegraphics[width=1.0\textwidth]{figures/corr_gains_bpm_swap_6with7_grid.pdf}
+% %     \caption{Correctors gains.}
+% %     \label{subfig:corr_fit_swap_bpm}
+% % \end{subfigure}
+% % \caption{Fitted values for BPM gains, roll errors and correctors (CH and CV) gains swapping 6\ts{th} and 7\ts{th} BPMs.}
+% % \label{fig:swap_bpm}
+% % \end{figure}
+
+% In adjusted BPMs gains and roll angles it can be clearly identified that the values for 6\ts{th} and 7\ts{th} stand out compared the remaining BPMs, even reaching negative horizontal gains. CH and CV gains near the region where the swap was performed also indicate that this region is problematic. These obvious outliers, specially the unrealistic horizontal gains, can be used to point out that there is a type of o problem in 3\ts{rd} and 2\ts{nd} BPMs that can not be explained with transformations of scales and rotations. 
+
+% To simulate an exchange between 6\ts{th} and 7\ts{th} CHs, the nominal~\gls{orm} had its 6\ts{th} column swapped with 7\ts{th}. LOCO method was applied using this changed matrix as goal. Once again, the convergence was stopped after 2 iterations, with $\chi$ reduced from $\SI{15.5}{\micro\meter}$ to $\SI{4.6}{\micro\meter}$, indicating a worse fitting level compared to the one obtained in BPM swap. The fitted gains in this test are shown in Figure~\ref{fig:swap_ch}.
+% \begin{figure}
+% \centering
+% \begin{subfigure}[t]{0.49\textwidth}
+% \includegraphics[width=1.0\textwidth]{figures/corr_gains_swap_ch_23_24.pdf}
+%     \caption{CH swap.}
+%     \label{subfig:bpm_fit_swap_ch}
+% \end{subfigure}
+%  \begin{subfigure}[t]{0.49\textwidth}
+% \includegraphics[width=1.0\textwidth]{figures/corr_gains_swap_cv_31_32.pdf}
+%     \caption{CV swap.}
+%     \label{subfig:corr_fit_swap_cv}
+% \end{subfigure}
+% % \caption{Fitted values for BPM gains, roll errors and correctors (CH and CV) gains swapping 6\ts{th} and 7\ts{th} CHs.}
+% \label{fig:swap_corr}
+% \end{figure}
+
+% In adjusted gains for CH, the values for 6\ts{th} and 7\ts{th} horizontal correctors surely differ from the remaining values, reaching negative values as well. The other fitted gains around the swap region are also disturbed. The same behavior is valid for CV swapping, affecting the vertical corrector gains.
+
+% With the studies performed with elements swapping in~\gls{orm}, one can conclude that, even for discontinuous errors like this, the LOCO method can still provide useful information. The unrealistic fitted gains in the elements may indicate that there is a localized discrepancy between the lattice that generated the goal~\gls{orm} and the model lattice that had its parameters varied to fit the goal matrix. Since the LOCO method applies linear transformations (scales changes with gains and rotations with roll angles) in~\gls{orm}, transformations like rows and columns exchanges can not be covered. 
+
+% Nevertheless, if this behavior is observed in LOCO analysis performed with measured~\glspl{orm}, one has evidences of localized problems that can be investigated more efficiently. For example, based on the localized negative gains, one can swap the corresponding rows or columns in nominal~\gls{orm} and compare the signatures with measured~\gls{orm}. Since unguided searching for problems in such a complex system as a storage ring with thousands of elements is clearly impractical, a tool that may reduce the search space dimensions is very valuable for machine operation, on the commissioning context and on the regular basis as well, after machine maintenance events, for example.
+
