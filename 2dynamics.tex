@@ -242,101 +242,101 @@ Since the synchronism condition is $f_{\mathrm{rf}} = h f_0$ the Eq.~\eqref{orbi
 From this equation it can be seen that a change in the \gls{rf} frequency forces the electrons to follow an off-energy orbit. In the \gls{rf} signal tuning, one must adjust the \gls{rf} frequency to match the condition $\delta = 0$ and this can be performed by making the horizontal orbit average go to zero, since the orbit displacement is related to the energy deviation by the dispersion function.
 
 Beyond the importance of phase stability in storage rings, it is also this principle that allows for increasing the electron energy in boosters. Increasing the magnetic fields will force the electrons to reach new synchronous conditions related to higher energies. To achieve that, the electrons must gain more energy from the \gls{rf} cavity and the phase stability principle drives this process automatically. In the Sirius booster, the electron energy ramp is performed from \SI{150}{\mega \electronvolt} to \SI{3}{\giga \electronvolt}.
-\section{Equilibrium Parameters}\label{equilibrium}
-Two opposite effects acts on the electron beam to result in equilibrium parameters: the radiation damping and the quantum excitation. The radiation emission is a quantum process, where the photon emissions occur randomly and are statistically independents. The radiation emission provides sudden energy jumps in the electron energy and excites both betatron and synchrotron oscillations.
+% \section{Equilibrium Parameters}\label{equilibrium}
+% Two opposite effects acts on the electron beam to result in equilibrium parameters: the radiation damping and the quantum excitation. The radiation emission is a quantum process, where the photon emissions occur randomly and are statistically independents. The radiation emission provides sudden energy jumps in the electron energy and excites both betatron and synchrotron oscillations.
 
-For the synchrotron oscillations the excitation is obvious. Each photon emitted produces a negative energy deviation in the electron, so it increases the energy oscillation amplitude. In the transverse coordinates, this negative energy deviation produces an additional orbit displacement by the means of dispersion function, then the electron will perform betatron oscillations around this new off-energy orbit, which might have greater amplitudes than before the photon emission, depending on the betatron phase at the emission position.
+% For the synchrotron oscillations the excitation is obvious. Each photon emitted produces a negative energy deviation in the electron, so it increases the energy oscillation amplitude. In the transverse coordinates, this negative energy deviation produces an additional orbit displacement by the means of dispersion function, then the electron will perform betatron oscillations around this new off-energy orbit, which might have greater amplitudes than before the photon emission, depending on the betatron phase at the emission position.
 
-It was shown in Section \ref{longitudinal} that the linear dependence of the energy loss by radiation on the electron energy deviation, the positive derivative $\dfrac{\dif U_{\mathrm{rad}}}{\dif \delta}$, produces a damping term in synchrotron oscillations: as the electron energy is higher it radiates more energy. The damping of betatron oscillations comes from the manner that the \gls{rf} cavity field accelerates the electrons and replaces its energy. The radiation emission reduces the momentum magnitude, $p = \sqrt{p_s
-^2+ p_x^2 +p_y^2}$, but does not change the vector direction. Moreover, the longitudinal electric fields in the \gls{rf} cavity adds only to the longitudinal component of the momentum. Therefore, after the energy loss and gain processes, the momentum magnitude is the same but the transverse components $p_x$ and $p_y$ are reduced and the longitudinal component $p_s$ is increased, leading to the damping of the transverse motion.
-\subsection{Emittance}
-The classical radiation power emitted for a relativist electron with energy $E$ in a magnetic field $B$ perpendicular to the electron path is given by~\cite{jackson}:
-\begin{equation}
-    P_{\gamma} = \dfrac{e^2c^3}{2\pi} C_{\gamma} E^2 B^2,
-\end{equation}
-where the constant $C_{\gamma} = \dfrac{4 \pi r_e}{3 (mc^2)^3} \approx \SI{8.85e-5}{\metre {\giga \electronvolt}^{-3}}$ and $r_e$ is classical electron radius. Writing the radiation power in terms of the local curvature radius:
-\begin{equation}
-    P_{\gamma} = \dfrac{cC_{\gamma}}{2\pi} \dfrac{E^4}{\rho^2}.
-\end{equation}
+% It was shown in Section \ref{longitudinal} that the linear dependence of the energy loss by radiation on the electron energy deviation, the positive derivative $\dfrac{\dif U_{\mathrm{rad}}}{\dif \delta}$, produces a damping term in synchrotron oscillations: as the electron energy is higher it radiates more energy. The damping of betatron oscillations comes from the manner that the \gls{rf} cavity field accelerates the electrons and replaces its energy. The radiation emission reduces the momentum magnitude, $p = \sqrt{p_s
+% ^2+ p_x^2 +p_y^2}$, but does not change the vector direction. Moreover, the longitudinal electric fields in the \gls{rf} cavity adds only to the longitudinal component of the momentum. Therefore, after the energy loss and gain processes, the momentum magnitude is the same but the transverse components $p_x$ and $p_y$ are reduced and the longitudinal component $p_s$ is increased, leading to the damping of the transverse motion.
+% \subsection{Emittance}
+% The classical radiation power emitted for a relativist electron with energy $E$ in a magnetic field $B$ perpendicular to the electron path is given by~\cite{jackson}:
+% \begin{equation}
+%     P_{\gamma} = \dfrac{e^2c^3}{2\pi} C_{\gamma} E^2 B^2,
+% \end{equation}
+% where the constant $C_{\gamma} = \dfrac{4 \pi r_e}{3 (mc^2)^3} \approx \SI{8.85e-5}{\metre {\giga \electronvolt}^{-3}}$ and $r_e$ is classical electron radius. Writing the radiation power in terms of the local curvature radius:
+% \begin{equation}
+%     P_{\gamma} = \dfrac{cC_{\gamma}}{2\pi} \dfrac{E^4}{\rho^2}.
+% \end{equation}
 
-The total energy radiated per turn for electrons with nominal energy can be obtained by integrating the radiation power in one revolution period. Since $s = ct$, equivalently one can change the integration variable to $s$ and substitute the local radius $\rho$ by the curvature function $G(s)$:
-\begin{equation}
-U_0 = \dfrac{C_{\gamma}E_0^4}{2\pi} \oint G^{2}(s) \dif s.    
-\end{equation}
+% The total energy radiated per turn for electrons with nominal energy can be obtained by integrating the radiation power in one revolution period. Since $s = ct$, equivalently one can change the integration variable to $s$ and substitute the local radius $\rho$ by the curvature function $G(s)$:
+% \begin{equation}
+% U_0 = \dfrac{C_{\gamma}E_0^4}{2\pi} \oint G^{2}(s) \dif s.    
+% \end{equation}
 
-Here we define the second synchrotron radiation integral:
-\begin{equation}
-    I_2 = \oint G^{2}(s) \dif s = \oint \dfrac{1}{\rho^2(s)} \dif s,
-\end{equation}
-then the energy loss per turn is written as $U_0 = C_{\gamma}E_0^4 I_2/2\pi$.
+% Here we define the second synchrotron radiation integral:
+% \begin{equation}
+%     I_2 = \oint G^{2}(s) \dif s = \oint \dfrac{1}{\rho^2(s)} \dif s,
+% \end{equation}
+% then the energy loss per turn is written as $U_0 = C_{\gamma}E_0^4 I_2/2\pi$.
 
-The origin of the other three synchrotron radiation integrals are more involved to be explained. Since it is not in the dissertation's scope, they will just be defined with their related parameters. 
-\begin{align}
-    I_3 &= \oint |G(s)|^3 \dif s = \oint \dfrac{1}{|\rho(s)|^3} \dif s, \\
-    I_4 &= \oint \eta(s) G(s) \left(G^2(s) + 2 K(s)\right) \dif s, \\
-    I_5 &= \oint \mathcal{H}(\eta, \eta') |G(s)|^3 \dif s,
-    \label{eq:integral5}
-\end{align}
-where $\mathcal{H}$ is a functional given by
-\begin{equation}
-    \mathcal{H}(\eta, \eta') = \gamma \eta^2 + 2 \alpha \eta \eta' + \beta {\eta'}^2.
-\end{equation}
+% The origin of the other three synchrotron radiation integrals are more involved to be explained. Since it is not in the dissertation's scope, they will just be defined with their related parameters. 
+% \begin{align}
+%     I_3 &= \oint |G(s)|^3 \dif s = \oint \dfrac{1}{|\rho(s)|^3} \dif s, \\
+%     I_4 &= \oint \eta(s) G(s) \left(G^2(s) + 2 K(s)\right) \dif s, \\
+%     I_5 &= \oint \mathcal{H}(\eta, \eta') |G(s)|^3 \dif s,
+%     \label{eq:integral5}
+% \end{align}
+% where $\mathcal{H}$ is a functional given by
+% \begin{equation}
+%     \mathcal{H}(\eta, \eta') = \gamma \eta^2 + 2 \alpha \eta \eta' + \beta {\eta'}^2.
+% \end{equation}
 
-From the analysis of the radiation damping effects on the transverse and longitudinal dynamics, one can obtain the damping rates for each oscillation. These damping rates are related to the so-called damping partition numbers, given by\footnote{Historically it was also chosen the letter $J$ to represent the damping partition numbers, care must be taken to do not confound it with the action variables.}
-\begin{equation}
-    J_x = 1 - \dfrac{I_4}{I_2}, \hspace{0.5cm} J_y = 1, \hspace{0.5cm} J_{\delta} = 2 + \dfrac{I_4}{I_2}.
-\end{equation}
+% From the analysis of the radiation damping effects on the transverse and longitudinal dynamics, one can obtain the damping rates for each oscillation. These damping rates are related to the so-called damping partition numbers, given by\footnote{Historically it was also chosen the letter $J$ to represent the damping partition numbers, care must be taken to do not confound it with the action variables.}
+% \begin{equation}
+%     J_x = 1 - \dfrac{I_4}{I_2}, \hspace{0.5cm} J_y = 1, \hspace{0.5cm} J_{\delta} = 2 + \dfrac{I_4}{I_2}.
+% \end{equation}
 
-Note that $J_x + J_y + J_{\delta} = 4$, which is a general result obtained from the Robinson Theorem~\cite{Robinson1958}. The value $J_y = 1$ reflects the assumption of zero vertical dispersion. In the presence of vertical dispersion, the first, fourth and fifth synchrotron integrals are divided in two components: $I_{i, x}$ and $I_{i, y}$, where $i = 1, 4, 5$. In this case the damping partition numbers are: 
-\begin{equation*}
-    J_x = 1 - \dfrac{I_{4,x}}{I_2}, \hspace{0.5cm} J_y = 1 - \dfrac{I_{4,y}}{I_2}, \hspace{0.5cm} J_{\delta} = 2 + \dfrac{I_{4,x} + I_{4,y}}{I_2}.
-\end{equation*}
+% Note that $J_x + J_y + J_{\delta} = 4$, which is a general result obtained from the Robinson Theorem~\cite{Robinson1958}. The value $J_y = 1$ reflects the assumption of zero vertical dispersion. In the presence of vertical dispersion, the first, fourth and fifth synchrotron integrals are divided in two components: $I_{i, x}$ and $I_{i, y}$, where $i = 1, 4, 5$. In this case the damping partition numbers are: 
+% \begin{equation*}
+%     J_x = 1 - \dfrac{I_{4,x}}{I_2}, \hspace{0.5cm} J_y = 1 - \dfrac{I_{4,y}}{I_2}, \hspace{0.5cm} J_{\delta} = 2 + \dfrac{I_{4,x} + I_{4,y}}{I_2}.
+% \end{equation*}
 
-The damping rates for each coordinate can be obtained by $\alpha_{\mu} = J_{\mu} \alpha_0$, where $\mu = x, y$ or $\delta$ and $\alpha_0 = \dfrac{U_0}{2E_0T_0}$. The damping times are simply $\tau_{\mu} = 1/\alpha_{\mu}$.
+% The damping rates for each coordinate can be obtained by $\alpha_{\mu} = J_{\mu} \alpha_0$, where $\mu = x, y$ or $\delta$ and $\alpha_0 = \dfrac{U_0}{2E_0T_0}$. The damping times are simply $\tau_{\mu} = 1/\alpha_{\mu}$.
 
-Including the damping and excitation effects, the natural equilibrium transverse emittance of the electron beam is:
-\begin{equation}
-    \varepsilon_0 = C_q \gamma^2 \dfrac{I_5}{J_x I_2},
-    \label{eq:emittance}
-\end{equation}
-where $C_q = \dfrac{55}{32 \sqrt{3}}\dfrac{\hbar}{mc} \approx \SI{3.84e-13}{\metre}$ and $J_x$ is the horizontal damping partition number.
+% Including the damping and excitation effects, the natural equilibrium transverse emittance of the electron beam is:
+% \begin{equation}
+%     \varepsilon_0 = C_q \gamma^2 \dfrac{I_5}{J_x I_2},
+%     \label{eq:emittance}
+% \end{equation}
+% where $C_q = \dfrac{55}{32 \sqrt{3}}\dfrac{\hbar}{mc} \approx \SI{3.84e-13}{\metre}$ and $J_x$ is the horizontal damping partition number.
 
-From the Eq.~\eqref{eq:emittance} and the definition of the integral $I_5$ in Eq.~\eqref{eq:integral5}, it is evident that the equilibrium emittance depends strongly on the dispersion function at the dipoles. Therefore, minimizing the values of the functional $\mathcal{H}(\eta, \eta')$ at the dipoles is one approach that can be taken in order to minimize the natural emittance for a storage ring. One would expect this intuitively knowing that the photon emission occurs at the dipoles, then if the dispersion is as low as possible at these magnets, the quantum excitation contribution to the transverse action may be reduced.
+% From the Eq.~\eqref{eq:emittance} and the definition of the integral $I_5$ in Eq.~\eqref{eq:integral5}, it is evident that the equilibrium emittance depends strongly on the dispersion function at the dipoles. Therefore, minimizing the values of the functional $\mathcal{H}(\eta, \eta')$ at the dipoles is one approach that can be taken in order to minimize the natural emittance for a storage ring. One would expect this intuitively knowing that the photon emission occurs at the dipoles, then if the dispersion is as low as possible at these magnets, the quantum excitation contribution to the transverse action may be reduced.
 
-Ideally the vertical dispersion function is zero and the horizontal and vertical dynamics are uncoupled, then the horizontal emittance is equal to the natural emittance and the vertical emittance is zero. If there are some field or rotation errors in the magnets, the betatron oscillations might be coupled. In this case of betatron coupling, the horizontal emittance is shared with the vertical emittance. One of the definitions of the betatron coupling is the emittance ratio $\kappa = \varepsilon_y/\varepsilon_x$. The nominal emittance is $\varepsilon_0 = \varepsilon_x + \varepsilon_y$ and the transverse emittances are
-\begin{align}
-    \varepsilon_x &= \dfrac{1}{1 + \kappa}\varepsilon_0, \\
-    \varepsilon_y &= \dfrac{\kappa}{1 + \kappa}\varepsilon_0.
-\end{align}
+% Ideally the vertical dispersion function is zero and the horizontal and vertical dynamics are uncoupled, then the horizontal emittance is equal to the natural emittance and the vertical emittance is zero. If there are some field or rotation errors in the magnets, the betatron oscillations might be coupled. In this case of betatron coupling, the horizontal emittance is shared with the vertical emittance. One of the definitions of the betatron coupling is the emittance ratio $\kappa = \varepsilon_y/\varepsilon_x$. The nominal emittance is $\varepsilon_0 = \varepsilon_x + \varepsilon_y$ and the transverse emittances are
+% \begin{align}
+%     \varepsilon_x &= \dfrac{1}{1 + \kappa}\varepsilon_0, \\
+%     \varepsilon_y &= \dfrac{\kappa}{1 + \kappa}\varepsilon_0.
+% \end{align}
 
-If there is a considerable vertical dispersion function in the storage ring, there will be a vertical emittance even if there is no betatron coupling between the transverse planes $(\kappa = 0)$ and the natural emittance will be increased. In this case, as already mentioned, there are two integrals $I_{5, x}$ and $I_{5, y}$, each one calculated with the respective dispersion function in the functional $\mathcal{H}$. Thus, the corresponding emittances are $\varepsilon_u = C_q \gamma^2 \dfrac{I_{5, u}}{J_u I_2}$, where $u=x$ or $y$ and the natural emittance is the sum $\varepsilon_0 = \varepsilon_x + \varepsilon_y$.
-\subsection{Beam Size and Divergence}
-The equilibrium transverse beam dimensions are also a result from the balance between the excitation and damping processes. The transverse displacements for the particles in the beam can be regarded also as gaussian distributions, so their~\gls{std} can be used to characterize the beam dimensions. From the betatron oscillation expression in Eq.~\eqref{eq:beta_oscillation} and their derivatives one can calculate:
-\begin{align}
-    \langle u_{\beta}^2 \rangle &= \beta_u(s) \langle J_u \rangle,  \\
-    % \langle u_{\beta} {u}_{\beta}' \rangle &= -\alpha_u(s) \langle J_u \rangle,  \\
-    \langle {u'_{\beta}}^{2} \rangle &= \gamma_u(s) \langle J_u \rangle,
-\end{align}
-where $\langle \cdot \rangle$ denotes the average performed on an ensemble of particles at a position $s$. One can identify that the beam emittance is the average of the particle actions, so $\varepsilon_u = \langle J_u \rangle$. Since the betatron oscillations occurs around the origin, $\langle u_{\beta}\rangle = \langle u'_{\beta}\rangle = 0$. 
+% If there is a considerable vertical dispersion function in the storage ring, there will be a vertical emittance even if there is no betatron coupling between the transverse planes $(\kappa = 0)$ and the natural emittance will be increased. In this case, as already mentioned, there are two integrals $I_{5, x}$ and $I_{5, y}$, each one calculated with the respective dispersion function in the functional $\mathcal{H}$. Thus, the corresponding emittances are $\varepsilon_u = C_q \gamma^2 \dfrac{I_{5, u}}{J_u I_2}$, where $u=x$ or $y$ and the natural emittance is the sum $\varepsilon_0 = \varepsilon_x + \varepsilon_y$.
+% \subsection{Beam Size and Divergence}
+% The equilibrium transverse beam dimensions are also a result from the balance between the excitation and damping processes. The transverse displacements for the particles in the beam can be regarded also as gaussian distributions, so their~\gls{std} can be used to characterize the beam dimensions. From the betatron oscillation expression in Eq.~\eqref{eq:beta_oscillation} and their derivatives one can calculate:
+% \begin{align}
+%     \langle u_{\beta}^2 \rangle &= \beta_u(s) \langle J_u \rangle,  \\
+%     % \langle u_{\beta} {u}_{\beta}' \rangle &= -\alpha_u(s) \langle J_u \rangle,  \\
+%     \langle {u'_{\beta}}^{2} \rangle &= \gamma_u(s) \langle J_u \rangle,
+% \end{align}
+% where $\langle \cdot \rangle$ denotes the average performed on an ensemble of particles at a position $s$. One can identify that the beam emittance is the average of the particle actions, so $\varepsilon_u = \langle J_u \rangle$. Since the betatron oscillations occurs around the origin, $\langle u_{\beta}\rangle = \langle u'_{\beta}\rangle = 0$. 
 
-The off-energy displacements $\eta(s)\delta$ also play a role in the beam dimensions. The energy deviations for the particles is also approximately a gaussian distribution centered at zero (so $\langle \delta \rangle = 0$) and its~\gls{std} is called beam energy spread:
-\begin{equation}
-    \sigma^2_{\delta} = \langle \delta ^2\rangle = C_q \gamma^2\dfrac{I_3}{J_{\delta}I_2}.
-\end{equation}
+% The off-energy displacements $\eta(s)\delta$ also play a role in the beam dimensions. The energy deviations for the particles is also approximately a gaussian distribution centered at zero (so $\langle \delta \rangle = 0$) and its~\gls{std} is called beam energy spread:
+% \begin{equation}
+%     \sigma^2_{\delta} = \langle \delta ^2\rangle = C_q \gamma^2\dfrac{I_3}{J_{\delta}I_2}.
+% \end{equation}
 
-Thus, the transverse beam size and divergence can be obtained from $\sigma^2_u = \langle\left(u_\beta + \eta_u \delta\right)^2\rangle$ and $\sigma^2_{u'} = \langle\left(u'_\beta + \eta'_u \delta\right)^2\rangle$, resulting in
-\begin{align}
- \sigma^2_u(s) &= \beta_u (s) \varepsilon_u + \left(\eta_u(s) \sigma_{\delta}\right)^2, \\
- \sigma^2_{u'}(s) &= \gamma_u (s) \varepsilon_u + \left(\eta_{u}'(s) \sigma_{\delta}\right)^2.
-\end{align}
+% Thus, the transverse beam size and divergence can be obtained from $\sigma^2_u = \langle\left(u_\beta + \eta_u \delta\right)^2\rangle$ and $\sigma^2_{u'} = \langle\left(u'_\beta + \eta'_u \delta\right)^2\rangle$, resulting in
+% \begin{align}
+%  \sigma^2_u(s) &= \beta_u (s) \varepsilon_u + \left(\eta_u(s) \sigma_{\delta}\right)^2, \\
+%  \sigma^2_{u'}(s) &= \gamma_u (s) \varepsilon_u + \left(\eta_{u}'(s) \sigma_{\delta}\right)^2.
+% \end{align}
 
-From the equations above it can be seen that to obtain an electron beam with small transverse size and divergence as a source for synchrotron light in a specific longitudinal position $s$, it is required a combination of small transverse emittances (which are global parameters) and low values of betatron and dispersion functions at the location $s$.
+% From the equations above it can be seen that to obtain an electron beam with small transverse size and divergence as a source for synchrotron light in a specific longitudinal position $s$, it is required a combination of small transverse emittances (which are global parameters) and low values of betatron and dispersion functions at the location $s$.
 
-Finally, the longitudinal beam size, named bunch length, is given by
-\begin{equation}
-    \sigma_{z} = \dfrac{\alpha}{\omega_z} \sigma_{\delta},
-\end{equation}
-remembering that $\alpha$ is the momentum compaction factor and $\omega_z$ the synchrotron frequency. The bunch length is a very important parameter to study of effects that involves the electron density in a bunch, such as the scattering between these electrons, which is responsible for the main contribution to the beam lifetime, the so-called Touschek lifetime~\cite{touschek}.
+% Finally, the longitudinal beam size, named bunch length, is given by
+% \begin{equation}
+%     \sigma_{z} = \dfrac{\alpha}{\omega_z} \sigma_{\delta},
+% \end{equation}
+% remembering that $\alpha$ is the momentum compaction factor and $\omega_z$ the synchrotron frequency. The bunch length is a very important parameter to study of effects that involves the electron density in a bunch, such as the scattering between these electrons, which is responsible for the main contribution to the beam lifetime, the so-called Touschek lifetime~\cite{touschek}.
 \section{Perturbations}\label{perturbations}
 The effects of magnets and field errors in the electron beam can be minimized following construction, installation and alignment specifications. Nevertheless, the errors are impossible to be completely eliminated in practice. Furthermore, the magnets parameters are measured by bench devices that are less sensible to the errors than the electron beam. Hence, deviations from ideal conditions must be considered in the accelerator physics studies in order to develop methods for their diagnostics and corrections.
 
@@ -472,6 +472,7 @@ The linear coupling resonances occur when $l = \pm 1$ and $\nu_x \pm \nu_y \appr
 In this coupled motion there are two normal modes of oscillation, which defines new betatron frequencies (or tunes), given by:
 \begin{equation}
     \nu_{1, 2} = \nu_{x, y} \pm \dfrac{1}{2}\sqrt{\Delta_{q, l}^2 + |\kappa_{q, l}|^2} \mp \dfrac{1}{2}\Delta_{q, l}^2,
+    \label{eq:eigentunes}
 \end{equation}
 where $\Delta_{q, l} = \nu_x + l\nu_y - q N$. 
 
