@@ -155,7 +155,65 @@ In each iteration of the LOCO algorithm, the gains and rolls parameters are upda
 
 The matrix multiplication order is important, since the \gls{orm} dimension is $2\mathrm{N}_{\mathrm{BPM}} \times \mathrm{N}_{\mathrm{corr}}$, the BPM-related matrices dimensions are $2\mathrm{N}_{\mathrm{BPM}} \times 2\mathrm{N}_{\mathrm{BPM}}$ and the correctors-related matrix dimension is $\mathrm{N}_{\mathrm{corr}} \times \mathrm{N}_{\mathrm{corr}}$. 
 
-\chapter{Integral of Beta in Quadrupoles}
+\chapter{LOCO pseudo-algorithm}\label{appendix:algo}
+\begin{algorithm}[h!]
+% \scriptsize
+% \footnotesize
+\SetAlgoLined
+\KwResult{Fitted model, $\chi^2$ at each step}
+ Get LOCOInput: measured ORM, $\Delta \theta_x$, $\Delta \theta_y$, $\Delta f_{\mathrm{rf}}$, $\nu_x$, $\nu_y$ and $\sigma_{\mathrm{BPM}}$.\\
+ Define LOCOConfig: fit parameters, minimization method, singular values selection, constraints, weights, $n_{\mathrm{steps}}$, $\chi^2_{\mathrm{min}}$, $\chi^2_{\mathrm{step}}$, initial $\lambda$, $\lambda_{\mathrm{min}}$, $\lambda_{\mathrm{max}}$.\\
+ Change model tunes to match the measured values.\\
+ Obtain initial model ORM.\\
+ Calculate or load LOCO jacobian matrix.\\
+ Perform SVD and singular values filtering on jacobian matrix to obtain its pseudo-inverse.\\
+ Calculate initial reference residue vector $\vec{V}_0$ and $\chi^2_0$.\\
+ $n \leftarrow 0$ \\
+ \While{$n \leq n_{\mathrm{steps}}$}{
+  With $\vec{V}_0$, calculate parameters variations $\Delta \vec{P}$.\\
+  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
+  Calculate new residue vector $\vec{V}$ and $\chi^2$. \\
+  \eIf{$\chi^2 > \chi_0^2$ or $\chi^2 < \chi^2_{\mathrm{min}}$}{
+  \eIf{$\chi^2 > \chi^2_{\mathrm{min}}$ and LM method}{LM Fail $\leftarrow$ LM Loop().\\
+  \If{LM Fail}{Stop}
+  }{Stop}
+   }{
+   \eIf{$\chi_0^2 - \chi^2 < \chi_{\mathrm{step}}^2$}{Stop}{
+   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$.\\
+   Update model. \\
+   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$.\\
+   \If{LM method}{Decrease $\lambda$ and recalculate the jacobian pseudo-inverse}
+  }}
+  $n \leftarrow n + 1$ \\
+ }
+ Save output.
+ \caption{LOCO pseudo-algorithm}
+ \label{algo:loco}
+\end{algorithm}
+\begin{algorithm}[h!]
+% \footnotesize
+% \scriptsize
+\SetAlgoLined
+\KwResult{LM Fail}
+LM Fail $\leftarrow$ True\\
+ \While{$\lambda > \lambda_{\mathrm{min}}$ and $\lambda < \lambda_{\mathrm{max}}$}{
+ Increase $\lambda$.\\
+  Recalculate the jacobian pseudo-inverse.\\
+  Recalculate parameters variations $\Delta \vec{P}$.\\
+  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
+  Calculate new residue vector $\vec{V}$ and $\chi^2$.\\
+  \If{$\chi^2 < \chi_0^2$}{
+   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$\\
+   Update model \\
+   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$\\
+   LM Fail $\leftarrow$ False.\\
+   Stop.}
+ }
+ \caption{\gls{lm} Loop pseudo-algorithm}
+ \label{algo:lm_loop}
+\end{algorithm}
+
+\chapter{Integral of Beta in Quadrupoles}\label{appendix:beta}
 The tune shift caused by a gradient error distribution $k(s)$ is, form Eq.~\eqref{eq:tune_shift}:
 \begin{align}
     \Delta\nu_u &= \frac{1}{4\pi} \oint \beta_u(s) k(s) \mathrm{d}s.
@@ -165,28 +223,28 @@ A gradient error distributed along a quadrupole can be modeled as
 \begin{equation}
     k(s) = 
 \begin{cases}
-\Delta K \hspace{0.2cm} \text{for} \hspace{0.1cm} s \in [0, L], \\
+\Delta \mathrm{K} \hspace{0.2cm} \text{for} \hspace{0.1cm} s \in [0, L], \\
 0 \hspace{0.2cm} \text{for} \hspace{0.1cm} s \notin [0, L]
 \end{cases},
 \end{equation}
 where $L$ is the quadrupole length. The tune shift in this case is
 \begin{align}
-    \Delta\nu_u &= \frac{\Delta K}{4\pi} \int_{0}^{L} \beta_u(s)\mathrm{d}s.
+    \Delta\nu_u &= \frac{\Delta \mathrm{K}}{4\pi} \int_{0}^{L} \beta_u(s)\mathrm{d}s.
 \end{align}
 
-If the quadrupole strength is intentionally changed by the amount $\Delta K$ and the corresponding tune shift is measured with the beam, the integral of beta function in the quadrupole can be calculated:
+If a quadrupole strength is intentionally changed by the amount $\Delta K$ and the corresponding tune shift is measured with the beam, the integral of beta function in the quadrupole can be calculated:
 \begin{align}
-\int_{0}^{L} \beta_u(s) \mathrm{d}s &= 4\pi\frac{\Delta \nu_u}{\Delta K}.
+\int_{0}^{L} \beta_u(s) \mathrm{d}s &= 4\pi\frac{\Delta \nu_u}{\Delta \mathrm{K}}.
 \end{align}
 
-Typically it is convenient to use the integrate quadrupole strength $\Delta KL$, in this way, the quantity that is calculated is the integral of beta function along the quadrupole normalized by the quadrupole length:
+Typically it is convenient to use the integrate quadrupole strength $\Delta \mathrm{KL}$, in this way, the quantity that is calculated is the integral of beta function along the quadrupole normalized by the quadrupole length:
 \begin{align}
-\dfrac{1}{L}\int_{0}^{L} \beta_u(s) \mathrm{d}s &= 4\pi\frac{\Delta \nu_u}{\Delta KL}.
+\dfrac{1}{L}\int_{0}^{L} \beta_u(s) \mathrm{d}s &= 4\pi\frac{\Delta \nu_u}{\Delta \mathrm{KL}}.
 \end{align}
 
-In the approximated case when the beta function is considered constant along the quadrupole, we obtain that $\beta_u(s_q) = 4\pi \dfrac{\Delta \nu_u}{\Delta KL}$, where $s_q$ is the varied quadrupole longitudinal position.
+In the approximated case when the beta function is considered constant along the quadrupole, we obtain that $\beta_u(s_q) = 4\pi \dfrac{\Delta \nu_u}{\Delta \mathrm{KL}}$, where $s_q$ is the varied quadrupole longitudinal position.
 
-It is important to notice that considering $\Delta KL > 0$ increases the focusing forces in the horizontal plane, thus necessarily decreases the focusing forces in the vertical plane. With this strength change we will obtain $\Delta \nu_x > 0$ and $\Delta \nu_y < 0$. Since the beta function is always positive, in this case the $\Delta KL$ sign must be negative for the vertical betatron function calculation to cancel the $\Delta \nu_y$ sign.
+It is important to notice that considering $\Delta \mathrm{KL} > 0$ increases the focusing forces in the horizontal plane, thus necessarily decreases the focusing forces in the vertical plane. With this strength change we will obtain $\Delta \nu_x > 0$ and $\Delta \nu_y < 0$. Since the beta function is always positive, in this case the $\Delta \mathrm{KL}$ sign must be negative for the vertical betatron function calculation to cancel the $\Delta \nu_y$ sign.
 
 The tune-shift approach is used for the measurement of the integral of betatron functions in the quadrupoles in a storage ring.
 
