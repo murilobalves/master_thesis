@@ -1,5 +1,6 @@
 \chapter{Code Implementation for Sirius}\label{chap:code_studies}
-This chapter is dedicated to a brief description about the LOCO method implementation for Sirius storage ring, using Python as the programming language. Some tests were performed to check the reliability of the implemented code and also to understand both the general behavior of the method and the particularities the application on the Sirius storage ring.
+This chapter is dedicated to the discussion about the LOCO method implementation for Sirius storage ring, using Python as the programming language. Some tests were performed to check the reliability of the implemented code and also to understand the general method behavior and the particularities related to the application on the Sirius storage ring as well.
+
 \section{Accelerator Physics Codes}
 The Python frameworks mentioned in the Section~\ref{sec:master_obj} for the accelerator physics studies are related to the accelerator modelling, the so-called tracking simulations and optics calculations. The corresponding packages developed and currently used by the LNLS \gls{fac} are described as follows.
 
@@ -11,15 +12,14 @@ The Python frameworks mentioned in the Section~\ref{sec:master_obj} for the acce
 
 Since PyAccel can be seen as a ``high-level'' interface for the calculations performed in the background by TrackCpp, the accelerator physics simulations are conducted with the combined use of PyModels and PyAccel packages.
 \section{Implementation}
-
-Currently the LOCO code for Sirius is a Python package. This package is used in a Python script that gathers the necessary input data, starts the fitting and saves the output. At the time of writing, this script is executed via terminal. The detailed implementation of LOCO Python package is completely open for access in the GitHub Repository website~\cite{locosirius}. A functional and tested code version was obtained during the master's work, however the LOCO code is susceptible to changes and improvements based on the experience acquired during the application in Sirius commissioning and machine studies. The upcoming versions will be constantly updated in the website~\cite{locosirius}, open to the community access.
+Currently the LOCO code for Sirius is a Python package. This package is imported in a Python script that gathers the necessary input data, starts the fitting and saves the output. At the time of writing, this script is executed via terminal. The detailed implementation of LOCO Python package is completely open for access in the GitHub Repository website~\cite{locosirius}. A functional and tested code version was obtained during the master's work, however the LOCO code is susceptible to changes and improvements based on the experience acquired during the application in Sirius commissioning and machine studies. The upcoming versions will be constantly updated in the website~\cite{locosirius}, open to the community access.
 
 \subsection{Orbit Response Matrix Calculation}
 The LOCO method requirements are basically a simulated model for the accelerator and a framework to perform the \gls{orm} calculations in the model. The numerical tools required for LOCO, such as matrix multiplications and SVD, are all covered by \textsc{NumPy}, a Python package largely used in scientific computing. 
 
-PyModels provides the accelerator modelling for Sirius storage ring and the \gls{orm} calculation was already implemented by the LNLS \gls{fac}, where the transfer matrices between BPMs and correctors are used to obtain the corresponding \gls{orm} elements. This approach assumes linearity, which is typically a good approximation for small variations in the correctors kicks and orbit distortions. The \gls{orm} calculation from the transfer matrices also has the advantage of being fast: it takes about $\SI{500}{\milli\second}$ to obtain the Sirius storage ring \gls{orm} in the available computers used by the LNLS \gls{fac}.
+PyModels provides the accelerator modelling for Sirius storage ring and the \gls{orm} calculation was already implemented by LNLS \gls{fac}, where the transfer matrices between BPMs and correctors are used to obtain the corresponding \gls{orm} elements. This approach assumes linearity, which is typically a good approximation for small variations in the correctors kicks and orbit distortions. The \gls{orm} calculation from the transfer matrices also has the advantage of being fast: it takes about $\SI{500}{\milli\second}$ to obtain the Sirius storage ring \gls{orm} in the available computers used by LNLS \gls{fac}.
 
-Considering that an origin for the coordinate $s$ is defined, let's assume that the BPM longitudinal position is smaller than the corrector (the BPM is behind the corretor), the general transfer matrix between the two elements is
+Considering that an origin for the coordinate $s$ is defined, let's assume that the BPM longitudinal position is smaller than the corrector (the BPM is behind the corretor), the general transfer matrix between these two elements is
 \begin{equation}
     \begin{bmatrix}
     \Delta x \\
@@ -41,13 +41,13 @@ Considering that an origin for the coordinate $s$ is defined, let's assume that 
     \end{bmatrix}_{\mathrm{corr}}.
 \end{equation}
 
-If the BPM is ahead the corrector, the transfer matrix is actually from the $BPM$ to the corrector, so it is the inverse of transfer matrix that must be used for consistency\footnote{Since the transfer matrices must be sympletic, their determinants are equal to one and the inverse transfer matrices exist.}. Since the corrector strength variation changes only the angles, so $\Delta x_{\mathrm{corr}}' = \Delta \theta_x \neq 0$ and $\Delta y_{\mathrm{corr}}' = \Delta \theta_y \neq 0$, and keeps the positions unchanged, $\Delta x_{\mathrm{corr}} = \Delta y_{\mathrm{corr}} = 0$, the \gls{orm} elements are obtained as 
+If the BPM is ahead the corrector, the transfer matrix is actually from the $BPM$ to the corrector, so it is the inverse of transfer matrix that must be used for consistency\footnote{Since the transfer matrices must be sympletic, their determinants are equal to one and the inverse transfer matrices exist.}. Since the corrector strength variation affects only the angles, so $\Delta x_{\mathrm{corr}}' = \Delta \theta_x \neq 0$ and $\Delta y_{\mathrm{corr}}' = \Delta \theta_y \neq 0$, and keeps the positions unchanged, $\Delta x_{\mathrm{corr}} = \Delta y_{\mathrm{corr}} = 0$, the \gls{orm} elements are obtained as 
 \begin{align*}
     M_{xx} = \dfrac{\Delta x_{\mathrm{BPM}}}{\Delta \theta_x} = T_{x, x'}, & \hspace{1cm} M_{xy} = \dfrac{\Delta x_{\mathrm{BPM}}}{\Delta \theta_y} = T_{x, y'}, \\
     M_{yx} = \dfrac{\Delta y_{\mathrm{BPM}}}{\Delta \theta_x} = T_{y, x'}, & \hspace{1cm} M_{yy} = \dfrac{\Delta y_{\mathrm{BPM}}}{\Delta \theta_y} = T_{y, y'}.
 \end{align*}
 
-For the uncoupled lattice, the crossed elements are null, the transfer matrix is
+For the uncoupled lattice, the crossed elements are null and the transfer matrix is
 \begin{equation}
     \begin{bmatrix}
     \Delta x \\
@@ -70,12 +70,12 @@ For the uncoupled lattice, the crossed elements are null, the transfer matrix is
 \end{equation}
 and it is evident that the horizontal and vertical planes can be treated independently. Also $M_{xy} = M_{yx} = 0$ as a consequence.
 
-The other approach simulates the \gls{orm} measurement, it does not necessarily assumes linearity, in principle it is more precise but, on the other hand, it requires more computing time. The idea is to calculate the \gls{orm} as a numerical derivative:
+The other approach simulates the \gls{orm} measurement. It does not necessarily assumes linearity and in principle it is more precise. On the other hand, it requires more computing time. The idea is this method is to calculate the \gls{orm} as a numerical derivative:
 \begin{equation}
     M_{uv} = \dfrac{u_{\mathrm{BPM}}\left(\theta_v + \Delta \theta_v\right)-u_{\mathrm{BPM}}\left(\theta_v \right)}{\Delta \theta_v},
     \label{eq:unipolar_respm}
 \end{equation}
-where $u, v = x$ or $y$ and $u_{\mathrm{BPM}}$ is the closed-orbit at BPMs, this is be called the monopolar calculation. The magnitude of the kick variation must be small enough to avoid non-linear effects. The \gls{orm} also can be calculated as
+where $u, v = x$ or $y$ and $u_{\mathrm{BPM}}$ is the closed-orbit at BPMs, this is called monopolar calculation. The kick variation magnitude must be small enough to avoid non-linear effects. The \gls{orm} also can be calculated as
 \begin{equation}
     M_{uv} = \dfrac{u_{\mathrm{BPM}}\left(\theta_v + \Delta \theta_v/2\right)-u_{\mathrm{BPM}}\left(\theta_v- \Delta \theta_v/2\right)}{\Delta \theta_v},
     \label{eq:bipolar_respm}
@@ -86,12 +86,11 @@ If non-linear effects are relevant, the advantage of bipolar calculation is that
 
 The larger~\gls{orm} computing time (approximately a factor of 20 for bipolar and 40 for bipolar numerical calculation) compared to the~\gls{orm} calculation from transfer matrices increases the LOCO running time roughly by the same factors. Hence, while linear approximations are valid and the numeric precision is maintained, a faster~\gls{orm} calculation is preferred to be used in LOCO.
 
-The~\gls{orm} calculation for the Sirius booster and storage ring was implemented by an~\gls{fac} colleague as a Python class and it is used extensively in the LOCO code.
+The~\gls{orm} calculation for the Sirius booster and storage ring was implemented by an~\gls{fac} colleague as a Python class and it is used extensively in LOCO code.
 \subsection{The Algorithm}
-The LOCO implementation in Python realized by the author follows the pseudo-algorithm described in Algorithm~\ref{algo:loco} that can be found in Appendix~\ref{appendix:algo}. For the case of \gls{lm} minimization method, there is an inner loop to deal with the parameter $\lambda$ for the case of $\chi^2$ reduction failure. This \gls{lm} loop is described in Algorithm~\ref{algo:lm_loop}, also in Appendix~\ref{appendix:algo}.
-% \normalsize
+The LOCO implementation in Python realized by the author follows the pseudo-algorithm described in Algorithm~\ref{algo:loco} that can be found in Appendix~\ref{appendix:algo}. When the \gls{lm} minimization method is used, there is an inner loop to deal with the parameter $\lambda$ for the case of $\chi^2$ reduction failure. This \gls{lm} loop is described in Algorithm~\ref{algo:lm_loop}, also in Appendix~\ref{appendix:algo}.
 
-The fit parameters that has been used in the regular LOCO analysis performed in Sirius storage ring are organized in Table~\ref{tab:fit_params}. The first 5 parameters refers to the fitting of the~\gls{orm} on-diagonal elements, related to the linear optics, the other 2 fit parameters between horizontal lines are related to the~\gls{orm} off-diagonal elements adjustment, which corresponds to the linear coupling errors. Typically both the on and off-diagonal elements are included in the fitting, thus the total number of fit parameters for LOCO in Sirius Storage ring is 1110.
+The fit parameters that have been used in regular LOCO analysis performed in Sirius storage ring are organized in Table~\ref{tab:fit_params}. The first 5 parameters refers to the fitting of the~\gls{orm} on-diagonal elements, related to the linear optics, the remaining 2 fit parameters between horizontal lines are related to the~\gls{orm} off-diagonal elements adjustment, which corresponds to the linear coupling errors. Typically both on and off-diagonal elements are included in the fitting, thus the total number of fit parameters for LOCO in Sirius Storage ring is 1110.
 \begin{table}
     \centering
     \caption{Fit parameters used in LOCO for Sirius storage ring.}
@@ -115,20 +114,18 @@ The fit parameters that has been used in the regular LOCO analysis performed in 
 \end{table}
 
 \section{Tests on Simulated Model}
-In order to check the reliability of the implemented LOCO code and also to develop the intuition and knowledge about the method behavior for the Sirius storage ring (before the actual application), a series of tests were performed. In this section these tests and the results obtained are reported.
+In order to check the reliability of the implemented LOCO code and also to develop an intuition and knowledge about the method behavior for the Sirius storage ring (before actual applications), a series of tests were performed. In this section these tests and the results obtained are reported.
 \subsection{Jacobian Matrix Analysis}
-Based on the discussion in Section~\ref{sec:degeneracy}, the analysis of the singular matrix provided by~\gls{svd} of the LOCO jacobian matrix may shed some light on the degeneracies of the problem.
+Based on the discussion made in Section~\ref{sec:degeneracy}, the singular matrix analysis provided by~\gls{svd} of the LOCO jacobian matrix may shed some light on the degeneracies of the problem.
 
 The complete LOCO jacobian matrix was calculated for the Sirius storage ring, producing a $89920 \times 1110$ matrix. From Eq.~\eqref{eq:param_calc}, the general parameters calculation, given a residue vector $\vec{V}$ is
 \begin{equation*}
 \Delta \vec{P} = - \left(\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right) \right)^{-1}\mathbf{J}^{\mathsf{T}}\vec{V}.
 \end{equation*}
 
-From this expression, it can be seen that the~\gls{svd} must be applied in two matrices: $\mathbf{J}$ for the case of singular value selection and $\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right)$ to also apply the singular value selection but, most importantly, to obtain its pseudo-inverse.
+From this expression, it can be seen that the~\gls{svd} must be applied in two matrices: $\mathbf{J}$ for the case of singular value selection and $\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right)$ in order to also apply the singular value selection but, most importantly, to obtain its pseudo-inverse. The minimization method to calculate the parameters is controlled by the parameter $\lambda$: if $\lambda = 0$ the~\gls{gn} method is used and if $\lambda \neq 0$, the~\gls{lm} is chosen.
 
-The minimization method to calculate the parameters is controlled by the parameter $\lambda$: if $\lambda = 0$ the~\gls{gn} method is used and if $\lambda \neq 0$, the~\gls{lm} is chosen.
-
-The matrix $\mathbf{J}_{\Delta K}$ is a diagonal matrix with elements given by $\vec{c}_{\Delta K} = \vec{w}_{\Delta K}/\sigma_{\Delta K}$, where $\vec{w}_{\Delta K}$ is the weight vector for the ${\Delta K}$ constraint. Controlling the values of $\vec{c}_{\Delta K}$ on can control the constraint in the problem. The unconstrained case is obtained with $\vec{c}_{\Delta K} = \vec{0}$.
+The matrix $\mathbf{J}_{\Delta K}$ is a diagonal matrix with elements given by $\vec{c}_{\Delta K} = \vec{w}_{\Delta K}/\sigma_{\Delta K}$, where $\vec{w}_{\Delta K}$ is the weight vector for the ${\Delta K}$ constraint. Controlling the values of $\vec{c}_{\Delta K}$ one controls the constraint in the problem. The unconstrained case is obtained with $\vec{c}_{\Delta K} = \vec{0}$.
 
 To study the LOCO jacobian matrix, \gls{svd} was applied in the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J} + \lambda \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}\mathbf{J}\right) + \mathrm{diag}\left(\mathbf{J}^{\mathsf{T}}_{\Delta K}\mathbf{J}_{\Delta K}\right)$ for several values of $\lambda$ and ${c}_{\Delta K}$, independently. The results are shown in Figure~\ref{fig:singval}, where the singular values in the vertical axis are normalized by the maximum value.
 \begin{figure}
@@ -147,15 +144,15 @@ To study the LOCO jacobian matrix, \gls{svd} was applied in the matrix $\mathbf{
 \label{fig:singval}
 \end{figure}
 
-The jacobian matrix is this analysis includes the~\gls{rf} response elements, i.e., the horizontal dispersion function is included, so the very low singular value $\sim10^{-21}$ for $\lambda = 0$ is related to the denegeracy between the vertical BPMs and correctors gains. With $\lambda = 10^{-5}$ this low singular value is already increased to $\sim10^{-12}$ and the decreasing singular values around $10^{-9}$ in the blue line are also raised. Increasing the value of $\lambda$ introduces a clear step in the $350\ts{th}$ singular value, which is related to the magnets strengths parameters: $270$ normal quadrupoles plus $80$ skew quadrupoles. The remaining $760$ singular values are related to the BPMs and correctors parameters and their magnitude decreases very slowly. The first $12$ singular values stand out with relative strengths greater than $10^{-2}$ compared to the maximum. These values are related to the $12$ quadrupoles families and since these families distribution around the ring is directly related to the lattice periodicity, the first $12$ singular values reflects the importance of the signature of symmetric gradient changes in the~\gls{orm}. 
+The jacobian matrix is this analysis includes the~\gls{rf} response elements, i.e., the horizontal dispersion function is included, so the very low singular value $\sim10^{-21}$ for $\lambda = 0$ is related to the degeneracy between the vertical BPMs and correctors gains. With $\lambda = 10^{-5}$ this low singular value is already increased to $\sim10^{-12}$ and the decreasing singular values around $10^{-9}$ in the blue line are also raised. Increasing the value of $\lambda$ introduces a clear step in the $350\ts{th}$ singular value, which is related to the magnets strengths parameters: $270$ normal quadrupoles plus $80$ skew quadrupoles. The remaining $760$ singular values are related to the BPMs and correctors parameters and their magnitude decreases very slowly. The first $12$ singular values stand out with relative strengths greater than $10^{-2}$ compared to the maximum. These values are related to the $12$ quadrupoles families and since these families distribution around the ring is directly related to the lattice periodicity, the first $12$ singular values reflects the importance of the signature of symmetric gradient changes in the~\gls{orm}. 
 
-In the literature~\cite{icfa_huang, huang2013}, it is common to start with $\lambda = 10^{-3}$. From Figure~\ref{subfig:lm} it can be seen that this value already raises the last very small singular value, avoiding the degeneracy problem. Increasing $\lambda$ even further introduces discontinuities in the singular values distribution, which may spoil the fitting, thus $\lambda = 10^{-3}$ really seems to be the optimum choice for the~\gls{lm} minimization.
+In the literature~\cite{icfa_huang, huang2013}, it is recommended to start the fitting with $\lambda = 10^{-3}$. From Figure~\ref{subfig:lm} it can be seen that this value already raises the last very small singular value, avoiding the degeneracy problem. Increasing $\lambda$ even further introduces discontinuities in the singular values distribution, which may spoil the fitting, thus $\lambda = 10^{-3}$ really seems to be the optimum choice for the~\gls{lm} minimization.
 
-In Figure~\ref{subfig:constraint}, the singular values for several constraint magnitudes were calculated. The weight vector was set as ones for every element and the normalization constant $\sigma_{\Delta K}$ was changed from $0$ to $10^{-4}$. The case $c_{\Delta K} = 0$ coincide with $\lambda = 0$ in the Figure~\ref{subfig:lm}. The normalization $\sigma_{\Delta K}$ can be interpreted as the limit of step variation in $\Delta K$. The range $0$ to $10^{-2}$ of step variation is on the order of the $K$ values for the quadrupoles and in this case the constraint does not really limits the gradients variations, which can be seen in the similar singular values distributions for $c_{\Delta K}$ from $0$ to $10^{2}$. With $c_{\Delta K}=10^{3}$ the first $350\ts{th}$ singular values are raised and with $c_{\Delta K}=10^{4}$ there is a clear change in the pattern at the $270\ts{th}$ singular value, which is the number of quadrupole in Sirius storage ring. From $270\ts{th}$ to $350\ts{th}$ a linear reduction occurs, related to the skew quadrupoles and the remaining singular values again corresponds to the BPMs and correctors gains. 
+In Figure~\ref{subfig:constraint}, the singular values for several constraint magnitudes were calculated. The weight vector was set as unity for every element and the normalization constant $\sigma_{\Delta K}$ was changed from $0$ to $10^{-4}$. The case $c_{\Delta K} = 0$ coincide with $\lambda = 0$ in the Figure~\ref{subfig:lm}. The normalization $\sigma_{\Delta K}$ can be interpreted as the limit of step variation in $\Delta K$. The range $0$ to $10^{-2}$ of step variation is on the order of the $K$ values for the quadrupoles and in this case the constraint does not really limits the gradients variations, which can be seen in the similar singular values distributions for $c_{\Delta K}$ from $0$ to $10^{2}$. With $c_{\Delta K}=10^{3}$ the first $350\ts{th}$ singular values are raised and with $c_{\Delta K}=10^{4}$ there is a clear change in the pattern at the $270\ts{th}$ singular value, which is the number of quadrupole in Sirius storage ring. From $270\ts{th}$ to $350\ts{th}$ a linear reduction occurs, related to the skew quadrupoles and the remaining singular values again corresponds to the BPMs and correctors gains. 
 
 Limiting too much the $\Delta K$ step variation may increase unnecessarily the number of iterations required for LOCO convergence. Hence it is recommended to use the maximum value of $\sigma_{\Delta K}$ that still produces a significant change in the singular values, aiming to balance the $\Delta K$ constraints and the number of iterations, therefore reducing the LOCO running time whenever it is worth it. For Sirius storage ring, the optimum value was determined to be $\sigma_{\Delta K} = 10^{-3}$, thus $c_{\Delta K} = 10^{3}$.
 
-Notice that with $c_{\Delta K}=10^{3}$ the last singular value was even smaller compared to the unconstrained case. This can be solved by combining the constrained case with the~\gls{lm} minimization, since it was seen that the~\gls{lm} contribution raises the singular values. The singular values distribution for the chosen values of $\lambda$ and $c_{\Delta K}$ compared to the original distribution can be found in Figure~\ref{fig:compare_svs}. With this choice, the only singular value that should be removed is the last one, which is well-known to be associated with the gain degeneracy between vertical~\glspl{bpm} and correctors.
+Notice that with $c_{\Delta K}=10^{3}$ the last singular value was smaller compared to the unconstrained case. This can be solved by combining the constrained case with the~\gls{lm} minimization, given that it was seen that the~\gls{lm} contribution raises the singular values. The singular values distribution for the chosen values of $\lambda$ and $c_{\Delta K}$ compared to the original distribution can be found in Figure~\ref{fig:compare_svs}. With this choice, the only singular value that should be removed is the last one, which is well-known to be associated with the gain degeneracy between vertical~\glspl{bpm} and correctors.
 \begin{figure}
 \centering
 \includegraphics[width=0.75\textwidth]{figures/chosen_singular_values.pdf}
@@ -164,14 +161,14 @@ Notice that with $c_{\Delta K}=10^{3}$ the last singular value was even smaller 
 \end{figure}
 
 \subsection{Detecting Distributed Errors}
-The first test to check the implemented code consist in perturbing the simulated storage ring model, obtain the corresponding~\gls{orm} and then trying to determine the input errors from the fit parameters with LOCO analysis. In this way, since the planted errors perturbs the~\gls{orm} and~\gls{loco} tries to adjust the fit parameters until the goal~\gls{orm} is fitted, once the perturbed~\gls{orm} is explained by~\gls{loco}, the corresponding changes in the fit parameters should match the input errors. 
+The first test to check the implemented code consists in perturbing the simulated storage ring model, obtain the corresponding~\gls{orm} and then trying to determine the input errors from the fit parameters with LOCO analysis. In this way, since the planted errors perturbs the~\gls{orm} and~\gls{loco} tries to adjust the fit parameters until the goal~\gls{orm} is fitted, once the perturbed~\gls{orm} is explained by~\gls{loco}, the corresponding changes in the fit parameters should match the input errors. 
 
 This test simulates the usage of~\gls{loco} as a diagnostic tool. However, since the only errors in the simulated model was included in the elements that was already adjusted in~\gls{loco}, subtracting the negative fit values in the perturbed model cancels out the input errors and in this way the~\gls{loco} also can be viewed as a correction tool.
 
-It is important to point out that this test should work properly if the errors are included in the elements that are used as fit parameters in LOCO method. For example, if gradient errors are added in the sextupoles but only quadrupoles strengths are fitted, the quadrupoles will be changed in order to best fit the~\gls{orm}. Thus, even if the $\chi^2$ is reduced, the final quadrupoles variations will not match the planted gradient errors in the sextupoles, since these elements are in different position around the ring. In this case, the fitted values must be interpreted only as the gradient changes in quadrupoles that best explain the perturbed \gls{orm} and the~\gls{loco} is viewed as a correction tool. Clearly this type of compensation should reach a limit of correction effectiveness. Therefore, whenever it is possible, the most appropriated approach is to identify and then to minimize the errors sources (or also called systematic errors) and, only after that, apply the~\gls{loco} analysis to obtain appropriated corrections.
+It is important to point out that this test should work properly if the errors are included in the elements that are used as fit parameters in LOCO method. For example, if gradient errors are added in the sextupoles but only quadrupoles strengths are fitted, the quadrupoles will be changed in order to best fit the~\gls{orm}. Thus, even if the $\chi^2$ is reduced, the final quadrupoles variations will not match the planted gradient errors in the sextupoles, since these elements are in different positions around the ring. In this case, the fitted values must be interpreted only as the gradient changes in quadrupoles that best explain the perturbed \gls{orm}. Clearly this type of compensation should reach a limit of fitting effectiveness. Therefore, whenever it is possible, the most appropriated approach is to identify and then to minimize the errors sources (or also called systematic errors) and, only after that, apply the~\gls{loco} analysis to obtain appropriated corrections.
 
-A hundred sets of errors were generated following a random normal distributions with $3\sigma$ cutoff, included in the simulated model and then the corresponding hundred~\gls{orm}s were calculated. The LOCO analysis were performed for these~\gls{orm}s, fitting all the parameters described in Table~\ref{tab:fit_params}. The~\gls{std} $\sigma$ used in the normal distribution to generate random errors for each parameter are presented in Table~\ref{tab:errors}.
-\begin{table}
+A hundred sets of errors were generated following a random normal distributions with $3\sigma$ cutoff. These errors were included in the simulated model and then the corresponding hundred~\gls{orm}s were calculated. The LOCO analysis were performed for these~\gls{orm}s, fitting all the parameters described in Table~\ref{tab:fit_params}. The~\gls{std} $\sigma$ used in the normal distribution to generate random errors for each parameter are presented in Table~\ref{tab:errors}.
+\begin{table}[h!]
     \centering
     \caption{Random errors included in the simulated model ($3\sigma$ cutoff).}
     \label{tab:errors}
@@ -209,8 +206,7 @@ The goal of this test is to compare the fitted variations determined from~\gls{l
 %         \bottomrule\bottomrule
 %     \end{tabular}
 % \end{table}
-
-\begin{table}
+\begin{table}[h!]
     \centering
     \caption{Differences (normalized by $\sigma$) between planted errors and fitted variations obtained from LOCO analysis for 100 sets of random errors.}
     \label{tab:diff_target}
@@ -229,7 +225,7 @@ The goal of this test is to compare the fitted variations determined from~\gls{l
     \end{tabular}
 \end{table}
 
-From the results in Table~\ref{tab:diff_target} it can be seen that for the normal quadrupoles, skew quadrupoles and BPM roll angles, target and obtained errors normalized by $\sigma$ agrees to within a few percent. For the gains of horizontal correctors and BPM, the difference is a few parts in ten thousand and for the vertical ones, it is a few parts in a thousand. The dispersion function was included in the fitting to break the horizontal gains degeneracy, which explains the fact that the gains determination for the horizontal plane is more efficient than for the vertical plane.
+From the results in Table~\ref{tab:diff_target} it can be seen that for the normal quadrupoles, skew quadrupoles and BPM roll angles, target and obtained errors normalized by $\sigma$ agrees to within a few percent. For the gains of horizontal correctors and BPM, the difference is a few parts in ten thousand and for the vertical ones, it is a few parts in a thousand. The dispersion function was included in the fitting to break the horizontal gains degeneracy, which explains the fact that the gains determination for the horizontal plane was more efficient than for the vertical plane.
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
@@ -247,32 +243,31 @@ From the results in Table~\ref{tab:diff_target} it can be seen that for the norm
 \end{figure}
 The average initial $\chi$ for these 100 sets of random errors was $\SI{11.6}{\micro\meter}$ and after the fitting, the average final $\chi$ was $\SI{6.2}{\nano\meter}$. Such level of fitting is only possible because in these tests the~\gls{orm} was obtained without any noise in the data and the process is not subjected to measurement errors. For real measurements, it is desired to achieve a final value for $\chi$ that is close to the BPM accuracy, which with the current technology is typically from hundreds of nanometers to a few micrometers.
 
-In Figure~\ref{subfig:chi_seeds} the convergence of $\chi$ for the 100 fittings is presented. The maximum number of iterations was limited to 25. It can be seen that at about 15 iterations $\chi$ already converged for all the 100 cases. Figure~\ref{subfig:chi_versus_score} shows the relation between the fitting level, represented by the ratio $\chi_{\mathrm{final}}/\chi_{\mathrm{initial}}$, and the fitting mismatch for each realization, obtained by $\sqrt{\sum_{p}d_p^2}$, where $d_p$ is the difference between target and fitted errors normalized by $\sigma$ for the parameter $p$, covering all the 7 fit parameters used in the LOCO runs. The mismatch in the fitting grows linearly with the fitting level, with a proportionality factor of about 50. The code would be unreliable if the fitting level was good but the corresponding mismatch was large. Such cases were not observed in the 100 random realizations.
+In Figure~\ref{subfig:chi_seeds} the convergence of $\chi$ for the 100 fittings is presented. The maximum number of iterations was limited to 25. It can be seen that at about 15 iterations $\chi$ already converged for all the 100 cases. Figure~\ref{subfig:chi_versus_score} shows the relation between the fitting level, represented by the ratio $\chi_{\mathrm{final}}/\chi_{\mathrm{initial}}$, and the fitting mismatch for each realization, obtained by $\sqrt{\sum_{p}d_p^2}$, where $d_p$ is the difference between target and fitted errors normalized by $\sigma$ for the parameter $p$ covering all the 7 fit parameters used in the LOCO runs. The mismatch in the fitting grows linearly with the fitting level, with a proportionality factor of about 50. The code would be unreliable if the fitting level was good but the corresponding mismatch was large. Such cases were not observed in the 100 random realizations.
 \subsection{Detecting Localized Errors}
-
 Detecting single errors is very useful to identify, in a more specific way, malfunctioning elements or a problematic region in the storage ring. A functional diagnostic tool that provides this localized detection can spare a considerable amount of time in the investigation of problems that are degrading the machine performance, thus being a useful tool for the commissioning stage and regular operation of a synchrotron light source as well, since installation and maintenance intervention occurs several times during machine lifetime.
 
 The goal of the tests reported in the present subsection is to check the LOCO ability to identify localized errors on quadrupoles, BPMs and correctors. 
 
 \subsubsection{Single Gradient}
-Suppose that amongst random gradient errors in quadrupoles, there is a single quadrupole with greater deviation to its nominal value. Single quadrupole errors are not expected, since magnetic measurements are performed before the assembly in storage ring to guarantee that mechanical and magnetic properties meet the specifications for all magnets. However, after the magnets assembly some kind of problem in a specific magnet coils or in its power supply may appear, leading to a localized error.
+Suppose that amongst random gradient errors in quadrupoles, there is a single quadrupole with greater deviation from its nominal value. Single quadrupole errors are not naturally expected, since magnetic measurements are performed before the assembly in storage ring to guarantee that mechanical and magnetic properties meet the specifications for all magnets. However, after the magnets assembly some kind of problem in a specific magnet coils or in its power supply may appear and lead to localized errors.
 
 The following error distribution was generated and applied in Sirius storage ring model: gaussian random errors in gradient strengths with std $\sigma=\SI{0.25}{\%}$ and $\SI{2.0}{\%}$ of error in the 215\ts{th} quadrupole. Errors in others parameters were not included. An~\gls{orm} was calculated with this perturbed model and it was used as input for LOCO analysis, including all fit parameters. The results for variations in quadrupoles fitted by LOCO compared to the target errors are in Figure~\ref{fig:single_quad_detec}.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/single_quaderror_detection_big.pdf}
 \caption{Fitted and target quadrupoles variations, including a higher error of 2\% in the 215\ts{th} quadrupole.}
 \label{fig:single_quad_detec}
 \end{figure}
 
-From Figure~\ref{fig:single_quad_detec} it can be seen that the input errors were accurately determined, including the single large gradient error. The maximum difference between fitted and target error for quadrupoles was $\num{1e-8}$. The final value of $\chi$ in this fitting was very low, around $\SI{1e-6}{\micro\meter}$. The remaining fit parameters were varied in much lower level, the maximum variation of BPM gains and correctors was $\num{3e-6}$ and for skew quadrupoles strengths $\SI{1e-16}{\meter^{-1}}$, on the order of computer numeric precision.
+From Figure~\ref{fig:single_quad_detec} it can be seen that the input errors were accurately determined, including the single large gradient error. The maximum difference between fitted and target error for quadrupoles was $\num{1e-8}$. The final value of $\chi$ in this fitting was very low, around $\SI{1e-6}{\micro\meter}$. The remaining fit parameters were varied in a much lower level, the maximum variation of BPM gains and correctors was $\num{3e-6}$ and for skew quadrupoles strengths $\SI{1e-16}{\meter^{-1}}$, on the order of computer numeric precision.
 
 It is clear that this level of error determination is only possible for tests in the simulated model, were the goal~\gls{orm} is obtained without noise and measurement errors. Nevertheless, in the limit that these practical limitations are set as low as possible in real measurements, it would still be possible to identify single errors with reasonable accuracy.
 \subsubsection{Single Gain}
-The same tests were performed with BPMs and correctors gains. Such type of error in gains may be associated with malfunctioning in\glspl{bpm} antennas, electrical interference or software issues. For correctors the outliers in gains may indicate problems in the coils of magnet or in its power supplies. For BPMs, the problems are typically easier to detect since they can be identified directly with unrealistic position measurements. For correctors, the effect on the beam produced by localized problems may be more subtle to identify directly. Measuring the~\gls{orm} and performing the LOCO analysis is usually a good indirect procedure to detect the aforementioned errors.
+The same tests were performed with BPMs and correctors gains. Such type of error in gains may be associated with malfunctioning in\glspl{bpm} antennas, electrical interference or software issues. For correctors the outliers in gains may indicate problems in the coils of magnet or in its power supplies. For BPMs, the problems are typically easier to detect since they can be identified directly from unrealistic position measurements. For correctors, the effect on the beam produced by localized problems may be more subtle to identify directly. Measuring the~\gls{orm} and performing the LOCO analysis is usually a good indirect procedure to detect the aforementioned errors.
 
 Gaussian random errors with std $\sigma=\SI{10}{\%}$ were applied both for horizontal and vertical gains. BPM roll angle errors were included following a gaussian random distribution with std $\sigma=\SI{1}{\milli\radian}$.  The corresponding gains for 7\ts{th} BPM, CH and CV were increased by a $1.5$ factor. This means that the nominal~\gls{orm}, after applying the random gains errors, had the 7\ts{th} and 167\ts{th} rows (for the 7\ts{th} BPM) and 7\ts{th} and 127\ts{th} columns (for the 7\ts{th} CH and CV) multiplied by $1.5$. This altered~\gls{orm} were set as the goal matrix for LOCO fitting, where all fit parameters were included again. The fitting results for this test are shown in Figure~\ref{fig:gain_greater}.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
 \includegraphics[width=1.0\textwidth]{figures/bpm_gains_1p5gain_7th_bpm_grid_big.pdf}

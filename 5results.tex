@@ -1,43 +1,39 @@
-\chapter{Application on Sirius Storage Ring}
+\chapter{Applications on Sirius Storage Ring}
 
 This final chapter is dedicated to the application of the theory and code presented and discussed in the previous chapters on Sirius storage ring. 
 
-During the Sirius commissioning in 2020, the implemented LOCO code had already been proven to be useful to correct Sirius linear optics and improve the machine performance. Hence, the method developed in the master's work were firstly applied for practical purposes on Sirius commissioning due to the time schedule. The optics and coupling corrections obtained with LOCO method also allowed for smooth operation recoveries after five~\glspl{id} installations.
+During the Sirius commissioning in 2020, the implemented LOCO code had already been proven to be useful to correct Sirius linear optics and coupling, improving the machine performance. Hence, the method developed in the master's work were firstly applied for practical purposes on Sirius commissioning due to the time schedule. The optics and coupling corrections obtained with LOCO method also allowed for smooth operation recoveries after five~\glspl{id} installations.
 
 A few tests were performed with measured~\glspl{orm} using the electron beam in the storage ring and they are reported in Section~\ref{sec:tests_measured}. The stored current used during the measurements was $\SI{10}{\milli\ampere}$, which is a value that provides a good accuracy for~\gls{bpm} readings and the beam stability is guaranteed as well.
 
-The studies reported in this chapter were performed in a philosophy of scientific case. The main objective is, starting from a storage ring without any optics and coupling corrections (supposing that LOCO analysis were never performed), iteratively realize the LOCO procedure and apply the calculated corrections, until convergence is reached. The results from this process are presented and discussed in Section~\ref{sec:orm_fit}. From this, independent optics and coupling measurements can be performed to characterize the storage ring before and after the corrections to determine how much the study improved Sirius parameters towards nominal values. Section~\ref{sec:independent_meas} is dedicated to this part.
+The studies reported in this chapter were performed in a philosophy of scientific case. The main objective is, starting from a storage ring without any optics and coupling corrections (supposing that LOCO analysis were never performed), iteratively realize the LOCO procedure and apply the calculated corrections until convergence is reached. The results from this process are presented and discussed in Section~\ref{sec:orm_fit}. From this point, independent optics and coupling measurements can be performed to characterize the storage ring before and after the corrections to determine how much the study improved Sirius parameters and performance towards expected values. Section~\ref{sec:independent_meas} is dedicated to this part.
 
 The~\gls{orm} measurement procedure using bipolar method is controlled by~\gls{sofb}, the same software that controls the orbit correction. Both horizontal and vertical kicks variations used for the measurements were $\Delta \theta_x = \Delta \theta_y = \SI{15}{\micro\meter}$ and the variation in~\gls{rf} frequency was $\Delta f_{\mathrm{rf}} = \SI{80}{\hertz}$. These variations are intermediate in the sense that they provide a compromise between sufficient orbit distortion for accurate~\gls{bpm} measurements and also keep variations small enough to avoid non-linear effects. Nominally, the peak orbit distortions at~\glspl{bpm} for half of correctors variations are $\Delta x = \SI{196}{\micro\meter}$ and $\Delta y = \SI{134}{\micro\meter}$. The peak horizontal distortion for a $\SI{40}{\hertz}$ variation in~\gls{rf} frequency is $\Delta x = \SI{38}{\micro\meter}$. The~\gls{orm} typical measurement time for Sirius storage ring is $40$ minutes.
 
-Sirius storage ring status when these studies were performed was: four undulators were installed, one in a high-beta section and three in low-beta sections; the~\gls{bba} procedured was applied to obtain~\glspl{bpm} offsets relative to quadrupoles centers and these offsets were used as the target orbit for orbit correction. The residual orbit obtained in both planes was $\SI{30}{\micro\meter}$ (\gls{std}). During commissioning, operating the machine with nominal betatron tunes $\nu_x = 49.096$ and $\nu_y = 14.152$ produced a very low injection efficiency (less than $10\%$). After scanning the tunes, the values that provided a better injection efficiency were $\nu_x = 49.075$ $\nu_y = 14.134$, so these values were used throughout the commissioning and this study as well. Nevertheless, without optics and coupling correction the injection efficiency was only $20\%$ on average.
-
-\section{Tests on Measured Data}\label{sec:tests_measured}
-
+Sirius storage ring status when these studies were performed was: four undulators were installed, one in a high-beta section and three in low-beta sections; the~\gls{bba} procedured was applied to obtain~\glspl{bpm} offsets relative to quadrupoles centers and these offsets were used as the target orbit for orbit correction. The residual orbit obtained in both planes was around $\SI{30}{\micro\meter}$ (\gls{std}). During commissioning, operating the machine with nominal betatron tunes $\nu_x = 49.096$ and $\nu_y = 14.152$ produced a very low injection efficiency (less than $10\%$). After scanning the tunes, the values that provided a better injection efficiency were $\nu_x = 49.075$ $\nu_y = 14.134$, so these values were used throughout the commissioning and this study as well. Nevertheless, without optics and coupling correction the injection efficiency was $20\%$ on average.
+\section{Tests with Measured Data}\label{sec:tests_measured}
 A few tests were performed with data measured in the actual storage ring to check the method reliability in practice as well. Moreover, some tests allowed to confirm the code setup, related to the minimization method and constraints on quadrupoles variations and also provided information about random errors of fit parameters.
 
-The beam orbit was measured with~\glspl{bpm} during $\SI{10}{\second}$ and the average variation obtained for each plane was $\sigma_{\mathrm{BPM}, x} = \SI{162(6)}{\nano\meter}$ and $\sigma_{\mathrm{BPM}, y} = \SI{233(7)}{\nano\meter}$. These values represent the noise level of positions measurements provided by~\glspl{bpm}. When there is no systematic errors influencing the process, the~\gls{orm} calibrated with LOCO should differ from the measured~\gls{orm} in the~\gls{bpm} noise level.
+The beam orbit was measured with~\glspl{bpm} during $\SI{10}{\second}$ and the average variation obtained for each plane was $\sigma_{\mathrm{BPM}, x} = \SI{162(6)}{\nano\meter}$ and $\sigma_{\mathrm{BPM}, y} = \SI{233(7)}{\nano\meter}$. These values represent the noise level of positions measurements provided by~\glspl{bpm} in Sirius storage ring. When there is no systematic errors influencing the process, the~\gls{orm} calibrated with LOCO should differ from the measured~\gls{orm} in the~\gls{bpm} noise level.
 
 \subsection{Constraints Importance}\label{subsec:loco_config}
 From tests with simulated model and jacobian matrix analysis discussed in Chapter~\ref{chap:code_studies}, the chosen LOCO configuration was: include the parameters presented in Table~\ref{tab:fit_params} in the fitting, use~\gls{lm} method as the minimization algorithm setting $\lambda = 10^{-3}$ initially, use the $\Delta K$ constraints with weight $c_{\Delta K} = 10^{3}$ and remove only the last singular value for pseudo-inversion of LOCO jacobian matrix. 
 
-In order to check if this setup is appropriated for LOCO analysis in the real Sirius storage ring a simple test was performed. Without any optics or coupling corrections applied in the storage ring, an~\gls{orm} was measured and it was used to apply LOCO fitting with two setups: without any modification (using~\gls{gn} method and no constraint on $\Delta K$) and with the chosen configuration described previously. The initial $\chi$ for the measured~\gls{orm} was $\SI{24.6}{\micro\meter}$ and for both LOCO fittings, $\chi$ converged to values close to $\SI{0.9}{\micro\meter}$. However there is a great difference between the two calibrated models regarding the quadrupole deviations from the nominal values. As discussed in the Chapter~\ref{chap:loco}, without constraints on $\Delta K$, the LOCO process tries to minimize $\chi$ without concern on the quadrupoles deviations, which may lead to large excursions in these parameters due to the quasi-degeneracies in LOCO jacobian. With constraints on $\Delta K$, the convergence path for $\chi$ is changed also minimize the step size of quadrupole deviations. This difference in the fitting behavior can be revealed with a plot of $\chi$ versus the~\gls{std} of quadrupole changes over iterations, as presented in Figure~\ref{fig:chi_vs_dkl}.
-\begin{figure}
+In order to check if this setup is appropriated for LOCO analysis in the real Sirius storage ring a simple test was performed. Without any optics or coupling corrections applied in the storage ring, an~\gls{orm} was measured and it was used to apply LOCO fitting with two setups: without any modification (using~\gls{gn} method and no constraint on $\Delta K$) and with the chosen configuration described previously. The initial $\chi$ for the measured~\gls{orm} was $\SI{24.6}{\micro\meter}$ and for both LOCO fittings, $\chi$ converged to values close to $\SI{0.9}{\micro\meter}$. However there is a great difference between the two calibrated models regarding the quadrupole deviations from the nominal values. As discussed in the Chapter~\ref{chap:loco}, without constraints on $\Delta K$, the LOCO process tries to minimize $\chi$ without any concern on the quadrupoles deviations magnitudes, which may lead to large excursions in these parameters due to the quasi-degeneracies in LOCO jacobian. With constraints on $\Delta K$, the convergence path for $\chi$ is changed in order to minimize the step size of quadrupole deviations. This difference in the fitting behavior can be revealed with a plot of $\chi$ versus the~\gls{std} of quadrupole changes over iterations, as presented in Figure~\ref{fig:chi_vs_dkl}. The comparison of final fit variations for 270 quadrupoles in Sirius storage ring in this test is plotted in Figure~\ref{fig:dkl_compare}. 
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/chi_versus_dk_cumsum.pdf}
 \caption{$\chi$ versus $||\Delta K/K||$ throughout 10 LOCO iterations. The gray dashed horizontal line corresponds to $\chi = \SI{908}{\nano\meter}$, the value used as reference for convergence.}
 \label{fig:chi_vs_dkl}
 \end{figure}
-
-The comparison of final fit variations for 270 quadrupoles in Sirius storage ring in this test is plotted in Figure~\ref{fig:dkl_compare}. 
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/delta_kl_comparison_better_grid.pdf}
 \caption{Comparison of quadrupoles variations obtained from LOCO with two calculation methods.}
 \label{fig:dkl_compare}
 \end{figure}
 
-The variations reaching $\SI{7.5}{\%}$ are unrealistic, since previous magnetic measurements and characterizations indicate a good gradient field quality, satisfying the specification of $\SI{0.05}{\%}$ in gradient errors. Moreover, it can be seen that some adjacent quadrupoles have large variations with opposite signs, which are related to the quasi-denegeracies discussed in Section~\ref{sec:degeneracy}. The solution obtained with constraints demands much less of quadrupole variations and also adjusts the measured~\gls{orm} in the same level. The variations obtained for the other parameters included in the fitting agrees for the two setups within the error bars, which was expected since basically the major difference is related to the constraints on quadrupoles strengths.
+The variations reaching $\SI{7.5}{\%}$ are unrealistic, since previous magnetic measurements and characterizations indicate a good gradient field quality, satisfying the specification of $\SI{0.05}{\%}$ in gradient errors. Moreover, it can be seen that some adjacent quadrupoles have large variations with opposite signs, which are related to the quasi-denegeracies discussed in Section~\ref{sec:degeneracy}. The solution obtained with constraints demands much less of quadrupole variations and also adjusts the measured~\gls{orm} in the same level. The variations obtained for the other fit parameters included in the fitting agree for the two setups within the error bars, which was expected since basically the major difference is related to the constraints on quadrupoles strengths.
 
 It is important to point out that the convergence criteria for $\chi$ should avoid the cases of over-fitting. In addition to save the LOCO running time, the most important reason is to prevent the method from increasing the quadrupoles strengths to produce a negligible reduction in $\chi$. In Figure~\ref{fig:chi_vs_dkl} it can be seen that for the unconstrained case, the last three iterations increased $||\Delta K/K||$ considerably while $\chi$ was basically the same. The over-fitting is more serious for the unconstrained case indeed, since each iteration may produce large variations on quadrupoles but it may also be a problem even for the constrained case, since accumulated small step sizes may also produce large and unnecessary variations in the final values. The convergence criteria can be controlled by defining the minimum acceptable change in the residue, given by $\chi_{\mathrm{step}}$ and the minimum level for the residue, $\chi_{\mathrm{min}}$. For the LOCO fittings performed in Sirius storage ring, the values used was $\chi_{\mathrm{step}} = \SI{10}{\nano\meter}$ and $\chi_{\mathrm{min}} = \SI{250}{\nano\meter}$, where the value for $\chi_{\mathrm{min}}$ was defined based on Sirius \glspl{bpm} accuracy. The final residue of $\SI{908}{\nano\meter}$ obtained in these fittings is still $3.6$ times greater than the \gls{bpm} accuracy and the explanation for this limit of convergence will be given throughout this chapter. Nevertheless, obtain a calibrated model with an \gls{orm} that agrees with the measured in the sub-$\mu$m level already corresponds to a very good fitting.
 
@@ -64,7 +60,7 @@ The~\gls{loco} analysis was performed in these 10 measured~\glspl{orm} with the 
     \end{tabular}
 \end{table}
 
-For each calibrated model obtained with LOCO, the optical functions and its variations in this set of 10 values were also calculated. The results are organized in Table~\ref{tab:twiss_var}. 
+For each calibrated model obtained with LOCO, the lattice functions and its variations in this set of 10 values were also calculated. The results are organized in Table~\ref{tab:twiss_var}. 
 \begin{table}
     \centering
     \caption{Variations in lattice functions obtained from LOCO calibrated models from 10 ORM measurements performed in Sirius storage ring.}
@@ -81,17 +77,17 @@ For each calibrated model obtained with LOCO, the optical functions and its vari
     \end{tabular}
 \end{table}
 
-The variations for the dispersion function are calculated as absolute values because $\eta_x$ is zero in the straight sections, so it is not possible to divide the variations by the average values and then obtain a finite relative variation. To compare the variations in Table~\ref{tab:twiss_var}, the average and~\gls{std} of $\eta_x$ around the Sirius storage ring is $\SI{2.1}{\cm}$ and the peak-to-valley value is $\SI{8.3}{\cm}$. In the case of betatron functions, which always assumes positive values by definition, it is possible to obtain the relative variations.
+The variations for dispersion function are calculated as absolute values because $\eta_x$ is zero in the straight sections, so it is not possible to divide the variations by the average values and then obtain a finite relative variation. To compare the variations in Table~\ref{tab:twiss_var}, the average and~\gls{std} of $\eta_x$ around the Sirius storage ring is $\SI{2.1}{\cm}$ and the peak-to-valley value is $\SI{8.3}{\cm}$. In the case of betatron functions, which always assumes positive values by definition, it is possible to obtain the relative variations.
 
 \subsection{Initial Condition Dependence}
-\gls{orm} fitting for Sirius storage ring with LOCO can be viewed as finding a minimum of a function $\chi$ with $1110$ variables (the fit parameters). The minimization problem in such high dimensions may contain multiple local minima between the starting point and the global minimum (if it exists at all). The parameters during the fitting may produce a $\chi$ that is trapped in these local minima, which may be away from the most effective solution in terms of minimizing $\chi$.
+\gls{orm} fitting for Sirius storage ring with LOCO can be viewed as finding a minimum of a function $\chi$ with $1110$ variables (the fit parameters). The minimization problem in such high dimensions may contain multiple local minima between the starting point and the global minimum (if it exists at all). The parameters during the fitting may produce a $\chi$ that is trapped in these local minima, which might be away from more effective solutions in terms of minimizing $\chi$.
 
-A strategy to explore the search space is beginning with different initial guesses and check the final solution obtained. If the final results are fairly independent on the initial guess, one has an indicative that, at least inside the region covered by the initial guesses range, the obtained solution is the minimum. For a given problem, if the initial guesses cover a broad range of feasible values for fit parameters, this process indicates that, amongst the doable solutions, the found solution is the best one.
+A strategy to explore the search space is beginning with different initial guesses and check the final solution obtained. If the final results are fairly independent on the initial guess, one has an indicative that, at least inside the region covered by the initial guesses range, the obtained solution is the best minimum. For a given problem, if the initial guesses cover a broad range of feasible values for fit parameters, this process indicates that, amongst the doable solutions, the found solution is the best one.
 
 The initial condition dependence test was applied in LOCO code. An~\gls{orm} measured in Sirius storage ring was used as input for LOCO fitting. Twenty different initial conditions, regarding only the quadrupole strengths, were used to adjust the measured~\gls{orm}. The gradient initial guesses varied with a random normal distribution with $\sigma=0.5\%$ and $\sigma$ cutoff, with respect to the nominal gradients. Larger values of $\sigma$ was tested but they produced unstable dynamics in the model, thus $0.5\%$ was chosen since it allowed for the largest large of feasible initial conditions.
 
 All the 20 initial conditions produced a greater initial $\chi$ as compared to the nominal initial guess. The minimum initial $\chi$ was $\SI{25.2}{\micro\meter}$ while with zero initial condition it was $\SI{24.6}{\micro\meter}$. Thus, the zero initial condition still was the closest to the minimum of $\chi$. The $\chi$ convergence for all the 20 realizations and the zero initial guess are plotted in Figure~\ref{fig:chi_ini_guess}. The initial $\chi$ in this test was $\SI{47(28)}{\micro\meter}$ and after 10 iterations, the final was $\SI{0.98(7)}{\micro\meter}$. Therefore, all the realizations converged to the same fitting level.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=0.75\textwidth]{figures/chi_convergence_initial_guess.pdf}
 \caption{$\chi$ convergence for different initial conditions. The zero initial guess convergence is represented by the orange curve.}
@@ -111,7 +107,7 @@ With this test one can conclude that the solution obtained with zero initial gue
 There is another insightful test, suggested and performed in~\cite{safranek1995}, with the goal of showing that quadrupole gradients can be accurately predicted with LOCO method. The test is quite simple: measure an~\gls{orm}, then change an individual quadrupole strength (in the case of Sirius, change the current of a trim-coil) and re-measure the~\gls{orm}. Each~\gls{orm} is adjusted with LOCO and the two sets of fitted quadrupole gradients is then compared.
 
 The test was also performed in Sirius storage ring. The trim-coil current of a QFA quadrupole was varied to produce a $-1.19\%$ reduction in its gradient strength. This quadrupole is placed in a high-beta straight section. Following the quadrupoles sorting around the storage ring, this corresponds to the 161\ts{th} quadrupole out of 270. Figure~\ref{fig:delta_13M1_qfa} shows the test results.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/delta_13M1_QFA.pdf}
 \caption{Quadrupoles variations comparison for two orbit response fittings, where the difference in an intentional change in the 161\ts{th} quadrupole.}
@@ -133,7 +129,7 @@ The initial difference between measured and nominal~\gls{orm} produced $\chi = \
 
 \subsection{Gains}
 \glspl{bpm} gains, roll errors and correctors gains are parameters that are related to the correspondent devices, thus it should be independent on the machine optics and coupling. Furthermore, typically these parameters should not vary greatly, specially in such a short period of time when these measurements occurred. Therefore, it is reasonable to include the gains and roll errors as LOCO fit parameters in the first iteration and use these obtained values as initial conditions for the following fittings. It is expected that the gains will not deviate too much from the fit values obtained in the first step. From the first LOCO iteration on Sirius, the BPM gains, roll errors and correctors gains obtained are shown in Figure~\ref{fig:gain_fit}.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
 \includegraphics[width=1.0\textwidth]{figures/bpm_gains_iter0_big.pdf}
@@ -149,7 +145,7 @@ The initial difference between measured and nominal~\gls{orm} produced $\chi = \
 \label{fig:gain_fit}
 \end{figure}
 
-The values in format (average $\pm$ std) for each parameter presented in Figure~\ref{fig:gain_fit} is: $\num{0.966(7)}$ for horizontal BPM gain, $\num{0.973(8)}$ for vertical BPM gain, $\num{0.94(3)}$ for CH gain, $\num{0.94(4)}$ for CV gain and $\SI{-1(3)}{\milli\radian}$ for BPM roll error. As discussed in Appendix~\ref{appendix:gains}, the interpretations for BPM and correctors gains are opposite, in the sense that for BPMs the fitted gains represents the corrections factors that should be applied in the measurements to explain correctly the actual orbit distortions, while it is the inverse of correctors gains that should be used in the kick applied to obtain the actual kicks that affected the beam. Therefore, this fitting indicates that the actual BPMs measurements are around $3\%$ lower than the actual values, on average, and the actual kicks that distort the beam orbit are $6\%$ greater (on average) than the kicks variations ($\SI{15}{\micro\radian}$) considered by the control system during~\gls{orm} measurement. It also can be observed that the spread between BPM gains is one order of magnitude lower than the spread between correctors and this difference was already expected.
+The values in format (average $\pm$ std) for each parameter presented in Figure~\ref{fig:gain_fit} are: $\num{0.966(7)}$ for horizontal BPM gain, $\num{0.973(8)}$ for vertical BPM gain, $\num{0.94(3)}$ for CH gain, $\num{0.94(4)}$ for CV gain and $\SI{-1(3)}{\milli\radian}$ for BPM roll error. As discussed in Appendix~\ref{appendix:gains}, the interpretations for BPM and correctors gains are opposite, in the sense that for BPMs the fitted gains represents the corrections factors that should be applied in the measurements to explain correctly the actual orbit distortions, while it is the inverse of correctors gains that should be used in the kick applied to obtain the actual kicks that affected the beam. Therefore, this fitting indicates that the actual BPMs measurements are around $3\%$ lower than the actual values, on average, and the actual kicks that distort the beam orbit are $6\%$ greater (on average) than the kicks variations ($\SI{15}{\micro\radian}$) considered by the control system during~\gls{orm} measurement. It also can be observed that the spread between BPM gains is one order of magnitude lower than the spread between correctors and this difference was already expected.
 
 In Figure~\ref{subfig:corr_fit} it can be observed a 20-fold periodic pattern in correctors gains, specially in CH gains. This signature following the storage ring period is also correlated to the topic of Section~\ref{sec:orbit_effect}. It also can be seen two outliers in CV gains in 82\ts{th} and 158\ts{th} vertical correctors. These correctors were later examined on site but this initial survey did not reveal any anomalies. The cause for these outliers in CV gains is still under investigation and they did not compromise the following results.
 
@@ -161,7 +157,7 @@ Normal and skew gradients were also included as LOCO fit parameters to adjust th
 The LOCO fitting changes the model parameters to calibrated it with the real machine, so the integrated gradients are changed by $\mathrm{KL}_{\mathrm{nominal}} \rightarrow \mathrm{KL}_{\mathrm{nominal}} + \Delta\mathrm{KL}_{\mathrm{LOCO}}$. The same is valid for $\mathrm{KsL}$, the skew gradients strength, however the difference is that initially the skew gradients are zero, since in the nominal model the coupling is zero as well. Ideally, $\mathrm{KL}_{\mathrm{actual}} = \mathrm{KL}_{\mathrm{nominal}} + \Delta\mathrm{KL}_{\mathrm{LOCO}}$ represents the actual focusing strengths affecting the electron beam in the real storage ring. In the real machine it is wanted to reverse this process, moving the focusing strengths towards the nominal values. Therefore, the gradient variations calculated from LOCO was applied to the machine with the opposite sign, making $\mathrm{KL}_{\mathrm{actual}} - \Delta\mathrm{KL}_{\mathrm{LOCO}} \rightarrow \mathrm{KL}_{\mathrm{nominal}}$. For skew quadrupoles, it is expected that the applied corrections cancels out the unwanted skew gradients in the storage ring to result in $\mathrm{KsL} = 0$, which is the nominal.
 
 The process of measuring an~\gls{orm}, fitting it with LOCO and applying the corrections to the machine was realized only twice until the convergence was reached. The corrections distribution history both for normal quadrupoles and skew quadrupoles are shown in Figure~\ref{fig:loco_corrections}. The standard deviations of these corrections for each LOCO iteration are organized in Table~\ref{tab:corr_converge}.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \begin{subfigure}[t]{1.0\textwidth}
 \includegraphics[width=1.0\textwidth]{figures/loco_quad_big.pdf}
@@ -176,7 +172,7 @@ The process of measuring an~\gls{orm}, fitting it with LOCO and applying the cor
 \caption{Normal and skew quadrupoles strength variations throughout LOCO iterations.}
 \label{fig:loco_corrections}
 \end{figure}
-\begin{table}
+\begin{table}[h!]
     \centering
     \caption{Corrections strengths variation for each LOCO iteration.}
     \label{tab:corr_converge}
@@ -209,7 +205,7 @@ From Figure~\ref{fig:loco_corrections} and the values in Table~\ref{tab:corr_con
 
 \subsection{Deviations from Nominal}
 The figure of merit to be minimized with LOCO method is the difference between measured and calculated~\gls{orm} in each iteration, by changing the storage ring model. As LOCO corrections are applied to the machine, it is expected that the measured~\gls{orm} converges to the nominal~\gls{orm}. Table~\ref{tab:orm_progress} shows the progress of~\gls{orm} differences (represented by $\chi$) throughout LOCO corrections applied to the machine and also the fitting level for each particular iteration.
-\begin{table}
+\begin{table}[h!]
     \centering
     \caption{ORM fitting progress.}
     \label{tab:orm_progress}
@@ -227,7 +223,7 @@ The figure of merit to be minimized with LOCO method is the difference between m
 The LOCO corrections applied in Sirius storage ring decreased the difference between measured and nominal~\gls{orm} from $\SI{24.6}{\micro\meter}$ to $\SI{2.1}{\micro\meter}$, which is almost a factor $12$ of reduction.
 
 For a global view of measured~\gls{orm} convergence towards the nominal, Figure~\ref{fig:histogram} shows the histogram of errors for each LOCO iteration. The error histograms are divided in four parts, following the four~\gls{orm} blocks: $M_{xx}$, $M_{yy}$ (on-diagonal) and $M_{xy}$, $M_{yx}$ (off-diagonal). 
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/histogram_loco_iterations3_density.pdf}
 \caption{Histogram for the errors between measured and nominal orbit response matrices for each LOCO iteration. The blue data refers to the measured ORM without corrections applied. The orange data was obtained after the first application of LOCO corrections. The green data is related to the second and last LOCO round applied.}
@@ -244,7 +240,7 @@ It can be seen that initially the order of magnitude of errors are basically the
 The off-diagonal errors were reduced by a factor of 2 greater than the on-diagonal errors.
 
 Two~\gls{orm} columns were taken to exemplify typical differences between measured and nominal matrices, before and after LOCO corrections and the results are presented in Figure~\ref{fig:orm_rows}. The first column is related to a horizontal corrector signature and the second one to a vertical corrector. Multiplying the~\gls{orm} column by the kicks $\Delta\theta_x$ and $\Delta\theta_y$, one can obtain the orbit distortion signature $\Delta x$ and $\Delta y$.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/nominal_measured_after_before_loco_big.pdf}
 \caption{Orbit Response Matrix rows for the first CH and CV. The blue curve is the nominal ORM, the orange curve represents the measured ORM before LOCO corrections and the green curve is from measured ORM after LOCO.}
@@ -274,13 +270,13 @@ Adding up the corrections sets for normal and skew quadruploles gradients in the
 The final quadrupole gradients variations covers the range of $\pm 2\%$, while the skew quadrupole strengths are between $\pm \SI{5e-3}{\meter^{-1}}$. Based only on magnetic characterization of quadrupoles fields, variations of $2\%$ are large, since the specifications for gradient errors were $0.05\%$. On the other hand, it is important to remember that these quadrupole variations are corrections for gradient errors along the whole storage ring. Thus, it is more likely that these corrections are compensating other sources of gradient errors. The most important ones are: additional gradients in dipoles that are not considered in the magnet modelling; gradients in sextupoles, which may be caused by additional fields in the magnets and by feed-down effect (Appendix~\ref{appendix:feed-down} for details) from misalignment or orbit distortions in sextupoles; gradient fields introduced by the undulators installed in storage ring. These other sources of gradient errors may accumulate in such a way that quadrupole variations on the order of $2\%$ are necessary for compensation.
 
 An interesting way to visualize the quadrupole variations is dividing them by following the 12 quadrupoles families in storage ring. The magnets that make up each family were selected in order to minimize the spread in gradient strengths within the families and to satisfy the $0.05\%$ specification on gradient errors. The results of this rearrangement in families are shown in Figure~\ref{fig:loco_corrections_final_families}. The statistics for these quadrupole variations divided by families are organized in Table~\ref{tab:quad_fam_corr}.
-\begin{figure}
+\begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/final_quads_correction_families_fix.pdf}
 \caption{Quadrupoles families final variations after two LOCO iterations. The continuous lines indicate the family average variation and the dashed lines correspond to $\pm$ std.}
 \label{fig:loco_corrections_final_families}
 \end{figure}
-\begin{table}
+\begin{table}[h!]
     \centering
     \caption{Quadrupole families corrections.}
     \label{tab:quad_fam_corr}
@@ -374,7 +370,7 @@ Finally, with the calibrated models the emittances were also calculated and the 
 Initially the model indicated that the natural emittance was $13\%$ higher than the nominal value of $\SI{251}{\pico\meter\radian}$. The vertical emittance generated an emittance coupling ratio of $0.94\%$. The natural emittance obtained with the final calibrated model was very close to the nominal and the vertical emittance was virtually absent.
 
 \section{Independent Measurements}\label{sec:independent_meas}
-There are some measurements that can be realized to check independently the impact of LOCO corrections in Sirius storage ring. Lattice functions, betatron and dispersion, are measured to verify the machine linear optics and its deviations to the nominal functions. Measuring the avoided-crossing in betatron tunes provides the information about the global betatron coupling. To check the performance in beam dynamics, one can measure the dynamic aperture and injection efficiency, two typically correlated quantities. 
+There are some measurements that can be realized to check independently the impact of LOCO corrections in Sirius storage ring. Lattice functions, betatron and dispersion, are measured to verify the machine linear optics and its deviations to the nominal functions. Measuring the avoided-crossing in betatron tunes provides the information about the global betatron coupling. To check the performance in beam dynamics, one can measure the dynamic aperture and injection efficiency, two typically correlated quantities. When these studies were performed, the Sirius diagnostic beamline was not installed yet, so it was not possible to perform beam size and emittance measurements.
 
 \subsection{Dispersion Function}
 The information about dispersion function is already encoded in one of~\gls{orm} columns. A column of this matrix is the orbit response due to a variation in~\gls{rf} frequency. From Eq.~\eqref{eq:rf_column}, the dispersion function at BPMs positions can be calculated as:
@@ -488,7 +484,7 @@ The equations above are equivalent to Eq.~\eqref{eq:eigentunes}. In the limit $\
 
 The tunes approximation can be performed by changing the focusing strengths in the storage ring. For Sirius, the fractional horizontal tune is lower than the vertical tune, thus the value scan be approximated by increasing a focusing quadrupole strength. The QFB family was chosen for this experiment. If the power supply current that feeds this quadrupole family is changed by $\Delta I_{\mathrm{QFB}}>0$, there will be a corresponding change in horizontal tune $\Delta\nu_x > 0$ and vertical tunes $\Delta\nu_y < 0$. In this way, both the tune sum and difference can be viewed as function of QFB current: $\nu_x + \nu_y = \Sigma \nu_{x, y} = f\left(I_{\mathrm{QFB}}\right)$ and $\nu_x - \nu_y = \Delta \nu_{x, y} = g\left(I_{\mathrm{QFB}}\right)$.
 
-The measurement script and analysis was implemented by an~\gls{fac} colleague and used by the author in Sirius storage ring to obtain the global betatron tunes before and after LOCO corrections. The results are shown in Figure~\ref{fig:global_coupling}. The fitting gray curve presented in Figure~\ref{fig:global_coupling} were obtained by plugging the measured $\nu_x$, $\nu_y$ for each current $I_{\mathrm{QFB}}$ in matrix $\mathbf{C}$, diagonalizing it and finding the parameter $\kappa$ and the offset $(\nu_x+\nu_y)/2$ that minimize the quadratic difference to the data.
+The measurement script and analysis was implemented by an~\gls{fac} colleague and used by the author in Sirius storage ring to obtain the global betatron tunes before and after LOCO corrections. The results are shown in Figure~\ref{fig:global_coupling}. The fitting gray curve presented in Figure~\ref{fig:global_coupling} were obtained by plugging the measured $\nu_x$, $\nu_y$ for each current $I_{\mathrm{QFB}}$ in matrix $\mathbf{C}$, diagonalizing it and finding the parameter $\kappa$ and the offsets $(\nu_x+\nu_y)/2$ that minimize the quadratic difference to the data.
 \begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
@@ -573,9 +569,9 @@ Although there were no errors in BPM gains and roll angles and correctors gains,
 \label{fig:gain_fit_orb}
 \end{figure}
 
-Observe that there is also a periodic signature in the gains. Comparing with Figure~\ref{fig:gain_fit}, even tough the absolute values are smaller than the gains obtained in the previous fitting, the periodic signature observed previously (specially for correctors) can be related to the orbit distortion effect on gains fitting. The BPM roll angles adjusted in this test were also on the order of $\pm\SI{10}{\milli\radian}$. Thus the values obtained previously probably are unrealistic and also related to orbit contribution.
+Observe that there is also a periodic signature in the gains. Comparing with Figure~\ref{fig:gain_fit}, even tough the absolute values are smaller than the gains obtained in the previous fitting, the periodic signature observed previously (specially for correctors) can be related to the orbit distortion effect on gains fitting. The BPM roll angles adjusted in this test were also on the order of $\pm\SI{10}{\milli\radian}$. Thus the values obtained previously probably are unrealistic and also related to the orbit contribution.
 
-The beta-beating caused by the residual orbit were also calculated and compared with the first calibrated LOCO model. The results are presented in Figure~\ref{fig:beta_beating_orb}.
+The beta-beating caused by the residual orbit were also calculated and compared with the first calibrated LOCO model. The results are presented in Figure~\ref{fig:beta_beating_orb}. The disturbed orbit produced~\gls{std} beta-beatings of $\SI{8.6}{\%}$ in horizontal and $\SI{3.0}{\%}$ in vertical plane. It can be seen that the orbit contributions to the beta-beating in some locations are commensurable to the ones obtained from calibrated model. The fact that calibrated beta-beating is higher than the cause by orbit distortion is reasonable, since in the real storage ring there are other sources of optics perturbations. 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/beta_beating_orbit_loco_iter0.pdf}
@@ -583,17 +579,13 @@ The beta-beating caused by the residual orbit were also calculated and compared 
 \label{fig:beta_beating_orb}
 \end{figure}
 
-The disturbed orbit produced~\gls{std} beta-beatings of $\SI{8.6}{\%}$ in horizontal and $\SI{3.0}{\%}$ in vertical plane. It can be seen that the orbit contributions to the beta-beating in some locations are commensurable to the ones obtained from calibrated model. The fact that calibrated beta-beating is higher than the cause by orbit distortion is reasonable, since in the real storage ring there are other sources of optics perturbations. 
-
-Another comparison was performed between the dispersion functions from perturbed orbit model and the measurements realized on storage ring before LOCO corrections.
+Another comparison was performed between the dispersion functions from perturbed orbit model and the measurements realized on storage ring before LOCO corrections, plotted in Figure~\ref{fig:disperson_orb}. Once again, the actual errors are larger than the ones generated by feed-down effect, as expected. The vertical dispersion signature similarities draws attention. It is clear that the errors in $\eta_y$ caused by orbit distortion explain a great part of the measured $\eta_y$. The correlation between measured $\Delta\eta_x$ and the calculated with orbit distortions is $76\%$ and for $\Delta\eta_y$ the correlations is $53\%$. The main sources of $\eta_y$ are vertical dipolar fields created by vertical orbit distortions at quadrupoles.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1.0\textwidth]{figures/dispersion_orbit_iter0.pdf}
 \caption{Comparison dispersion functions at BPMs obtained perturbed orbit model with measurement before optics corrections.}
 \label{fig:disperson_orb}
 \end{figure}
-
-Once again, the actual errors are larger than the ones generated by feed-down effect, as expected. The vertical dispersion signature similarities draws attention. It is clear that the errors in $\eta_y$ caused by orbit distortion explain a great part of the measured $\eta_y$. The correlation between measured $\Delta\eta_x$ and the calculated with orbit distortions is $76\%$ and for $\Delta\eta_y$ the correlations is $53\%$. The main sources of $\eta_y$ are vertical dipolar fields created by vertical orbit distortions at quadrupoles.
 
 Finally, the variations in normal and skew quadrupoles obtained in this test were compared with LOCO corrections applied in storage ring, as can be seen in Figure~\ref{fig:corrections_orb}.
 \begin{figure}[h!]
@@ -603,7 +595,7 @@ Finally, the variations in normal and skew quadrupoles obtained in this test wer
 \label{fig:corrections_orb}
 \end{figure}
 
-The order of magnitude of variations in both cases are very similiar. For quadrupoles, the std variations are $\SI{0.36}{\%}$ for orbit perturbed model and $\SI{0.33}{\%}$ for LOCO corrections. For skew quadrupoles, the std variations are $\SI{2.4e-3}{\meter^{-1}}$ for orbit perturbed model and $\SI{2.7e-3}{\meter^{-1}}$ for LOCO corrections. When these corrections are applied in the perturbed model, the~\gls{orm} is approximated to the nominal matrix very well, the optics errors are reduced (except for $\eta_y$) but can not be eliminated, exactly as observed in the actual storage ring. The results of this optics corrections on perturbed model is organized on Table~\ref{tab:params_corr}.
+The order of magnitude of variations in both cases are very similiar. For quadrupoles, the std variations are $\SI{0.36}{\%}$ for orbit perturbed model and $\SI{0.33}{\%}$ for LOCO corrections. For skew quadrupoles, the std variations are $\SI{2.4e-3}{\meter^{-1}}$ for orbit perturbed model and $\SI{2.7e-3}{\meter^{-1}}$ for LOCO corrections. When these corrections are applied in the perturbed model, the~\gls{orm} is approximated to the nominal matrix very well, the optics errors are reduced (except for $\eta_y$) but can not be eliminated, exactly as observed in the actual storage ring. The results of optics corrections on perturbed model is organized on Table~\ref{tab:params_corr}.
 \begin{table}[h!]
     \centering
     \caption{Optics errors before and after LOCO corrections applied on perturbed model.}
@@ -612,10 +604,10 @@ The order of magnitude of variations in both cases are very similiar. For quadru
         \toprule\toprule
         Parameter (std) & before corr. & after corr. & Unit\\
         \hline
-        $\Delta\beta_x/\beta_x$ & \SI{8.6}{} & \SI{1.8}{\%} & \SI{}{\%}\\
-        $\Delta\beta_y/\beta_y$ & \SI{3.0}{} & \SI{1.5}{\%} & \SI{}{\%}\\
-        $\Delta\eta_x$ & \SI{333}{} & \SI{155}{} & \SI{}{\milli\meter} \\
-        $\Delta\eta_y$ & \SI{170}{} & \SI{188}{} & \SI{}{\milli\meter}\\
+        $\Delta\beta_x/\beta_x$ & \SI{8.6}{} & \SI{1.8}{} & \SI{}{\%}\\
+        $\Delta\beta_y/\beta_y$ & \SI{3.0}{} & \SI{1.5}{} & \SI{}{\%}\\
+        $\Delta\eta_x$ & \SI{3.3}{} & \SI{1.6}{} & \SI{}{\milli\meter} \\
+        $\Delta\eta_y$ & \SI{1.7}{} & \SI{1.9}{} & \SI{}{\milli\meter}\\    
         \bottomrule\bottomrule
     \end{tabular}
 \end{table}

@@ -156,6 +156,8 @@ In each iteration of the LOCO algorithm, the gains and rolls parameters are upda
 The matrix multiplication order is important, since the \gls{orm} dimension is $2\mathrm{N}_{\mathrm{BPM}} \times \mathrm{N}_{\mathrm{corr}}$, the BPM-related matrices dimensions are $2\mathrm{N}_{\mathrm{BPM}} \times 2\mathrm{N}_{\mathrm{BPM}}$ and the correctors-related matrix dimension is $\mathrm{N}_{\mathrm{corr}} \times \mathrm{N}_{\mathrm{corr}}$. 
 
 \chapter{LOCO pseudo-algorithm}\label{appendix:algo}
+The pseudo-algorithm for LOCO fitting is presented in this appendix. For the Python implementation, the GitHub Repository~\cite{locosirius} should be consulted.
+
 \begin{algorithm}[h!]
 % \scriptsize
 % \footnotesize
@@ -190,6 +192,8 @@ The matrix multiplication order is important, since the \gls{orm} dimension is $
  \caption{LOCO pseudo-algorithm}
  \label{algo:loco}
 \end{algorithm}
+
+The additional loop for the case of Levenberg-Marquardt minimization algorithm usage in LOCO fitting is presented in the Algorithm 2 below.
 \begin{algorithm}[h!]
 % \footnotesize
 % \scriptsize
