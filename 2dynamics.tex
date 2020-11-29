@@ -1,7 +1,7 @@
 \chapter{Beam dynamics}
 This chapter is dedicated to introduce the basic Accelerator Physics concepts and terminology required for this dissertation. For detailed discussions about the topics presented here, the author recommends the references~\cite{sands1970physics, wiedemann2007physics}.
 
-After the storage ring coordinate system definition in the Section~\ref{coord}, the dynamics of a single electron will be described in Sections~\ref{tranverse} and~\ref{longitudinal}. Then one can introduce the excitation and damping processes in the description and apply statistical methods to obtain equilibrium parameters for an ensemble of non-interacting (independent) electrons -- the electron beam. In Section~\ref{perturbations} it is presented and discussed the perturbations on the beam dynamics, which are fundamental to this work.
+After the storage ring coordinate system definition in Section~\ref{coord}, the dynamics of a single electron will be described in Sections~\ref{tranverse} and~\ref{longitudinal}. Then one can introduce the excitation and damping processes in the description and apply statistical methods to obtain equilibrium parameters for an ensemble of non-interacting (independent) electrons -- the electron beam. In Section~\ref{perturbations} it is presented and discussed the perturbations on the beam dynamics, which are fundamental to this work.
 \section{Coordinate System}\label{coord}
 To describe the motion of electrons in a storage ring, a coordinate system definition is required and for this sake the concept of reference orbit is necessary. With proper initial conditions, an ideal electron (also called synchronous electron), which has the storage ring nominal energy $E_0$, will follow a closed orbit and this specific periodic path is defined as the reference orbit. The motion of an arbitrary electron is then described in terms of small deviations from the reference orbit, which is taken as the coordinate system origin. 
 
@@ -126,7 +126,7 @@ The tune fractional part is closely related to resonances. If the fractional par
     m \nu_x + n \nu_y = r,
     \label{resonance}
 \end{equation}
-where $m, n, r \in \mathbb{Z}$. The order of resonance is $|m| + |n|$ and the resonance strength decays with the increase of its order, thus the lower order resonances are more harmful to the beam stability. The Eq.~\eqref{resonance} determines resonance lines in the space $(\nu_x, \nu_y)$ that must be avoided to prevent the electron beam from this type of instability. The tunes values must be carefully chosen for the machine operation point. The Sirius storage ring tunes are $\nu_x = 49.0962$ and $\nu_y=14.1520$.
+where $m, n, r \in \mathbb{Z}$. The order of resonance is $|m| + |n|$ and the resonance strength decays with the increase of its order, thus the lower order resonances are more harmful to the beam stability. Eq.~\eqref{resonance} determines resonance lines in the space $(\nu_x, \nu_y)$ that must be avoided to prevent the electron beam from this type of instability. The tunes values must be carefully chosen for the machine operation point. The Sirius storage ring tunes are $\nu_x = 49.0962$ and $\nu_y=14.1520$.
 \subsection{Dispersion function}
 It can be seen from the radius of curvature created by the dipoles that an electron with energy deviation $\delta$ will be more deflected if $\delta < 0$ and less deflected if $\delta > 0$, compared to the on-energy electron with $\delta = 0$. Thus this energy difference is translated in different horizontal displacements. This effect is represented by the non-homogeneous term $G(s)\delta$ in the horizontal equation of motion, which couples longitudinal and horizontal motions.
 
@@ -217,7 +217,7 @@ With the linear approximations made in equations~\eqref{approx1} and~\eqref{appr
     \Ddot{v} + 2\alpha_{z} \dot{v} + \omega_{z}^2 v = 0,
     \label{damped}
 \end{equation}
-where $v=\tau$ or $\delta$ and the dot represents the time derivative. The Eq.~\eqref{damped} describes a damped harmonic oscillator, with frequency $\omega_z = \sqrt{\dfrac{\alpha e}{E_0 T_0} \dfrac{\dif V_{\mathrm{rf}}}{\dif \tau}}$, called synchrotron frequency. The term $\alpha_z = \dfrac{1}{2T_0} \dfrac{\dif U_{\mathrm{rad}}}{\dif \delta}$ is positive, represents the effect of radiation damping and it is typically small. 
+where $v=\tau$ or $\delta$ and the dot represents the time derivative. Eq.~\eqref{damped} describes a damped harmonic oscillator, with frequency $\omega_z = \sqrt{\dfrac{\alpha e}{E_0 T_0} \dfrac{\dif V_{\mathrm{rf}}}{\dif \tau}}$, called synchrotron frequency. The term $\alpha_z = \dfrac{1}{2T_0} \dfrac{\dif U_{\mathrm{rad}}}{\dif \delta}$ is positive, represents the effect of radiation damping and it is typically small. 
 
 In the small oscillation limit, the phase-space trajectories are ellipses with decreasing radius towards $\tau = \delta = 0$. In the general case of large oscillations, the longitudinal dynamics is not equivalent to a damped oscillator anymore and the dynamics is non-linear. The electrons trajectories in phase space are divided in two classes: 1) closed, limited and stable and 2) open, unlimited and unstable. The stable regions in the phase space are called \gls{rf} buckets and a separatrix delimits the stable from the unstable region, where the limit is the stable trajectory with largest amplitudes.
 
@@ -229,7 +229,7 @@ Since $\omega_{\mathrm{rf}} = h \omega_0$, where $\omega_0$ is the angular revol
 \subsection{Phase Stability}
 The principle of phase stability is a fundamental concept to the realization of synchrotron light sources. It establishes a mechanism that guarantees that electrons with energy or longitudinal phase deviations will be forced towards the synchronous condition.
 
-It will be helpful to convert the Eq.~\eqref{orbitlen} in terms of revolution times, writing as $\Delta T/T_0 = \alpha \delta$. Suppose an electron with energy deviation $\delta > 0$ in a storage ring, then it will take more time to this electron perform one turn, to reach the \gls{rf} cavity and from the convention used to the coordinate definition, $\tau < 0$ to this electron. Since the \gls{rf} potential derivative must be positive at $\tau = 0$, the energy gain $U_{\mathrm{rf}}$ for $\tau < 0$ is less than $U_0$; moreover, $U_{\mathrm{rad}} > U_0$ for electrons with $\delta > 0$. Thus, the energy balance for this electron will be negative, leading it to lower values of $\delta$ and also $\tau$.
+It will be helpful to convert Eq.~\eqref{orbitlen} in terms of revolution times, writing as $\Delta T/T_0 = \alpha \delta$. Suppose an electron with energy deviation $\delta > 0$ in a storage ring, then it will take more time to this electron perform one turn, to reach the \gls{rf} cavity and from the convention used to the coordinate definition, $\tau < 0$ to this electron. Since the \gls{rf} potential derivative must be positive at $\tau = 0$, the energy gain $U_{\mathrm{rf}}$ for $\tau < 0$ is less than $U_0$; moreover, $U_{\mathrm{rad}} > U_0$ for electrons with $\delta > 0$. Thus, the energy balance for this electron will be negative, leading it to lower values of $\delta$ and also $\tau$.
 
 The analysis is basically the same for electrons initially with $\delta < 0$. These electrons will perform each turn faster than the synchronous electron does, having $\tau > 0$ and gaining more energy from the cavity than it is lost by radiation. This positive energy balance will increase the values of $\delta$ and $\tau$.
 
@@ -411,7 +411,7 @@ For a general gradient error distribution around the ring, the tune change is:
     \label{eq:tune_shift}
 \end{equation}
 
-The solution for the Eq.~\eqref{beta_equation} in the presence of a distribution of gradient errors provides the relative change in the betatron function given by
+The solution for Eq.~\eqref{beta_equation} in the presence of a distribution of gradient errors provides the relative change in the betatron function given by
 \begin{equation}
     \dfrac{\Delta \beta_u(s)}{\beta_u(s)} = \dfrac{1}{2\sin\left(2\pi \nu_u\right)} \oint \Delta K_u(\bar{s}) \beta_u(\bar{s}) \cos\left(2\left(|\varphi_{u}(s) - \varphi_{u}(\bar{s})| - \pi\nu_{u} \right)\right) \dif \bar{s}.
 \end{equation}

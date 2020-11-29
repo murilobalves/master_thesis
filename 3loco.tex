@@ -18,7 +18,7 @@ If the corrector magnet is horizontal, $v=x$ and if it is vertical, $v=y$. For e
 
 The sub-matrices $\mathbf{M}^{xx}$ and $\mathbf{M}^{yy}$ in the on-diagonal blocks are the elements with larger values in the \gls{orm}. In a magnetic lattice with zero transverse coupling (such as the nominal magnetic lattice for Sirius storage ring) the sub-matrices $\mathbf{M}^{xy}$ and $\mathbf{M}^{yx}$ in the off-diagonal blocks are zero as well. The order of magnitude of the elements in off-diagonal blocks compared to the on-diagonal blocks is smaller by the same order of magnitude of the transverse coupling, typically a few percent without corrections.
 
-It is possible to obtain an analytical expression for the \gls{orm} elements in the on-diagonal blocks, for the uncoupled case. In Eq.~\eqref{eq:orbit_distortion} the orbit distortion in the presence of a given dipolar kick distribution $\theta_u(s)$ is given. For the special case where the kick distribution is discrete, localized in the dipolar correctors positions $s_j$, with values $\Delta \theta^{u}_{j}$, the Eq.~\eqref{eq:orbit_distortion} is rewritten in the form:
+It is possible to obtain an analytical expression for the \gls{orm} elements in the on-diagonal blocks, for the uncoupled case. In Eq.~\eqref{eq:orbit_distortion} the orbit distortion in the presence of a given dipolar kick distribution $\theta_u(s)$ is given. For the special case where the kick distribution is discrete, localized in the dipolar correctors positions $s_j$, with values $\Delta \theta^{u}_{j}$, Eq.~\eqref{eq:orbit_distortion} is rewritten in the form:
 \begin{equation}
     \Delta u(s_i) = \sum_{j} \dfrac{\sqrt{\beta_{u}(s_i)\beta_{u_j}(s_j)}}{2\sin\left(\pi\nu_{u}\right)} \Delta \theta^{u}_j \cos\left( |\varphi_{u}(s_i) - \varphi_{u}(s_j)| - \pi\nu_{u} \right).
     \label{eq:discrete_orbit_distortion}
@@ -166,7 +166,7 @@ where $\lambda > 0$ is a constant. The diagonal operator acts on a $2\times 2$ m
  \end{bmatrix}.
 \end{equation}
 
-Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, the Eq.~\eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, the Eq.~\eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
+Note that the diagonal elements of the matrix $\mathbf{J}^{\mathsf{T}}\mathbf{J}$ are increase by the scale $1 + \lambda$. The interpolation between the \gls{gn} algorithm and the gradient descent is controlled with the parameter $\lambda$. In the limit $\lambda \ll 1$, Eq.~\eqref{eq:lm} approaches to the equation used in the \gls{gn} method. If $\lambda \gg 1$, Eq.~\eqref{eq:lm} describes the gradient descent method, where the changes are made only in the direction of maximum variation of the function.
 
 The parameter $\lambda$ may be chosen in a heuristic manner for the specific problem. It also can be changed during the fitting. The typical procedure used in \gls{loco} algorithm \cite{icfa_huang, huang2019beam} is to begin with small values for $\lambda$, around $10^{-3}$, decrease $\lambda$ by a factor (for example, by 10) if the iteration reduces $\chi^2$ and increase $\lambda$ by a scale if $\chi^2$ is increased and keep increasing this parameter until $\chi^2$ is reduced or $\lambda$ reaches a maximum threshold. In this way, the methods \gls{gn} and \gls{lm} proceeds basically in the same manner initially and in the cases that \gls{gn} fails to converge, the \gls{lm} may continue the convergence by changing the fitting method, making it closer to the gradient descent by increasing the value of $\lambda$. One disadvantage of the \gls{lm} algorithm is that for large values of $\lambda$, the algorithm convergence is typically very slow. Therefore, once the fitting is reasonably close to the minimum, it may be helpful to decrease the value of $\lambda$ for the sake of increasing the convergence speed.
 \section{Functionalities}
@@ -213,12 +213,12 @@ BPMs gains and rolls can be viewed as adjustments to the measurements given by t
 \end{bmatrix},
 \label{eq:bpm_gain1}
 \end{equation}
-where $g_{i, x}$ are the horizontal gains, $g_{i, y}$ the vertical gains for the $i$-th BPM and $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting the Eq.~\eqref{eq:bpm_gain1} as:
+where $g_{i, x}$ are the horizontal gains, $g_{i, y}$ the vertical gains for the $i$-th BPM and $\alpha_i$ is the roll for this BPM. In that way, the BPM measurements $\vec{u}_{i, \mathrm{meas.}}$ are adjusted to $\vec{u}_{i, \mathrm{real}}$, rewriting Eq.~\eqref{eq:bpm_gain1} as:
 \begin{equation}
     \vec{u}_{i, \mathrm{real}} = \mathbf{R}^{\mathrm{BPM}}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}},
     \label{eq:bpm_gain}
 \end{equation}
-where $\mathbf{R}\left(\alpha_i\right)$ is a rotation matrix and $\mathbf{G}_{i}^{\mathrm{BPM}}$ the BPM gain matrix. The Eq.~\eqref{eq:bpm_gain} allows for the jacobian matrix analytical calculation for the BPM gains and rolls, which is done in details in Appendix~\ref{appendix:gains}.
+where $\mathbf{R}\left(\alpha_i\right)$ is a rotation matrix and $\mathbf{G}_{i}^{\mathrm{BPM}}$ the BPM gain matrix. Eq.~\eqref{eq:bpm_gain} allows for the jacobian matrix analytical calculation for the BPM gains and rolls, which is done in details in Appendix~\ref{appendix:gains}.
 
 For the steering magnets the discussion is similar. Suppose that the $j$-th corrector kick set in the storage ring control system is $\theta_{j, \mathrm{applied}}^u$, $u=x$ for horizontal kicks and $u=y$ for vertical. Let $\theta_{j, \mathrm{real}}^u$ be the actual kick applied in the electron beam. These two values may be different and can be related by a gain factor
 \begin{equation}
@@ -226,7 +226,7 @@ For the steering magnets the discussion is similar. Suppose that the $j$-th corr
     \label{eq:corr_gain}
 \end{equation}
 
-The gain definition for correctors and BPMs was different in order to obtain linear analytical expressions for both jacobian matrices. The Eq.~\eqref{eq:corr_gain} also allows for the jacobian matrix analytical calculation for the steering magnets gains, which is done in details in Appendix~\ref{appendix:gains}. 
+The gain definition for correctors and BPMs was different in order to obtain linear analytical expressions for both jacobian matrices. Eq.~\eqref{eq:corr_gain} also allows for the jacobian matrix analytical calculation for the steering magnets gains, which is done in details in Appendix~\ref{appendix:gains}. 
 
 The jacobian matrix for the remaining parameters are calculated by numerical derivatives:
 \begin{equation}
@@ -245,7 +245,7 @@ By default, the BPMs and steering magnets gains are always included as fit param
 \subsection{Finding Errors}
 The fit parameters to be included in the LOCO method and its interpretation are directly related to the goal that is wanted to be achieved with the method. 
 
-As discussed in the Section~\ref{perturbations}, there are various sources of errors that perturbs the storage ring linear optics: the betatron and dispersion functions. The \gls{orm} depends on these functions, so fitting the measured \gls{orm} is fundamentally equivalent to obtain a model that represents the linear response of real machine on the optics functions subject.
+As discussed in Section~\ref{perturbations}, there are various sources of errors that perturbs the storage ring linear optics: the betatron and dispersion functions. The \gls{orm} depends on these functions, so fitting the measured \gls{orm} is fundamentally equivalent to obtain a model that represents the linear response of real machine on the optics functions subject.
 
 If the measured \gls{orm} is adjusted by varying in the model all the available fit parameters, then the final values of these parameters are interpreted as the deviations from ideal conditions represented by the nominal lattice, i.e., they represent the errors sources. 
 
@@ -259,7 +259,7 @@ Let's use the fit parameters described in the previous subsection~\ref{subsec:fi
     \item dipoles skew gradients: rotation errors in dipoles,
     \item sextupoles skew gradients: the major contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produces skew gradients. 
     \end{itemize}
-The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the method. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in the section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains. The BPMs roll angles are related to electrical coupling between the device channels and cables and rotation errors in the devices installation.
+The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the method. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains. The BPMs roll angles are related to electrical coupling between the device channels and cables and rotation errors in the devices installation.
 \subsection{Correcting Errors}
 Finding the errors sources with LOCO method is a strategy to obtain a model representation in the computer for the real storage ring. This LOCO functionality can be used as a diagnostic tool, for example, after a machine shutdown in which there was some interventions in the storage ring. Running the LOCO after a shutdown including all parameters in the fitting might show non-trivial problems in the machine that might perturb the beam. Thus the LOCO analysis may point out specific errors and facilitate targeted interventions to correct them.
 
