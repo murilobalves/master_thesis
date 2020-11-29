@@ -1,11 +1,11 @@
 \chapter{Beam dynamics}
-This chapter is dedicated to introduce the basic Accelerator Physics concepts and the terminology required for this dissertation. For detailed discussions about the topics presented here, the author recommends the references~\cite{sands1970physics, wiedemann2007physics}.
+This chapter is dedicated to introduce the basic Accelerator Physics concepts and terminology required for this dissertation. For detailed discussions about the topics presented here, the author recommends the references~\cite{sands1970physics, wiedemann2007physics}.
 
-After the storage ring coordinate system definition in the Section~\ref{coord}, the dynamics of a single electron will be described in the Sections~\ref{tranverse} and~\ref{longitudinal}. Then one can introduce the excitation and damping processes in the description and apply statistical methods to obtain equilibrium parameters for an ensemble of electrons -- the electron beam. This will be briefly done in the Section~\ref{equilibrium}. In the Section~\ref{perturbations} it is presented and discussed the perturbations on the beam dynamics, which are fundamental to this work.
+After the storage ring coordinate system definition in the Section~\ref{coord}, the dynamics of a single electron will be described in Sections~\ref{tranverse} and~\ref{longitudinal}. Then one can introduce the excitation and damping processes in the description and apply statistical methods to obtain equilibrium parameters for an ensemble of non-interacting (independent) electrons -- the electron beam. In Section~\ref{perturbations} it is presented and discussed the perturbations on the beam dynamics, which are fundamental to this work.
 \section{Coordinate System}\label{coord}
 To describe the motion of electrons in a storage ring, a coordinate system definition is required and for this sake the concept of reference orbit is necessary. With proper initial conditions, an ideal electron (also called synchronous electron), which has the storage ring nominal energy $E_0$, will follow a closed orbit and this specific periodic path is defined as the reference orbit. The motion of an arbitrary electron is then described in terms of small deviations from the reference orbit, which is taken as the coordinate system origin. 
 
-The dipoles are the elements of the magnetic lattice that defines the reference orbit that is curvilinear. Ideally, the dipoles deflects the electrons in just one direction (called radial or horizontal), therefore the ideal orbit defines an orbital plane in the storage ring. It is convenient to use a curvilinear and comoving coordinate system. The longitudinal axis $s$ can be defined as tangent to the local orbit, the horizontal $x$ is defined in the radial direction and the vertical $y$ is perpendicular to the orbital plane. A graphical representation of this coordinate system can be seen in Figure~\ref{syst}.
+The reference orbit is curved at dipoles and straight elsewhere. Generally, storage rings are planar, i.e., they are designed so that dipoles deflect the electrons in just one direction (called radial or horizontal), therefore the ideal orbit defines an orbital plane in the storage ring. It is convenient to use a curvilinear and comoving coordinate system. The longitudinal axis $s$ can be defined as tangent to the local orbit, the horizontal $x$ is defined in the radial direction and the vertical $y$ is perpendicular to the orbital plane. A graphical representation of this coordinate system can be seen in Figure~\ref{syst}.
 \begin{figure}
     \centering
     \includegraphics[scale=0.25]{figures/reference_system.png}
@@ -29,14 +29,15 @@ To describe the longitudinal dynamics, one can define two more coordinates. The 
 
 The variable $t$ represents the wall-clock time. The coordinate $z$ can be used in time units as well, represented by $\tau$ and the conversion is made by $\tau(t) = z(t)/c$. 
 
-For the last coordinate it is used the electron relative energy deviation from the nominal energy, which is also typically small:
+For the last coordinate it is used the electron relative momentum deviation from the nominal momentum, which is also typically small:
 \begin{equation}
-    \delta := \frac{E - E_0}{E_0}.
+    \delta := \frac{p - p_0}{p_0} \approx \frac{E - E_0}{E_0},
 \end{equation}
+where the approximation follows from $E \approx pc$.
 
 Finally, $(x, x', y, y', z, \delta)$ defines a six dimensional (6D) phase space where the transverse and longitudinal dynamics of the electrons in a storage ring can be studied.
 \section{Transverse Dynamics}\label{tranverse}
-The transverse dynamics describes the motion of the electrons in the 4D phase space $(x, x', y, y')$. Assuming that the typical time scale in the longitudinal dynamics is much greater than the transverse time scale, the two dynamics can be treated independently. This is called the adiabatic approximation and is a good approximation to describe the transverse motion in storage rings. In Sirius storage ring, while it takes around 200 turns to the electrons perform one complete energy oscillation, in just one turn the same electrons realize 49 and 14 complete oscillations in $x$ and $y$ planes, respectively.
+The transverse dynamics describes the motion of the electrons in the 4D phase space $(x, x', y, y')$. In general, the typical time scale of the longitudinal dynamics is much larger than the transverse time scale and the two dynamics can be treated independently. This is called the adiabatic approximation and is a good approximation to describe the transverse motion in storage rings. In Sirius storage ring, while it takes around 200 turns to the electron perform one complete energy oscillation, in just one turn the same electron completes 49 and 14 oscillations in $x$ and $y$ planes, respectively.
 
 % In the present section the linear transverse dynamics for a single electron in a storage ring is reported and the next one concerns its longitudinal dynamics.
 \subsection{Betatron Oscillations}
@@ -65,7 +66,7 @@ From the Hamiltonian in Eq.~\eqref{transv_hamilton}, the equations of motion are
 
 From the adiabatic approximation, in this derivation it was considered that the energy deviation $\delta$ is constant during the transverse motion.
 
-The equation of motion for the horizontal plane contains a non-homogeneous term $G(s)\delta$ due to the energy dispersion created at dipoles. This term couples the horizontal and longitudinal motions.
+The equation of motion for the horizontal plane contains a non-homogeneous term $G(s)\delta$ due to the dependence of position with energy created at dipoles. This term couples the horizontal and longitudinal motions.
 
 If we consider only the homogeneous part, the $x$ and $y$ equations can be cast in the same form:
 \begin{equation}
@@ -99,7 +100,7 @@ The parameters $J_u$ and $\phi_u$ are constants defined by the electron initial 
 \end{equation}
 for every longitudinal position $s$ and using the identities $\alpha_u(s) = -\beta_u'(s)/2$ and $\gamma_u(s) = (1 + \alpha_u^2(s))/\beta_u(s)$. These three functions $\left\{\alpha_u(s), \beta_u(s), \gamma_u(s)\right\}$ are called Twiss functions and depends only on the magnetic lattice.
 
-In the Eq.~\eqref{invariant} it is shown that, for each position $s$, the betatron oscillations performed by the electrons  in the storage ring over the turns draws a ellipse in the phase space $(u, u')$. Since the assumptions made so far allows us to consider the system as conservative, the Liouville theorem applies, therefore the area of this ellipse is invariant. From Eq.~\eqref{invariant}, the ellipse area is $A_u = 2 \pi J_u$, following that $J_u$ is a invariant of motion. It is also possible to obtain this result applying the canonical transformation of action-angle variables in the Hamiltonian~\eqref{transv_hamilton}, identifying the action with $J_u$ (in this case, it is an invariant by construction), and the phase variable with $\varphi_u$.
+In Eq.~\eqref{invariant} it is shown that, for each position $s$, the betatron oscillations performed by the electrons in the storage ring over the turns draw a ellipse in the phase space $(u, u')$. The ellipse shape varies with the longitudinal position $s$, however the ellipse area is constant for every $s$. Since the assumptions made so far allow us to consider the system as conservative, the ellipse area invariance in phase space can also be obtained from Liouville theorem. From Eq.~\eqref{invariant}, the ellipse area is $A_u = 2 \pi J_u$, following that $J_u$ is a invariant of motion. It is also possible to obtain this result applying the canonical transformation of action-angle variables in the Hamiltonian~\eqref{transv_hamilton}, identifying the action with $J_u$ (in this case, it is an invariant by construction), and the phase variable with $\varphi_u$.
 
 Once these concepts are presented, we define the particle emittance as $\varepsilon_u = 2J_u$. In this way, the particle emittance can be interpreted as the area of the ellipse that electron follows in the 4D phase space during betatron oscillations, divided by $\pi$:
 \begin{equation}
@@ -112,7 +113,7 @@ As discussed, it follows that the particle emittance is a invariant for the beta
     {u}_{\beta, \mathrm{max}}'(s) &= \sqrt{\varepsilon_u \gamma_u(s)}.
 \end{align}
 
-In a storage ring, the betatron phase advance accumulated over one turn is related to the number of betatron oscillations realized by the electrons. This number is called the tune of the machine, given by
+In a storage ring, the betatron phase advance accumulated over one turn is related to the number of betatron oscillations completed by the electrons. This number is called the tune of the machine, given by
 \begin{equation}
     \nu_u = \dfrac{1}{2\pi} \oint \dfrac{1}{\beta_u({s})} \dif {s},
 \end{equation}
@@ -129,7 +130,7 @@ where $m, n, r \in \mathbb{Z}$. The order of resonance is $|m| + |n|$ and the re
 \subsection{Dispersion function}
 It can be seen from the radius of curvature created by the dipoles that an electron with energy deviation $\delta$ will be more deflected if $\delta < 0$ and less deflected if $\delta > 0$, compared to the on-energy electron with $\delta = 0$. Thus this energy difference is translated in different horizontal displacements. This effect is represented by the non-homogeneous term $G(s)\delta$ in the horizontal equation of motion, which couples longitudinal and horizontal motions.
 
-The homogeneous equation was already solved in the last section, leading to betatron oscillations $x_{\beta}$. Therefore the general solution to the horizontal plane is a combination of $x_{\beta}$ and a particular solution for the non-homogeneous equation. As discussed, it is known that this particular solution must be a function of $s$ and $\delta$. A simple proposal is a linear dependence with energy deviation
+The homogeneous equation was already solved in the last section, leading to betatron oscillations $x_{\beta}$. Therefore the general solution to the horizontal plane is a combination of $x_{\beta}$ and a particular solution for the non-homogeneous equation. As discussed, it is known that this particular solution must be a function of $s$ and $\delta$. From linearity with respect to energy deviations
 \begin{equation}
     x(s, \delta) = x_{\delta}(s) = \eta(s) \delta,
 \end{equation}
@@ -143,36 +144,38 @@ For a periodic magnetic lattice as used in storage rings, $\eta(s)$ is a periodi
 
 We finally obtained the transverse displacements solutions to the equations of motion, where $x(s) = x_{\beta}(s) + x_{\delta} (s)$ and $y(s) = y_{\beta}(s)$. 
 
-Nominally there are dipolar fields only in the vertical direction deflecting the electrons in the horizontal plane. Then the defined dispersion function is ideally horizontal $\eta(s) = \eta_x(s)$. But in some cases, magnets imperfections or rotations errors in the storage ring could introduce horizontal dipolar fields, generating a vertical dispersion as well and the dispersion components separation in $\eta_x$ and $\eta_y$ must be done. Nevertheless, in this case the steps made to obtain the solution for the $x$ plane can be reproduced to obtain a equivalent solution to the $y$ plane. Moreover, typically it is desired to keep $\eta_y(s)$ as low as possible and there are some strategies to achieve this goal, which will be discussed in this work.
+Imperfections such as magnet misalignment or construction errors can introduce horizontal dipolar and skew quadrupolar fields, generating a vertical dispersion function, i.e., a dependence on vertical position with energy as well. Nevertheless, in this case the steps made to obtain the solution for $x$ plane can be reproduced to obtain a equivalent solution to the $y$ plane. Moreover, typically it is desired to keep $\eta_y(s)$ as low as possible and there are some strategies to achieve this goal, which will be discussed in this work.
 \section{Longitudinal dynamics}\label{longitudinal}
-In the previous section it was considered that the electron energy remains constant during the transverse motion typical time scale, which is a good approximation. On the other hand, since electrons are charged particles and in a storage ring they are submitted to centripetal acceleration at dipoles and \gls{id}s, the so-called sychrotron radiation is generated and the electrons lose energy. The energy loss is then compensated by an energy gain from the accelerating eletric fields contained in the \gls{rf} cavity. During this process the electron energy oscillates and this motion is known as synchrotron oscillations.
+In the previous section it was considered that the electron energy remains constant during the transverse motion typical time scale, which is a good approximation. On the other hand, since electrons are charged particles and in a storage ring they are submitted to centripetal acceleration at dipoles and \gls{id}s, the so-called sychrotron radiation is generated and the electrons lose energy. The energy loss is then compensated by the accelerating fields contained in the \gls{rf} cavity. During this process the electron energy oscillates and this motion is known as synchrotron oscillations.
 \subsection{Orbit Length}
 To calculate the orbit length, one has to average the electron path over many turns. In this process the betatron oscillations occurs several times, adding and subtracting almost equally to the path length. Therefore the betatron motion does not contribute to the orbit length in first order. On the other hand, the horizontal energy-dependent term $x_{\delta}(s) = \eta(s) \delta$ has a significant contribution. 
 
-An electron with $\delta > 0$ is less deflected by the dipoles, following a path with greater radius, therefore greater length, as compared to the nominal orbit length $L_0$. The opposite happens for an electron with $\delta < 0$. This effect analyzed in detail leads to the following equation:
+The momentum compaction factor is a parameter that depends on the magnetic lattice and is fundamental to the longitudinal dynamics. It can be defined as:
 \begin{equation}
-    \frac{\Delta L}{L_0} = \left(\alpha - \dfrac{1}{(v/c)^2\gamma^2}\right) \dfrac{\Delta p}{p_0},
-    \label{slip}
+    \alpha := \dfrac{1}{L_0}\oint G(s) \eta(s) \dif s,
 \end{equation}
-where $\alpha$ is called the momentum compaction factor. The term $\alpha - \dfrac{1}{(v/c)^2\gamma^2}$ is known as slip factor and, for ultra-relativistic electrons, it is very close to $\alpha$. For example, on Sirius storage ring $\alpha = 1.6 \times 10^{-4}$, $v/c \approx 1$ and $\gamma = 5871$, so the difference between the slip factor and $\alpha$ is only $3 \times 10^{-8}$. Using $\delta \approx \dfrac{\Delta p}{p_0}$, the Eq.~\eqref{slip} is commonly written as:
+where $\alpha$ can be positive, negative or zero as well. 
+
+The orbit length is related to the momentum deviation by:
 \begin{equation}
-    \frac{\Delta L}{L_0} \approx \alpha \delta.
+    \frac{\Delta L}{L_0} = \alpha \dfrac{\Delta p}{p_0} = \alpha \delta.
     \label{orbitlen}
 \end{equation}
 
-The momentum compaction factor is a parameter that depends on the magnetic lattice and is fundamental to the longitudinal dynamics. It can be determined by:
-\begin{equation}
-    \alpha = \dfrac{1}{L_0}\oint G(s) \eta(s) \dif s.
-\end{equation}
+Typically $\alpha > 0$ in synchrotrons. In this case, from Eq.~\eqref{orbitlen}, an electron with $\delta > 0$ is less deflected by the dipoles, following a path with greater radius, therefore greater length $\Delta L > 0$, as compared to the nominal orbit length $L_0$. The opposite happens for an electron with $\delta < 0$. 
+% \begin{equation}
+%     \frac{\Delta L}{L_0} = \left(\alpha - \dfrac{1}{(v/c)^2\gamma^2}\right) ,
+%     \label{slip}
+% \end{equation}
+% where $\alpha$ is called the momentum compaction factor. The term $\alpha - \dfrac{1}{(v/c)^2\gamma^2}$ is known as slip factor and, for ultra-relativistic electrons, it is very close to $\alpha$. For example, on Sirius storage ring $\alpha = 1.6 \times 10^{-4}$, $v/c \approx 1$ and $\gamma = 5871$, so the difference between the slip factor and $\alpha$ is only $3 \times 10^{-8}$. Using $\delta \approx \dfrac{\Delta p}{p_0}$, the Eq.~\eqref{slip} is commonly written as:
+
 % This type of closed integral around the ring is common during the derivation of lattice and beam parameters. There are five integrals, called synchrotron radiation integrals, that appears in the expressions of many parameters, so it is useful to label them. The first synchrotron integral is the one used to calculate the momentum compaction factor
 % \begin{equation}
 %     I_1 = \oint G(s) \eta(s) \dif s = \oint \dfrac{\eta(s)}{\rho(s)} \dif s.
 % \end{equation}
-
 % Then, the momentum compaction factor is written as $\alpha = I_1/L_0$.
 \subsection{Synchrotron Oscillations}
-Energy oscillations are not directly explored in this work, however it was considered appropriated to include the basic ideas for the sake of completeness of the presented theory.
-
+% Energy oscillations are not directly explored in this work, however it was considered appropriated to include the basic ideas for the sake of completeness of the presented theory.
 Consider the synchronous electron with the nominal energy $E_0$, following the ideal orbit through the storage ring. In each turn, this electron will radiate synchrotron light, losing the amount $U_0$ of energy. $U_0$ is typically much lower than the electron energy $E_0$. An electron with energy $E_0$ but not following the ideal orbit will perform several betatron oscillations in one turn and the transverse displacements will average to zero in first order. Hence, in this case, the energy loss per turn will be $U_0$ too. 
 
 On the other hand, the energy loss per turn has a first order difference from $U_0$ for an electron with energy deviation $\delta$. This off-energy electron will follow an orbit displaced horizontally by $\eta(s)\delta$ and the electron will experience different fields along the ring. Furthermore, the energy loss depends on the electron energy by itself as well. On account of these two effects, the energy loss must be a function $U_{\mathrm{rad}}(\delta)$ satisfying $U(0) = U_0$. It is considered that $\delta \ll 1$ for electrons in a storage ring, so it is reasonable to keep only the linear part of $U_{\mathrm{rad}}(\delta)$:
@@ -189,7 +192,7 @@ The electric field mentioned has a related time-dependent potential $V(t)$, whic
 \end{equation}
 where integer $h$ is called harmonic number.
 
-We are interested in deviations from the synchronous electron, then the absolute time dependence of $V_{\mathrm{rf}}(t)$ can be replaced by the coordinate $\tau(t) = z(t)/c$ that is the relative difference to the ideal arrival time at the cavity. In this way, an electron energy gain is given by $eV_{\mathrm{rf}}(\tau)$ and for the ideal electron we require that $eV_{\mathrm{rf}}(0) = U_0$. Since the  longitudinal displacements $\tau$ are small as well, we may expand in first order the energy gain:
+We are interested in deviations from the synchronous electron, then the absolute time dependence of $V_{\mathrm{rf}}(t)$ can be replaced by the coordinate $\tau(t) = z(t)/c$ that is the relative difference to the ideal arrival time at the cavity. In this way, an electron energy gain is given by $eV_{\mathrm{rf}}(\tau)$ and for the ideal electron we require that $eV_{\mathrm{rf}}(0) = U_0$. Since the longitudinal displacements $\tau$ are small as well, we may expand in first order the energy gain:
 \begin{equation}
     U_{\mathrm{rf}}(\tau) = eV_{\mathrm{rf}}(\tau) \approx U_0 + e\dfrac{\dif V_{\mathrm{rf}}}{\dif \tau}\tau.
     \label{approx2}
@@ -232,15 +235,15 @@ The analysis is basically the same for electrons initially with $\delta < 0$. Th
 
 The phase stability principle guarantees that the electrons will oscillate around the longitudinal fixed point $(\tau = 0, \delta = 0)$. The radiation damping effect says that the longitudinal deviations might be eventually damped to this fixed point. On the counterpart, the quantum nature of radiation emission produces an excitation effect and the balance between damping and excitation creates an equilibrium configuration.
 
-Since the synchronism condition is $f_{\mathrm{rf}} = h f_0$ the Eq.~\eqref{orbitlen} can be adapted to:
+Since the synchronous condition must be satisfied, from Eq.~\eqref{orbitlen} it is obtained that:
 \begin{equation}
     \dfrac{\Delta f_{\mathrm{rf}}}{f_{\mathrm{rf}}} = -\alpha \delta.
     \label{eq:delta_freq}
 \end{equation}
 
-From this equation it can be seen that a change in the \gls{rf} frequency forces the electrons to follow an off-energy orbit. In the \gls{rf} signal tuning, one must adjust the \gls{rf} frequency to match the condition $\delta = 0$ and this can be performed by making the horizontal orbit average go to zero, since the orbit displacement is related to the energy deviation by the dispersion function.
+From this equation it can be seen that a change in the \gls{rf} frequency forces the electrons to follow an off-energy orbit. In the \gls{rf} tuning, one must adjust the \gls{rf} frequency to match the condition $\delta = 0$ and this can be performed by making the horizontal orbit average go to zero, since the orbit displacement is related to the energy deviation by the dispersion function.
 
-Beyond the importance of phase stability in storage rings, it is also this principle that allows for increasing the electron energy in boosters. Increasing the magnetic fields will force the electrons to reach new synchronous conditions related to higher energies. To achieve that, the electrons must gain more energy from the \gls{rf} cavity and the phase stability principle drives this process automatically. In the Sirius booster, the electron energy ramp is performed from \SI{150}{\mega \electronvolt} to \SI{3}{\giga \electronvolt}.
+Beyond the importance of phase stability in storage rings, it is also this principle that allows for increasing the electron energy in synchrotrons. Increasing the magnetic fields will force the electrons to reach new synchronous conditions related to higher energies. To achieve that, the electrons must gain more energy from the \gls{rf} cavity and the phase stability principle drives this process automatically. In the Sirius booster, the electron energy ramp is performed from \SI{150}{\mega \electronvolt} to \SI{3}{\giga \electronvolt}.
 % \section{Equilibrium Parameters}\label{equilibrium}
 % Two opposite effects acts on the electron beam to result in equilibrium parameters: the radiation damping and the quantum excitation. The radiation emission is a quantum process, where the photon emissions occur randomly and are statistically independents. The radiation emission provides sudden energy jumps in the electron energy and excites both betatron and synchrotron oscillations.
 
@@ -337,17 +340,18 @@ Beyond the importance of phase stability in storage rings, it is also this princ
 % \end{equation}
 % remembering that $\alpha$ is the momentum compaction factor and $\omega_z$ the synchrotron frequency. The bunch length is a very important parameter to study of effects that involves the electron density in a bunch, such as the scattering between these electrons, which is responsible for the main contribution to the beam lifetime, the so-called Touschek lifetime~\cite{touschek}.
 \section{Perturbations}\label{perturbations}
-The effects of magnets and field errors in the electron beam can be minimized following construction, installation and alignment specifications. Nevertheless, the errors are impossible to be completely eliminated in practice. Furthermore, the magnets parameters are measured by bench devices that are less sensible to the errors than the electron beam. Hence, deviations from ideal conditions must be considered in the accelerator physics studies in order to develop methods for their diagnostics and corrections.
+The effects of magnets and field errors in the electron beam can be minimized with increasingly advanced techniques for magnets construction and alignment. Nevertheless, the errors are impossible to be completely eliminated in practice. Furthermore, the magnets parameters are measured by bench devices that are less sensible to the errors than the electron beam. Hence, deviations from ideal conditions must be considered in the accelerator physics studies in order to develop methods for their diagnostics and corrections.
 
 In this section we will present the perturbations on the electron beam properties caused by low-order errors that are found in storage rings. 
 \subsection{Orbit}\label{subset:orbit}
-The first natural error type to be studied is the dipolar. The presence of these dipolar errors disturbs the closed orbit for the electron motion. Depending on the distribution and the magnitude of these errors, a closed orbit solution may not even exist, then it would be impossible to keep electrons in stable conditions in the storage ring without corrections. Typically, even considering that all the specifications regarding the magnets fabrication and alignment were met, the dipolar errors might provide a closed orbit solution with distortions around the ring. Despite this, the orbit distortions can be measured by the \gls{bpm}s and corrected with dipolar correctors (or steering magnets), forcing the disturbed closed orbit to reach the ideal closed orbit.
+The first natural error type to be studied is the dipolar. The presence of these dipolar errors disturbs the closed orbit for the electron motion. Depending on the distribution and the magnitude of these errors, a closed orbit solution may not even exist, then it would be impossible to keep electrons in stable conditions in the storage ring without corrections. Typically, even considering that all the specifications regarding the magnets fabrication and alignment were met, the dipolar errors might provide a closed orbit solution with large distortions around the ring. Despite this, the orbit distortions can be measured by the \gls{bpm}s and corrected with dipolar correctors (or steering magnets), forcing the disturbed closed orbit to approach the ideal closed orbit.
 
 The typical sources of dipolar errors are:
 \begin{itemize}
     \item Dipolar fields from transverse alignment errors in quadrupoles. An electron with the deviation $x$ passing through a focusing quadrupole perfectly aligned to the reference orbit will receive a force $-Kx$ in the horizontal plane. If the quadrupole center is misplaced from the center by $x_0$, the focusing force will be $-K(x - x_0)$, therefore the misalignment introduces an additional dipolar term $K x_0$ every time the elecrons pass through this quadrupole. This is called feed-down effect\footnote{The Appendix~\ref{appendix:feed-down} is dedicated to brief discussions and derivations related to this effect.}, in which alignment errors in $n$-order fields will produce $(n-1)$-order fields contributions.
     \item Differences between ideal and real dipolar fields in the dipoles magnets, due to fabrication errors or remnant fields. In the case of electromagnets, the excitation curve that relates the applied current on the power supply and the magnetic field in the magnet must be well calibrated, otherwise the actual field in the magnets will differ from the expected. 
     \item Horizontal dipolar fields, which should be ideally zero, due to rotation errors in the dipoles magnets.
+    \item Spurious magnetic sources along the ring, such as ion pumps, leak fields from injection pulsed magnets, etc.
 \end{itemize}
 We will study how a dipolar error $\Delta G_u$ (where $u=x, y$), localized in a small longitudinal region $\Delta s$, affects the closed orbit solution. The additional term $\Delta G_u$ can be regarded as a perturbation in the Hamiltonian~\eqref{transv_hamilton} for the transverse dynamics. An approximation can be made to consider the dipolar error as a localized ``kick'': 
 \begin{equation*}
@@ -361,7 +365,7 @@ where $\delta(s-s_0)$ is the Dirac delta distribution centered at $s_0$, so in t
 
 If the dipolar field error is vertical, $v=y$, the angle change is horizontal, $u=x$ and the dipolar kick is also named as horizontal. If the field error is horizontal, $v=x$, the angle change is vertical, $u=y$ and the kick is called vertical. The sign follows from angle coordinate definition, if $\Delta G_y > 0$ then $\Delta x' < 0$ and if $\Delta G_x > 0$, then $\Delta y' > 0$.
 
-The angle change will be produce betatron oscillations in the electron motion, reaching the dipolar error in each turn with different position and angle conditions. After some time, the transverse motion will be damped to a distorted closed orbit. 
+The angle change will produce betatron oscillations in the electron motion, reaching the dipolar error in each turn with different position and angle conditions. After some time, the transverse motion will be damped to a distorted closed orbit. 
 
 In the presence of this dipolar kick, the transverse equations of motion  are:
 \begin{align}
@@ -371,7 +375,7 @@ In the presence of this dipolar kick, the transverse equations of motion  are:
 
 Remember that $u'' = \frac{\Delta u'}{\Delta s}$, then writing the above equations as $\Delta u' + K_u(s) u \Delta s = \Delta G_v(s) \Delta s$ and taking the limit $\Delta s \rightarrow 0$, $\Delta u' = \theta^{u}_{s_0}$ is recovered. 
 
-With the kick approximation, the dipolar error can be viewed as an impulse term in the linear differential equations for the transverse motion. Hence, the theory of Green's function can be applied. The solution obtained from this analysis is
+With the kick approximation, the dipolar error can be viewed as an impulse term in the linear differential equations for the transverse motion. Hence, the theory of Green's function can be applied. The solution obtained from this analysis is~\cite{wiedemann2007physics}
 \begin{equation}
     \Delta u(s) = \dfrac{\sqrt{\beta_{u}(s)\beta_{u}(s_0)}}{2\sin\left(\pi\nu_{u}\right)} \theta_{s_0}^{u} \cos\left( |\varphi_{u}(s) - \varphi_{u}(s_0)| - \pi\nu_{u} \right),
 \end{equation}
@@ -416,13 +420,13 @@ The ratio $\Delta \beta/\beta$ is called beta-beating and it is a measurement of
 
 Observe that the beta-beating diverges if the tune fractional part is a half-integer. Thus, it can be seen the association between gradient fields errors and half-integer resonances.
 
-The dispersion function $\eta(s)$ may be changed in the presence of dipolar of quadrupolar errors as well, since it must satisfy the differential Eq.~\eqref{eq:dispersion}, which depends on the lattice functions $G(s)$ and $K(s)$. An analytical expression for the dispersion variation in the presence of these errors are not very insightful to be presented here, but it is important to keep in mind that lattice imperfections may disturb the $\eta(s)$ function and the most direct parameter that may be affected by these errors is the beam emittance.
+The dispersion function $\eta(s)$ may be changed in the presence of dipolar and quadrupolar errors as well, since it must satisfy the differential Eq.~\eqref{eq:dispersion}, which depends on the lattice functions $G(s)$ and $K(s)$. An analytical expression for the dispersion variation in the presence of these errors are not very insightful to be presented here, but it is important to keep in mind that lattice imperfections may disturb the $\eta(s)$ function and the most direct parameter that may be affected by these errors is the beam emittance.
 \subsection{Linear Coupling}\label{subsec:linear_coupling}
 There are some types of errors that couples the dynamics in the transverse planes. The rotated quadrupolar field are called skew gradients (the first gradients introduced are called normal). In this subsection we will study the effects of linear coupling on the dynamics. Typical coupling sources are:
 \begin{itemize}
     \item Rotation errors in the quadrupoles. These errors adds skew gradients to the lattice: focusing forces in the $x$ plane which are dependent on the $y$ displacements and vice-versa.
     \item Effects from vertical alignment errors in sextupoles magnets. An electron with the deviation $x$ and $y$ passing through a focusing sextupole perfectly aligned to the reference orbit will receive a force $S(x^2-y^2)$ in the horizontal and $Sxy$ in the vertical plane. If the sextupole center is misplaced from the center by $y_0$, the terms $Sy_0 y$ and $-Sy_0^2$ are added in the horizontal, and the force $Sy_0 x$ is added in the vertical plane. Hence, there are focusing forces, with strength $Sy_0$, in one transverse plane that depends on position deviations in the perpendicular plane, i.e., skew gradients.
-    \item Dipolar fields in the longitudinal direction. These type of fields are called solenoidal fields and may be found in the insertion devices as undulators.
+    % \item Dipolar fields in the longitudinal direction. These type of fields are called solenoidal fields and may be found in the insertion devices as undulators.
 \end{itemize}
 
 We may consider that the skew gradients distribution around the storage ring are small perturbations to the electron dynamics. Suppose that this distribution is represented by the lattice function $K_S(s)$, namely skew-focusing function, generated by rotated quadrupoles, for example. The homogeneous equations of motion with these new fields will be changed by
@@ -441,14 +445,14 @@ the Hamiltonian for the linearly coupled motion is
 \end{equation*}
 and the the term $H_1 = K_S(s) xy$ can be viewed as a perturbation Hamiltonian.
 
-Applying a convenient canonical transformation with the action-angle variables $(a, \phi)$ in $H_1$, it assumes the form
+Applying a convenient canonical transformation with the action-angle variables $(a, \phi)$ in $H_1$, it assumes the form~\cite{wiedemann2007physics}
 \begin{equation*}
     H_1 = \dfrac{K_S(s)}{2}\sqrt{\beta_x(s)\beta_y(s)} \sqrt{a_x a_y} \sum_{lx, ly \in (-1, 1)} e^{i\left[l_x(\varphi_x + \phi_x) + ly(\varphi_y + \phi_y)\right]}.
 \end{equation*}
 
-From this form, we are able to separate constants and slowly varying terms from fast oscillating terms. Using periodic properties for the functions in a storage ring, we rewrite the Hamiltonian as:
+From this expression, we are able to separate constants and slowly varying terms from fast oscillating terms. Using periodic properties for the functions in a storage ring, we rewrite the Hamiltonian as:
 \begin{equation*}
-    H_1 = \dfrac{A(s)}{2} \sqrt{a_x a_y} \sum_{lx, ly \in (-1, 1)} e^{i\left[\left(l_x\nu_x + l_y\nu_y\right)2\pi s/L_0 + l_x\phi_x + l_y\phi_y\right]},
+    H_1 = \dfrac{\sqrt{a_x a_y}}{2} \sum_{lx, ly \in (-1, 1)} A(s) e^{i\left[\left(l_x\nu_x + l_y\nu_y\right)2\pi s/L_0 + l_x\phi_x + l_y\phi_y\right]},
 \end{equation*}
 where the factor $A(s)$ contains the periodic functions:
 \begin{equation*}
