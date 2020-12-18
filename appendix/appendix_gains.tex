@@ -1,0 +1,101 @@
+\chapter{BPMs and Correctors Gains}\label{appendix:gains}
+
+The starting point to obtain LOCO jacobian matrix for the BPMs gains and rolls is the linear transformation:
+\begin{equation}
+    \vec{u}_{i, \mathrm{real}} = \mathbf{R}^{\mathrm{BPM}}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{u}_{i, \mathrm{meas.}}.
+    \label{eq:gain_bpm_app}
+\end{equation}
+
+If the orbit vector is viewed as a function $\vec{u}_i = \vec{u}_i\left(\theta_j, \alpha_i, g_{i, x}, g_{i, y}\right)$, the \gls{orm} is $\vec{M}_{ij} = \dfrac{\partial \vec{u}_i}{\partial \theta_j}$. The vector is just a notation to use $\vec{u}_i = (x_i, y_i)$ and $\vec{M}_{ij} = \left(M_{ij}^x, M_{ij}^y\right)$. Moreover, the matrices $\mathbf{R}\left(\alpha_i\right)$ and $\mathbf{G}_{i}^{\mathrm{BPM}}$ satisfies
+\begin{equation*}
+\dfrac{\partial \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{ \partial  \theta_j} = \dfrac{\partial \mathbf{G}_{i}^{\mathrm{BPM}}}{ \partial \theta_j} = 0.
+\end{equation*}
+
+Thus it is possible to obtain from~\eqref{eq:gain_bpm_app} that
+\begin{equation}
+    \vec{M}_{ij}^{\mathrm{real}} = \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} \vec{M}_{ij}^{\mathrm{meas.}}.
+    \label{eq:gain_bpm_orm}
+\end{equation}
+
+The transformation represented in equation~\eqref{eq:gain_bpm_orm} must be applied in the measured \gls{orm} as LOCO algorithm updates the values of $\left(\alpha_i, g_{x, i}, g_{y, i}\right)$. 
+
+The residue vector is defined as $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} - \mathbf{M}^{\mathrm{model}}\right)$. Since $\mathbf{M}^{\mathrm{measured}}$ must be corrected by the transformation that includes BPM gains and rolls, the new residue vector is elements are 
+\begin{equation}
+    {V}_k^{\mathrm{real}} = \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right) \mathbf{G}_{i}^{\mathrm{BPM}} {M}^{\mathrm{meas.}}_{ij} - \mathbf{M}^{\mathrm{model}}_{ij},
+\end{equation}
+where the index $k$ is obtained from $i$ and $j$ by the vectorization. 
+
+To calculate LOCO jacobian matrix one needs to calculate the derivatives of $\vec{V}^{\mathrm{real}}$ relative to the fit parameters $\left(\alpha_i, g_{x, i}, g_{y, i}\right)$, which are assumed to be independent parameters, obtaining:
+\begin{align}
+    J_{kl}^{\mathrm{BPMroll}} = \dfrac{\partial {V}_k^{\mathrm{real}}}{\partial \alpha_l} &= \delta_{il}\dfrac{\dif \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{\dif \alpha_l} \mathbf{G}_{i}^{\mathrm{BPM}} {M}^{\mathrm{meas.}}_{ij}, \\
+    J_{kl}^{\mathrm{BPMgain}} = \dfrac{\partial {V}_k^{\mathrm{real}}}{\partial g_{l, u}} &= \delta_{il}\mathbf{R}^\mathrm{BPM}\left(\alpha_i\right){M}^{\mathrm{meas.}}_{ij},
+\end{align}
+where $\delta_{il}$ is the Kronecker delta and 
+\begin{equation*}
+    \dfrac{\dif \mathbf{R}^\mathrm{BPM}\left(\alpha_i\right)}{\dif \alpha_i} =
+    \begin{bmatrix}
+    -\sin\alpha_i & \cos\alpha_i \\
+     -\cos\alpha_i & -\sin\alpha_i 
+    \end{bmatrix}.
+\end{equation*}
+
+Due to the sorting used in the \gls{orm} that the horizontal measurements are in the upper blocks and the vertical measurements are in the lower blocks, the transformation matrices of gains and rolls are reorganized as
+\begin{align*}
+    \mathbf{R}^\mathrm{BPM}_{\alpha} &=
+    \begin{bmatrix}
+    \mathbf{C}^\alpha &  \mathbf{S}^\alpha \\
+     -\mathbf{S}^\alpha & \mathbf{C}^\alpha
+    \end{bmatrix}, \\
+    \dfrac{\dif \mathbf{R}^\mathrm{BPM}_{\alpha}}{\dif \alpha} &=
+    \begin{bmatrix}
+    -\mathbf{S}^\alpha &  \mathbf{C}^\alpha \\
+    -\mathbf{C}^\alpha & -\mathbf{S}^\alpha
+    \end{bmatrix}, \\
+    \mathbf{G}^{\mathrm{BPM}} &=
+    \begin{bmatrix}
+    \mathbf{G}^x & \mathbf{G}^y \\
+    \mathbf{G}^x & \mathbf{G}^y
+    \end{bmatrix},
+\end{align*}
+formed with diagonal sub-matrices ${C}^{\alpha}_{ii} = \cos\alpha_i$, ${S}^{\alpha}_{ii} = \sin\alpha_i$, ${G}^{x}_{ii} = g_{i, x}$, ${G}^{y}_{ii} = g_{i, y}$. The transformation in this form is very useful to be applied directly in the measured \gls{orm} and to calculate the jacobian matrix elements:
+\begin{align}
+    \mathbf{M}^{\mathrm{real}} &= \mathbf{R}^\mathrm{BPM}_\alpha\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}, \\
+    J_{kl}^{\mathrm{BPMroll}} &= \delta_{il}\left(\dfrac{\dif \mathbf{R}^\mathrm{BPM}_{\alpha}}{\dif \alpha}\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\right)_{ij}, \\
+    J_{kl}^{\mathrm{BPMgain}} &= \delta_{il}\left(\mathbf{R}^\mathrm{BPM}_\alpha \mathbf{M}^{\mathrm{meas.}}\right)_{ij},
+\end{align}
+the index $i$ is related to BPM index (rows of \gls{orm}) and it is used to be compared with the index $l$ of the jacobian matrix columns. Again, $i$ and $j$ are converted by vectorization to obtain the index $k$.
+
+For the steering magnets gain the analysis is straightforward. The transformation is
+\begin{equation}
+    \theta_{j, \mathrm{applied}}^u = g_{j, u}^{\mathrm{corr}}\theta_{j, \mathrm{real}}^u,
+    \label{eq:app-corr_gain}
+\end{equation}
+where the ``applied'' sub-index is the equivalent for the ``measured'' in BPMs.
+
+This transformation can be also cast in a matrix form, with diagonal gain matrices. However, since the kicks are in the denominator of the \gls{orm} with $M_{ij} = \dfrac{\Delta u_i}{\Delta \theta_j}$, the correct way to implement the corrector gain transformation in the \gls{orm} is by its inverse
+\begin{equation}
+        \mathbf{M}^{\mathrm{real}} = \mathbf{G}^{-1}_{\mathrm{corr}} \mathbf{M}^{\mathrm{meas.}}.
+\end{equation}
+
+Since the steering magnet gain was defined by equation~\eqref{eq:app-corr_gain}, the diagonal elements of $\mathbf{G}_{\mathrm{corr}}$ are $G^{\mathrm{corr}}_{ii} = 1/g_{i}$ so the inverse elements are $g_{i}$. This is convenient to obtain the jacobian matrix elements in a linear form, in the same manner that was obtained for the BPMs gains:
+\begin{equation}
+    J_{kl}^{\mathrm{corr}-\mathrm{gain}} = \delta_{jl}M^{\mathrm{meas.}}_{ij}.
+\end{equation}
+
+The index $j$ is related to correctors index (columns of \gls{orm}) and it is used to be compared with the index $l$ of the jacobian matrix columns. Once again, $i$ and $j$ are converted by vectorization to obtain the index $k$. Since the correctors is sorted column-wise in the \gls{orm}, the related gains blocks are organized as $\mathbf{G}_{\mathrm{corr}} =
+    \begin{bmatrix}
+    \mathbf{G}^x & \mathbf{G}^x \\
+    \mathbf{G}^y & \mathbf{G}^y
+    \end{bmatrix}$.
+
+If the corrector gain was defined alternatively as $\theta_{j, \mathrm{real}}^u = g_{j, u}^{\mathrm{corr}}\theta_{j, \mathrm{applied}}^u$, the jacobian matrix would contain non-linear elements like $-1/g_{i}^2$, obtained from the derivative of $1/g_{i}$.
+
+The final transformation, containing the BPMs and correctors gains and also the BPM roll is
+\begin{equation}
+    \mathbf{M}^{\mathrm{real}} = \mathbf{R}^\mathrm{BPM}_\alpha\mathbf{G}^{\mathrm{BPM}} \mathbf{M}^{\mathrm{meas.}}\mathbf{G}^{-1}_{\mathrm{corr}}.
+    \label{eq:full_transf}
+\end{equation}
+
+In each iteration of LOCO algorithm, the gains and rolls parameters are updated and the transformation described in equation~\eqref{eq:full_transf} must be applied.
+
+The matrix multiplication order is important, since the \gls{orm} dimension is $2\mathrm{N}_{\mathrm{BPM}} \times \mathrm{N}_{\mathrm{corr}}$, the BPM-related matrices dimensions are $2\mathrm{N}_{\mathrm{BPM}} \times 2\mathrm{N}_{\mathrm{BPM}}$ and the correctors-related matrix dimension is $\mathrm{N}_{\mathrm{corr}} \times \mathrm{N}_{\mathrm{corr}}$. 

@@ -1,0 +1,61 @@
+\chapter{LOCO pseudo-algorithm}\label{appendix:algo}
+The pseudo-algorithm for LOCO fitting is presented in this appendix. For the Python implementation, the GitHub Repository~\cite{locosirius} should be consulted.
+
+\begin{algorithm}[h!]
+% \scriptsize
+% \footnotesize
+\SetAlgoLined
+\KwResult{Fitted model, $\chi^2$ at each step}
+ Get LOCOInput: measured ORM, $\Delta \theta_x$, $\Delta \theta_y$, $\Delta f_{\mathrm{rf}}$, $\nu_x$, $\nu_y$ and $\sigma_{\mathrm{BPM}}$.\\
+ Define LOCOConfig: fit parameters, minimization method, singular values selection, constraints, weights, $n_{\mathrm{steps}}$, $\chi^2_{\mathrm{min}}$, $\chi^2_{\mathrm{step}}$, initial $\lambda$, $\lambda_{\mathrm{min}}$, $\lambda_{\mathrm{max}}$.\\
+ Change model tunes to match the measured values.\\
+ Obtain initial model ORM.\\
+ Calculate or load LOCO jacobian matrix.\\
+ Perform SVD and singular values filtering on jacobian matrix to obtain its pseudo-inverse.\\
+ Calculate initial reference residue vector $\vec{V}_0$ and $\chi^2_0$.\\
+ $n \leftarrow 0$ \\
+ \While{$n \leq n_{\mathrm{steps}}$}{
+  With $\vec{V}_0$, calculate parameters variations $\Delta \vec{P}$.\\
+  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
+  Calculate new residue vector $\vec{V}$ and $\chi^2$. \\
+  \eIf{$\chi^2 > \chi_0^2$ or $\chi^2 < \chi^2_{\mathrm{min}}$}{
+  \eIf{$\chi^2 > \chi^2_{\mathrm{min}}$ and LM method}{LM Fail $\leftarrow$ LM Loop().\\
+  \If{LM Fail}{Stop}
+  }{Stop}
+   }{
+   \eIf{$\chi_0^2 - \chi^2 < \chi_{\mathrm{step}}^2$}{Stop}{
+   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$.\\
+   Update model. \\
+   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$.\\
+   \If{LM method}{Decrease $\lambda$ and recalculate the jacobian pseudo-inverse}
+  }}
+  $n \leftarrow n + 1$ \\
+ }
+ Save output.
+ \caption{LOCO pseudo-algorithm}
+ \label{algo:loco}
+\end{algorithm}
+
+The additional loop for the case of Levenberg-Marquardt minimization algorithm usage in LOCO fitting is presented in the Algorithm 2 below.
+\begin{algorithm}[h!]
+% \footnotesize
+% \scriptsize
+\SetAlgoLined
+\KwResult{LM Fail}
+LM Fail $\leftarrow$ True\\
+ \While{$\lambda > \lambda_{\mathrm{min}}$ and $\lambda < \lambda_{\mathrm{max}}$}{
+ Increase $\lambda$.\\
+  Recalculate the jacobian pseudo-inverse.\\
+  Recalculate parameters variations $\Delta \vec{P}$.\\
+  Apply $\Delta \vec{P}$ to the model and obtain new ORM. \\
+  Calculate new residue vector $\vec{V}$ and $\chi^2$.\\
+  \If{$\chi^2 < \chi_0^2$}{
+   Update parameters $\vec{P} \leftarrow \vec{P} + \Delta \vec{P}$\\
+   Update model \\
+   Update references $\vec{V}_0 \leftarrow \vec{V}$ and $\chi^{2}_0 \leftarrow \chi^{2}$\\
+   LM Fail $\leftarrow$ False.\\
+   Stop.}
+ }
+ \caption{\gls{lm} Loop pseudo-algorithm}
+ \label{algo:lm_loop}
+\end{algorithm}
