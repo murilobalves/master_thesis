@@ -381,8 +381,11 @@ In the presence of this dipolar kick, the transverse equations of motion  are:
 Remember that $u'' = \frac{\Delta u'}{\Delta s}$, then writing the above equations as $\Delta u' + K_u(s) u \Delta s = \Delta G_v(s) \Delta s$ and taking the limit $\Delta s \rightarrow 0$, $\Delta u' = \theta^{u}_{s_0}$ is recovered. 
 
 With the kick approximation, the dipolar error can be viewed as an impulse term in the linear differential equations for the transverse motion. Hence, the theory of Green's function can be applied. The solution obtained from this analysis is~\cite{wiedemann2007physics}:
+% \begin{equation}
+%     \Delta u(s) = \dfrac{\sqrt{\beta_{u}(s)\beta_{u}(s_0)}}{2\sin\left(\pi\nu_{u}\right)} \theta_{s_0}^{u} \cos\left( |\varphi_{u}(s) - \varphi_{u}(s_0)| - \pi\nu_{u} \right),
+% \end{equation}
 \begin{equation}
-    \Delta u(s) = \dfrac{\sqrt{\beta_{u}(s)\beta_{u}(s_0)}}{2\sin\left(\pi\nu_{u}\right)} \theta_{s_0}^{u} \cos\left( |\varphi_{u}(s) - \varphi_{u}(s_0)| - \pi\nu_{u} \right),
+    \Delta u(s) = \dfrac{\sqrt{\beta_{u}(s)\beta_{u}(s_0)}}{2\sin\left(\pi\nu_{u}\right)}  \Delta G_v(s_0)\Delta s \cos\left( |\varphi_{u}(s) - \varphi_{u}(s_0)| - \pi\nu_{u} \right),
 \end{equation}
 and this is the orbit distortion for a dipolar error localized in the position $s_0$. The generalization for a distribution of errors $\theta_u(s)$ is quite direct:
 \begin{equation}
