@@ -10,7 +10,7 @@ The first test to check the implemented code consists in perturbing the simulate
 It is important to point out that this test should work properly if the errors are included in the elements that are used as fit parameters in LOCO method. For example, if gradient errors are added in the sextupoles but only quadrupoles strengths are fitted, the quadrupoles will be changed to best fit the~\gls{orm}. Thus, even if the $\chi^2$ is reduced, the final quadrupoles variations will not match the planted gradient errors in the sextupoles, since these elements are in different positions around the ring, with different phase advances. In this case, the fitted values must be interpreted only as the gradient changes in quadrupoles that best explain the perturbed \gls{orm}. Clearly this type of compensation should reach a limit of fitting effectiveness. Therefore, whenever it is possible, the most appropriated approach is to identify and then to minimize the errors sources not covered by LOCO and, only after that, apply~\gls{loco} analysis to obtain appropriated corrections.
 
 A hundred sets of errors were generated following a random normal distribution with $3\sigma$ cutoff. These errors were included in the simulated model and then the corresponding hundred~\gls{orm}s were calculated. LOCO analysis were performed for these~\gls{orm}s, fitting all the parameters described in Table~\ref{tab:fit_params}. The~\gls{std} $\sigma$ used in the normal distribution to generate random errors for each parameter are presented in Table~\ref{tab:errors}.
-\begin{table}[h!]
+\begin{table}
     \centering
     \caption{Random errors included in the simulated model ($3\sigma$ cutoff).}
     \label{tab:errors}
@@ -48,7 +48,7 @@ The goal of this test is to compare the fitted variations determined from~\gls{l
 %         \bottomrule\bottomrule
 %     \end{tabular}
 % \end{table}
-\begin{table}[h!]
+\begin{table}
     \centering
     \caption{Differences (normalized by $\sigma$) between planted errors and fitted variations obtained from LOCO analysis for 100 sets of random errors.}
     \label{tab:diff_target}
@@ -93,7 +93,7 @@ Detecting single errors is very useful to identify, in a more specific way, malf
 Suppose that amongst random gradient errors in quadrupoles, there is a single quadrupole with a large deviation from its nominal value. Single quadrupole errors are not naturally expected, since magnetic measurements are performed before the assembly in storage ring to guarantee that mechanical and magnetic properties meet the specifications for all magnets. However, after the magnets assembly some kind of problem in a specific magnet coils or in its power supply may appear and lead to localized errors.
 
 The following error distribution was generated and applied in Sirius storage ring model: gaussian random errors in gradient strengths with std $\sigma=\SI{0.25}{\%}$ and $\SI{2.0}{\%}$ of error in the 215\ts{th} quadrupole. Errors in others parameters were not included. An~\gls{orm} was calculated with this perturbed model and it was used as input for LOCO analysis, including all fit parameters. The results for variations in quadrupoles fitted by LOCO compared to the target errors are in Figure~\ref{fig:single_quad_detec}.
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \includegraphics[width=1.0\textwidth]{figures/single_quaderror_detection_big.pdf}
 \caption{Fitted and target quadrupoles variations, including a higher error of 2\% in the 215\ts{th} quadrupole.}
@@ -107,7 +107,7 @@ It is clear that this level of error determination is only possible for tests in
 The same tests were performed with BPMs and correctors gains. Such type of error in gains may be associated with malfunctioning in~\glspl{bpm} antennas, electrical interference or software issues. For correctors the outliers in gains may indicate problems in the magnet coils or in its power supplies. For BPMs, the problems are typically easier to detect since they can be identified directly from unrealistic position measurements. For correctors, the effect on the beam produced by localized problems may be more subtle to identify directly. Measuring the~\gls{orm} and performing LOCO analysis is usually a good indirect procedure to detect the aforementioned errors.
 
 Gaussian random errors with std $\sigma=\SI{10}{\%}$ were applied both for horizontal and vertical gains. BPM roll angle errors were included following a gaussian random distribution with std $\sigma=\SI{1}{\milli\radian}$.  The corresponding gains for 7\ts{th} BPM, CH and CV were increased by a $1.5$ factor. This means that the nominal~\gls{orm}, after applying the random gains errors, had the 7\ts{th} and 167\ts{th} rows (for the 7\ts{th} BPM) and 7\ts{th} and 127\ts{th} columns (for the 7\ts{th} CH and CV) multiplied by $1.5$. This altered~\gls{orm} were set as the goal matrix for LOCO fitting, where all fit parameters were included again. The fitting results for this test are shown in Figure~\ref{fig:gain_greater}.
-\begin{figure}[h!]
+\begin{figure}
 \centering
 \begin{subfigure}[t]{0.49\textwidth}
 \includegraphics[width=1.0\textwidth]{figures/bpm_gains_1p5gain_7th_bpm_grid_big.pdf}
