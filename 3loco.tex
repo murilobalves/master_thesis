@@ -101,10 +101,10 @@ Let the dimension of $\vec{V}$ be denoted by $\mathrm{N}_{\mathrm{data}}$. For t
 
 If the relative orbit response due to the~\gls{rf} frequency variation $\dfrac{\Delta u_i}{\Delta f_{\mathrm{rf}}}$ is included as a~\gls{orm} column, from Eq.~\eqref{eq:rf_column}, the minimization problem can be factored as
 \begin{equation}
-    \chi^2_{\eta} = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 + \dfrac{c_{\Delta f_{\mathrm{rf}}, \Delta \theta}}{\alpha^2 f_{\mathrm{rf}}^2}\sum_{i}\left(\eta^{\mathrm{measured}}_{i} - \eta^{\mathrm{model}}_{i}\right),
+    \chi^2_{\eta} = \sum_{i, j} \left(M^{\mathrm{measured}}_{ij} - M^{\mathrm{model}}_{ij}\right)^2 + \left(\dfrac{c_{f_{\mathrm{rf}}, \theta}}{\alpha f_{\mathrm{rf}}}\right)^2\sum_{i}\left(\eta^{\mathrm{measured}}_{i} - \eta^{\mathrm{model}}_{i}\right)^2,
     \label{eq:chi2_disp}
 \end{equation}
-where $c_{\Delta f_{\mathrm{rf}}, \Delta \theta}$ is a conversion factor used to match the units of $\chi_{\eta}$ terms. 
+where $c_{f_{\mathrm{rf}}, \theta}$ is a conversion factor used to match the units of $\chi_{\eta}$ terms, $\alpha$ is the momentum compaction factor and $f_{\mathrm{rf}}$ is the~\gls{rf} frequency.
 
 The BPM index $i$ covers the horizontal dispersion function for $1 \leq i \leq \mathrm{N}_{\mathrm{BPM}}$ and the range $\mathrm{N}_{\mathrm{BPM}}+1 \leq i \leq 2\mathrm{N}_{\mathrm{BPM}}$ refers to the vertical dispersion. Therefore, in this way the dispersion functions are also included in the fitting.
 
@@ -184,19 +184,19 @@ In order to determine the type of parameters to be included in the~\gls{orm} fit
 \begin{itemize}
     \item Diagonal blocks $\mathbf{M}^{xx}$ and $\mathbf{M}^{yy}$
     \begin{itemize}
-        \item quadrupoles gradients;
-        \item dipoles gradients;
-        \item sextupoles gradients;
+        \item quadrupolar gradients in quadrupole magnets;
+        \item quadrupolar gradients in dipole magnets;
+        \item quadrupolar gradients in sextupole magnets;
         \item BPMs gains;
         \item steering magnets gains.
     \end{itemize}
     \item Off-diagonal blocks $\mathbf{M}^{xy}$ and $\mathbf{M}^{yx}$
     \begin{itemize}
-        \item skew quadrupoles skew gradients;
-        \item quadrupoles skew gradients;
-        \item dipoles skew gradients;
-        \item sextupoles skew gradients;
-        \item BPMs rolls.
+        \item skew quadrupolar gradients in skew quadrupole magnets;
+        \item skew quadrupolar gradients in quadrupole magnets;
+        \item skew quadrupolar gradients in dipole magnets;
+        \item skew quadrupolar gradients in sextupole magnets;
+        \item BPMs roll angles.
     \end{itemize}
 \end{itemize}
 The LOCO jacobian matrix for BPMs and corrector gains, and also for BPMs roll er, are the columns that can be easily calculated analytically, as shown in Appendix~\ref{appendix:gains}. The columns related to the other parameters are typically calculated by numerical derivatives with the simulated storage ring model. 
@@ -246,7 +246,8 @@ The residue vector is $\vec{V} = \mathrm{vec}\left(\mathbf{M}^{\mathrm{meas.}} -
 remembering that the vectorization transforms the $(i, j)$ indices in the $k$ index.
 
 This numerical calculation dominates the running time for LOCO, whereas for each individual parameters that is varied, the model~\gls{orm} must be calculated to obtain the residue vector. The total jacobian calculation time is approximately $\Delta t_{\mathsf{ORM}} \times \mathrm{N}_{\mathrm{param.}}$, where $\Delta t_{\mathsf{ORM}}$ is the time required to calculate the~\gls{orm}. Thus, optimizing the~\gls{orm} calculation directly reduces LOCO running time. 
-% By default, the BPMs and steering magnets gains are always included as fit parameters, both for finding errors or calculating the corrections. The reason for this is that the gains calibrations have a specific signature in the residue vector and not including the gains would force the other parameters to compensate these systematic errors. In this case, even if the measured~\gls{orm} is perfectly fitted, the adjusted parameters are unrealistic. 
+
+By default, the BPMs and steering magnets gains are always included as fit parameters, both for finding errors or calculating the corrections. The reason for this is that the gains calibrations have a specific signature in the residue vector and not including the gains would force the other parameters to compensate these systematic errors. In this case, even if the measured~\gls{orm} is perfectly fitted, the adjusted parameters are unrealistic. 
 \subsection{Finding Errors}
 The fit parameters to be included in LOCO method and its interpretation are directly related to method's goal. As discussed in Section~\ref{perturbations}, there are various sources of errors that perturbs the storage ring linear optics: the betatron and dispersion functions. The~\gls{orm} depends on these functions, so fitting the measured~\gls{orm} is fundamentally equivalent to obtain a model that represents the linear response of the real machine on the optics functions subject.
 
@@ -254,13 +255,12 @@ If the measured~\gls{orm} is adjusted by varying in the model all the available 
 
 Let's use the fit parameters described in the previous subsection~\ref{subsec:fit_params} as an example for discussion. If all these parameters are adjusted, their variations may be interpreted as:
 \begin{itemize}
-    \item dipoles and quadrupoles gradients: differences between the expected gradients in the magnet models in the simulated magnetic lattice and the actual gradients affecting the beam;
+    \item quadrupolar gradients in dipole and quadrupole magnets: differences between the expected gradients in the magnet models in the simulated magnetic lattice and the actual gradients affecting the beam;
     % \item dipoles gradients: difference between the expected gradients in the dipole model in the simulated magnetic lattice and the actual gradients affecting the beam,
-    \item sextupoles gradients: the major contribution is due to horizontal transverse alignment errors or horizontal orbit distortions in the sextupoles, leading to feed-down effects that produce normal gradients;
+    \item quadrupolar gradients in sextupole magnets: the major contribution is due to horizontal transverse alignment errors or horizontal orbit distortions in the sextupoles, leading to feed-down effects that produce normal gradients;
     % The difference between magnet model and real magnets field also plays a role so it may be difficult to distinguish the effects, 
-    \item quadrupoles skew gradients: rotation errors in normal quadrupoles;
-    \item dipoles skew gradients: rotation errors in dipoles;
-    \item sextupoles skew gradients: the major contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produce skew gradients. 
+    \item skew quadrupolar gradients in quadrupole and dipole magnets: rotation errors the corresponding magnets;
+    \item skew quadrupolar gradients in sextupole magnets: the main contribution is due to vertical transverse alignment errors or vertical orbit distortions in the sextupoles, leading to feed-down effects that produce skew gradients.
     \end{itemize}
 The BPM gains, rolls and the steering magnets gains interpretation is the same for the two purposes of the method. There is a question about the degeneracy between obtaining the absolute BPM and correctors gains that is addressed in section~\ref{sec:degeneracy}, so in principle it is only possible to obtain the relative gains. The BPMs roll angles are related to electrical coupling between the device channels and cables and rotation errors in the devices installation.
 \subsection{Correcting Errors}
@@ -484,7 +484,7 @@ Limiting too much the $\Delta K$ step variation may increase unnecessarily the n
 Notice that with $c_{\Delta K}=10^{3}$ the last singular value was relatively smaller compared to the unconstrained case. This can be solved by combining the constrained case with the~\gls{lm} minimization, given that it was seen that the~\gls{lm} contribution raises the singular values. The singular values distribution for the chosen values of $\lambda$ and $c_{\Delta K}$ compared to the original distribution are shown in Figure~\ref{fig:compare_svs}. The last singular value is associated with the gain degeneracy between vertical~\glspl{bpm} and correctors, so, in principle, it is the only singular value that should be removed.
 \begin{figure}
 \centering
-\includegraphics[width=0.70\textwidth]{figures/chosen_singular_values.pdf}
+\includegraphics[width=0.75\textwidth]{figures/chosen_singular_values.pdf}
 \caption{Singular values distributions between GN unconstrained method and LM constrained method with chosen parameters.}
 \label{fig:compare_svs}
 \end{figure}

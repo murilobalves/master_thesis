@@ -11,7 +11,7 @@
 	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
 	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
 	% -- opções do pacote babel --
-    brazil,				% o último idioma é o principal do documento
+    % brazil,				% o último idioma é o principal do documento
 	english,			% idioma adicional para hifenização
 	%french,			% idioma adicional para hifenização
 	%spanish,			% idioma adicional para hifenização
@@ -56,7 +56,7 @@
 \usepackage{pdfpages}       % insere páginas pdf no arquivo
 \usepackage[separate-uncertainty=true]{siunitx}        % pacote para padronizar display de números e unidades
 \sisetup{exponent-product=\cdot}
-% \usepackage[a4paper, left=3cm, right=2cm, top=3cm, bottom=2cm]{geometry}
+\usepackage[a4paper, left=3cm, right=2cm, top=3cm, bottom=2cm]{geometry}
 
 \usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citacões na bibl
 
@@ -112,7 +112,6 @@
 % \input{preamble/glossary}
 %% comando \gls
 
-
 %---------------CONFIGURAÇÕES------------%
 
 % informações do PDF. O pacote hyperref já foi incluido em abntex2, eu acho
@@ -146,3 +145,5 @@
 \makeindex
 \makenomenclature
 \makeglossaries
+
+\selectlanguage{english}
